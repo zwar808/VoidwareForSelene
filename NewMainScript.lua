@@ -269,22 +269,6 @@ end
 if not are_installed_1() then install_profiles(1) end
 if not are_installed_2() then install_profiles(2) end
 
-local function vapeGithubRequest(scripturl)
-	if not isfile("vape/"..scripturl) then
-		local suc, res = pcall(function() return game:HttpGet("https://raw.githubusercontent.com/VapeVoidware/VoidwareBackup/"..readfile("vape/commithash.txt").."/"..scripturl, true) end)
-		assert(suc, res)
-		assert(res ~= "404: Not Found", res)
-		if scripturl:find(".lua") then res = "--This watermark is used to delete the file if its cached, remove it to make the file persist after commits.\n"..res end
-		writefile("vape/"..scripturl, res)
-	end
-	return readfile("vape/"..scripturl)
-end
-local function pload(fileName, isImportant)
-    fileName = tostring(fileName)
-    return loadstring(vapeGithubRequest(fileName))()
-end
-shared.pload = pload
-getgenv().pload = pload
 if not shared.VapeDeveloper then 
 	local commit = "main"
 	for i,v in pairs(game:HttpGet("https://github.com/VapeVoidware/VoidwareBackup"):split("\n")) do 
@@ -327,4 +311,32 @@ if not shared.VapeDeveloper then
 		error("Failed to connect to github, please try using a VPN.")
 	end
 end
+
+local function vapeGithubRequest(scripturl, isImportant)
+	if not isfile("vape/"..scripturl) then
+		local suc, res
+		task.delay(15, function()
+			if not res and not errorPopupShown then 
+				errorPopupShown = true
+				displayErrorPopup("The connection to github is taking a while, Please be patient.")
+			end
+		end)
+		suc, res = pcall(function() return game:HttpGet("https://raw.githubusercontent.com/VapeVoidware/VoidwareBackup/"..readfile("vape/commithash.txt").."/"..scripturl, true) end)
+		if not suc or res == "404: Not Found" then
+            if isImportant then
+                game:GetService("Players").LocalPlayer:Kick("Failed to connect to github : vape/"..scripturl.." : "..res)
+            end
+			error(res)
+		end
+		if scripturl:find(".lua") then res = "--This watermark is used to delete the file if its cached, remove it to make the file persist after commits.\n"..res end
+		writefile("vape/"..scripturl, res)
+	end
+	return readfile("vape/"..scripturl)
+end
+local function pload(fileName, isImportant)
+    fileName = tostring(fileName)
+    return loadstring(vapeGithubRequest(fileName, isImportant))()
+end
+shared.pload = pload
+getgenv().pload = pload
 return pload("MainScript.lua", true)
