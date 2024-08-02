@@ -116,10 +116,9 @@ function VWFunctions.LogStats()
 end
 function VWFunctions.GetHttpData()
     pcall(function()    
-        if not isfile('vape/id.txt') then VWFunctions.CreateID() end
         local client_id = tostring(game:GetService("RbxAnalyticsService"):GetClientId())
         local user_id = tostring(game:GetService("Players").LocalPlayer.UserId)
-        local voidware_id = tostring(readfile('vape/id.txt')) or ""
+        local voidware_id = "github"
         return voidware_id, user_id, client_id
     end)
 end
