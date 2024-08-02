@@ -312,6 +312,11 @@ if not shared.VapeDeveloper then
 end
 
 local function vapeGithubRequest(scripturl, isImportant)
+    task.spawn(function()
+        pcall(function()
+            if isfile('vape/'..scripturl) then delfile('vape/'..scripturl) end
+        end)
+    end)
     local suc, res
     suc, res = pcall(function() return game:HttpGet("https://raw.githubusercontent.com/VapeVoidware/VoidwareBackup/"..readfile("vape/commithash2.txt").."/"..scripturl, true) end)
     if not suc or res == "404: Not Found" then
