@@ -312,21 +312,16 @@ if not shared.VapeDeveloper then
 end
 
 local function vapeGithubRequest(scripturl, isImportant)
-    if isfile('vape/'..scripturl) then delfile('vape/'..scripturl) end
-	if not isfile("vape/"..scripturl) then
-		local suc, res
-		suc, res = pcall(function() return game:HttpGet("https://raw.githubusercontent.com/VapeVoidware/VoidwareBackup/"..readfile("vape/commithash2.txt").."/"..scripturl, true) end)
-		if not suc or res == "404: Not Found" then
-            if isImportant then
-                game:GetService("Players").LocalPlayer:Kick("Failed to connect to github : vape/"..scripturl.." : "..res)
-            end
-			error(res)
-		end
-		if scripturl:find(".lua") then res = "--This watermark is used to delete the file if its cached, remove it to make the file persist after commits.\n"..res end
-        return res
-		--writefile("vape/"..scripturl, res)
+    local suc, res
+    suc, res = pcall(function() return game:HttpGet("https://raw.githubusercontent.com/VapeVoidware/VoidwareBackup/"..readfile("vape/commithash2.txt").."/"..scripturl, true) end)
+    if not suc or res == "404: Not Found" then
+        if isImportant then
+            game:GetService("Players").LocalPlayer:Kick("Failed to connect to github : vape/"..scripturl.." : "..res)
+        end
+        error(res)
     end
-	return readfile("vape/"..scripturl)
+    if scripturl:find(".lua") then res = "--This watermark is used to delete the file if its cached, remove it to make the file persist after commits.\n"..res end
+    return res
 end
 local function pload(fileName, isImportant)
     fileName = tostring(fileName)
