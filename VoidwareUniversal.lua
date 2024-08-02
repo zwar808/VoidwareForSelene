@@ -1114,67 +1114,65 @@ end)
 
 task.spawn(function()
 	repeat task.wait() until shared.VapeFullyLoaded
-	pcall(function()
-		if shared.GuiLibrary.ObjectsThatCanBeSaved["ChatTagOptionsButton"].Api.Enabled then
-		else
-			repeat task.wait() until shared.vapewhitelist.loaded 
-			local lplr = game:GetService("Players").LocalPlayer
-			if shared.vapewhitelist:get(lplr) == 0 then 
-				local Players = game:GetService("Players")
-				local ReplicatedStorage = game:GetService("ReplicatedStorage")
-				local yes = Players.LocalPlayer.Name
-				local ChatTag = {}
-				ChatTag[yes] =
-					{
-						TagText = "VOIDWARE USER",
-						TagColor = Color3.fromRGB(255, 0, 0),
-					}
-				local oldchanneltab
-				local oldchannelfunc
-				local oldchanneltabs = {}
-				for i, v in pairs(getconnections(ReplicatedStorage.DefaultChatSystemChatEvents.OnNewMessage.OnClientEvent)) do
-					if
-						v.Function
-						and #debug.getupvalues(v.Function) > 0
-						and type(debug.getupvalues(v.Function)[1]) == "table"
-						and getmetatable(debug.getupvalues(v.Function)[1])
-						and getmetatable(debug.getupvalues(v.Function)[1]).GetChannel
-					then
-						oldchanneltab = getmetatable(debug.getupvalues(v.Function)[1])
-						oldchannelfunc = getmetatable(debug.getupvalues(v.Function)[1]).GetChannel
-						getmetatable(debug.getupvalues(v.Function)[1]).GetChannel = function(Self, Name)
-							local tab = oldchannelfunc(Self, Name)
-							if tab and tab.AddMessageToChannel then
-								local addmessage = tab.AddMessageToChannel
-								if oldchanneltabs[tab] == nil then
-									oldchanneltabs[tab] = tab.AddMessageToChannel
-								end
-								tab.AddMessageToChannel = function(Self2, MessageData)
-									if MessageData.FromSpeaker and Players[MessageData.FromSpeaker] then
-										if ChatTag[Players[MessageData.FromSpeaker].Name] then
-											MessageData.ExtraData = {
-												NameColor = Players[MessageData.FromSpeaker].Team == nil and Color3.new(128,0,128)
-													or Players[MessageData.FromSpeaker].TeamColor.Color,
-												Tags = {
-													table.unpack(MessageData.ExtraData.Tags),
-													{
-														TagColor = ChatTag[Players[MessageData.FromSpeaker].Name].TagColor,
-														TagText = ChatTag[Players[MessageData.FromSpeaker].Name].TagText,
-													},
-												},
-											}
-										end
-									end
-									return addmessage(Self2, MessageData)
-								end
+	if shared.GuiLibrary.ObjectsThatCanBeSaved["ChatTagOptionsButton"].Api.Enabled then
+	else
+		repeat task.wait() until shared.vapewhitelist.loaded 
+		local lplr = game:GetService("Players").LocalPlayer
+		if shared.vapewhitelist:get(lplr) == 0 then 
+			local Players = game:GetService("Players")
+			local ReplicatedStorage = game:GetService("ReplicatedStorage")
+			local yes = Players.LocalPlayer.Name
+			local ChatTag = {}
+			ChatTag[yes] =
+				{
+					TagText = "VOIDWARE USER",
+					TagColor = Color3.fromRGB(255, 0, 0),
+				}
+			local oldchanneltab
+			local oldchannelfunc
+			local oldchanneltabs = {}
+			for i, v in pairs(getconnections(ReplicatedStorage.DefaultChatSystemChatEvents.OnNewMessage.OnClientEvent)) do
+				if
+					v.Function
+					and #debug.getupvalues(v.Function) > 0
+					and type(debug.getupvalues(v.Function)[1]) == "table"
+					and getmetatable(debug.getupvalues(v.Function)[1])
+					and getmetatable(debug.getupvalues(v.Function)[1]).GetChannel
+				then
+					oldchanneltab = getmetatable(debug.getupvalues(v.Function)[1])
+					oldchannelfunc = getmetatable(debug.getupvalues(v.Function)[1]).GetChannel
+					getmetatable(debug.getupvalues(v.Function)[1]).GetChannel = function(Self, Name)
+						local tab = oldchannelfunc(Self, Name)
+						if tab and tab.AddMessageToChannel then
+							local addmessage = tab.AddMessageToChannel
+							if oldchanneltabs[tab] == nil then
+								oldchanneltabs[tab] = tab.AddMessageToChannel
 							end
-							return tab
+							tab.AddMessageToChannel = function(Self2, MessageData)
+								if MessageData.FromSpeaker and Players[MessageData.FromSpeaker] then
+									if ChatTag[Players[MessageData.FromSpeaker].Name] then
+										MessageData.ExtraData = {
+											NameColor = Players[MessageData.FromSpeaker].Team == nil and Color3.new(128,0,128)
+												or Players[MessageData.FromSpeaker].TeamColor.Color,
+											Tags = {
+												table.unpack(MessageData.ExtraData.Tags),
+												{
+													TagColor = ChatTag[Players[MessageData.FromSpeaker].Name].TagColor,
+													TagText = ChatTag[Players[MessageData.FromSpeaker].Name].TagText,
+												},
+											},
+										}
+									end
+								end
+								return addmessage(Self2, MessageData)
+							end
 						end
+						return tab
 					end
-				end	
-			end
+				end
+			end	
 		end
-	end)
+	end
 end)
 
 local cooldown = 0
