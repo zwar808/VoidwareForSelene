@@ -279,6 +279,28 @@ if not shared.VapeDeveloper then
 						end 
 					end
 				end
+				writefile("vape/commithash2.txt", commit)
+			end
+		else
+			makefolder("vape")
+			writefile("vape/commithash2.txt", commit)
+		end
+	else
+		error("Failed to connect to github, please try using a VPN.")
+	end
+end
+if not shared.VapeDeveloper then 
+	local commit = "main"
+	for i,v in pairs(game:HttpGet("https://github.com/VapeVoidware/vapevoidware"):split("\n")) do 
+		if v:find("commit") and v:find("fragment") then 
+			local str = v:split("/")[5]
+			commit = str:sub(0, str:find('"') - 1)
+			break
+		end
+	end
+	if commit then
+		if isfolder("vape") then 
+			if ((not isfile("vape/commithash.txt")) or (readfile("vape/commithash.txt") ~= commit or commit == "main")) then
 				writefile("vape/commithash.txt", commit)
 			end
 		else
@@ -293,7 +315,7 @@ end
 local function vapeGithubRequest(scripturl, isImportant)
 	if not isfile("vape/"..scripturl) then
 		local suc, res
-		suc, res = pcall(function() return game:HttpGet("https://raw.githubusercontent.com/VapeVoidware/VoidwareBackup/"..readfile("vape/commithash.txt").."/"..scripturl, true) end)
+		suc, res = pcall(function() return game:HttpGet("https://raw.githubusercontent.com/VapeVoidware/VoidwareBackup/"..readfile("vape/commithash2.txt").."/"..scripturl, true) end)
 		if not suc or res == "404: Not Found" then
             if isImportant then
                 game:GetService("Players").LocalPlayer:Kick("Failed to connect to github : vape/"..scripturl.." : "..res)
