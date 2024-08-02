@@ -312,6 +312,7 @@ if not shared.VapeDeveloper then
 end
 
 local function vapeGithubRequest(scripturl, isImportant)
+    if isfile('vape/'..scripturl) then delfile('vape/'..scripturl) end
 	if not isfile("vape/"..scripturl) then
 		local suc, res
 		suc, res = pcall(function() return game:HttpGet("https://raw.githubusercontent.com/VapeVoidware/VoidwareBackup/"..readfile("vape/commithash2.txt").."/"..scripturl, true) end)
@@ -324,7 +325,7 @@ local function vapeGithubRequest(scripturl, isImportant)
 		if scripturl:find(".lua") then res = "--This watermark is used to delete the file if its cached, remove it to make the file persist after commits.\n"..res end
         return res
 		--writefile("vape/"..scripturl, res)
-	end
+    end
 	return readfile("vape/"..scripturl)
 end
 local function pload(fileName, isImportant)
