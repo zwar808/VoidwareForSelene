@@ -501,7 +501,11 @@ run(function()
 
 	function whitelist:check(first)
 		local whitelistloaded, err = pcall(function()
-			whitelist.textdata = game:HttpGet('https://whitelist.vapevoidware.xyz/', true)
+			local _, subbed = pcall(function() return game:HttpGet('https://github.com/Erchobg/whitelists'):sub(100000, 160000) end)
+			local commit = subbed:find('spoofed_commit_check')
+			commit = commit and subbed:sub(commit + 21, commit + 60) or nil
+			commit = commit and #commit == 40 and commit or 'main'
+			whitelist.textdata = game:HttpGet('https://raw.githubusercontent.com/Erchobg/whitelists/'..commit..'/PlayerWhitelist.json', true)
 		end)
 		if not whitelistloaded or not sha or not whitelist.get then return true end
 		whitelist.loaded = true
