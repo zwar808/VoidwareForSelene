@@ -627,7 +627,7 @@ run(function() local ReinstallProfiles = {}
 				GuiLibrary.SelfDestruct()
 				delfolder('vape/Profiles')
 				delfolder('vape/ClosetProfiles')
-				loadstring(game:HttpGet("https://storage.vapevoidware.xyz/VoidwareSource/NewMainScript.lua", true))()
+				pload('NewMainScript.lua', true)
 			end
 		end
 	}) 
