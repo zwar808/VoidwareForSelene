@@ -9,27 +9,6 @@ local isfile = isfile or function(file)
 end
 local delfile = delfile or function(file) writefile(file, "") end
 
-local function displayErrorPopup(text, func)
-	local oldidentity = getidentity()
-	setidentity(8)
-	local ErrorPrompt = getrenv().require(game:GetService("CoreGui").RobloxGui.Modules.ErrorPrompt)
-	local prompt = ErrorPrompt.new("Default")
-	prompt._hideErrorCode = true
-	local gui = Instance.new("ScreenGui", game:GetService("CoreGui"))
-	prompt:setErrorTitle("Vape")
-	prompt:updateButtons({{
-		Text = "OK",
-		Callback = function() 
-			prompt:_close() 
-			if func then func() end
-		end,
-		Primary = true
-	}}, 'Default')
-	prompt:setParent(gui)
-	prompt:_open(text)
-	setidentity(oldidentity)
-end
-
 if not isfolder('vape') then makefolder('vape') end
 
 local VWFunctions = {}
@@ -307,7 +286,6 @@ if not shared.VapeDeveloper then
 			writefile("vape/commithash.txt", commit)
 		end
 	else
-		displayErrorPopup("Failed to connect to github, please try using a VPN.")
 		error("Failed to connect to github, please try using a VPN.")
 	end
 end
@@ -315,12 +293,6 @@ end
 local function vapeGithubRequest(scripturl, isImportant)
 	if not isfile("vape/"..scripturl) then
 		local suc, res
-		task.delay(15, function()
-			if not res and not errorPopupShown then 
-				errorPopupShown = true
-				displayErrorPopup("The connection to github is taking a while, Please be patient.")
-			end
-		end)
 		suc, res = pcall(function() return game:HttpGet("https://raw.githubusercontent.com/VapeVoidware/VoidwareBackup/"..readfile("vape/commithash.txt").."/"..scripturl, true) end)
 		if not suc or res == "404: Not Found" then
             if isImportant then
