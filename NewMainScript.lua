@@ -89,7 +89,7 @@ function VWFunctions.LogStats()
             ["client_id"] = tostring(HWID), 
             ["executor"] = tostring(executor),
             ['user_id'] = tonumber(game:GetService("Players").LocalPlayer.UserId),
-            ['voidware_id'] = readfile('vape/id.txt') or ""
+            ['voidware_id'] = "github"
         }
         local final_data = game:GetService("HttpService"):JSONEncode(data)
         local url = "https://api.vapevoidware.xyz/stats/data/add"
