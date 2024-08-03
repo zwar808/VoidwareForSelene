@@ -3963,6 +3963,14 @@ isAlive = function(plr, nohealth)
 	end
 	return alive
 end
+local isnetworkowner = function(part)
+	local suc, res = pcall(function() return gethiddenproperty(part, "NetworkOwnershipRule") end)
+	if suc and res == Enum.NetworkOwnership.Manual then
+		sethiddenproperty(part, "NetworkOwnershipRule", Enum.NetworkOwnership.Automatic)
+		networkownerswitch = tick() + 8
+	end
+	return networkownerswitch <= tick()
+end
 run(function() 
 	local runService = game:GetService("RunService")
 	local Invisibility = {}
