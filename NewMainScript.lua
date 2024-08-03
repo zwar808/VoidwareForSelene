@@ -9,7 +9,14 @@ local isfile = isfile or function(file)
 end
 local delfile = delfile or function(file) writefile(file, "") end
 
+if identifyexecutor() then
+    if string.find(identifyexecutor(), 'solara') or string.find(identifyexecutor(), 'celery') then
+        game:GetService("Players").LocalPlayer:Kick('The current executor that you are using is trash and doesn\'t support Voidware. Please find a better executor!')
+    end
+end
+
 if not isfolder('vape') then makefolder('vape') end
+
 
 local VWFunctions = {}
 function VWFunctions.CreateID()
