@@ -3945,3 +3945,96 @@ task.spawn(function()
 		staffdetector.ToggleButton(false)
 	end
 end)
+
+local isEnabled = function() return false end
+local function isEnabled(module)
+	return GuiLibrary.ObjectsThatCanBeSaved[module] and GuiLibrary.ObjectsThatCanBeSaved[module].Api.Enabled and true or false
+end
+local isAlive = function() return false end
+isAlive = function(plr, nohealth) 
+	plr = plr or lplr
+	local alive = false
+	if plr.Character and plr.Character:FindFirstChildWhichIsA('Humanoid') and plr.Character.PrimaryPart and plr.Character:FindFirstChild('Head') then 
+		alive = true
+	end
+	local success, health = pcall(function() return plr.Character:FindFirstChildWhichIsA('Humanoid').Health end)
+	if success and health <= 0 and not nohealth then
+		alive = false
+	end
+	return alive
+end
+run(function() 
+	local runService = game:GetService("RunService")
+	local Invisibility = {}
+	local collideparts = {}
+	local invisvisual = {}
+	local visualrootcolor = {Hue = 0, Sat = 0, Sat = 0}
+	local oldcamoffset = Vector3.zero
+	local oldcolor
+	Invisibility = GuiLibrary.ObjectsThatCanBeSaved.HotWindow.Api.CreateOptionsButton({
+		Name = 'Invisibility',
+		HoverText = 'Makes your invisible.',
+		Function = function(calling)
+			if calling then 
+				task.spawn(function()
+				repeat task.wait() until ((isAlive(lplr, true) or not Invisibility.Enabled) and (isEnabled('Lobby Check', 'Toggle') == false or store.matchState ~= 0))
+				if not Invisibility.Enabled then 
+					return 
+				end
+				task.wait(0.5)
+				local anim = Instance.new('Animation')
+				anim.AnimationId = 'rbxassetid://11360825341'
+				local anim2 = lplr.Character.Humanoid.Animator:LoadAnimation(anim) 
+				for i,v in next, lplr.Character:GetDescendants() do 
+					if v:IsA('BasePart') and v.CanCollide and v ~= lplr.Character.HumanoidRootPart then 
+						v.CanCollide = false 
+						table.insert(collideparts, v) 
+					end 
+				end
+				table.insert(Invisibility.Connections, runService.Stepped:Connect(function()
+					for i,v in next, collideparts do 
+						pcall(function() v.CanCollide = false end)
+					end
+				end))
+				repeat 
+					if isEnabled('AnimationPlayer') then 
+						GuiLibrary.ObjectsThatCanBeSaved.AnimationPlayerOptionsButton.Api.ToggleButton()
+					end
+					if isAlive(lplr, true) and isnetworkowner(lplr.Character.HumanoidRootPart) then 
+						lplr.Character.HumanoidRootPart.Transparency = (invisvisual.Enabled and 0.6 or 1)
+						oldcolor = lplr.Character.HumanoidRootPart.Color
+						lplr.Character.HumanoidRootPart.Color = Color3.fromHSV(visualrootcolor.Hue, visualrootcolor.Sat, visualrootcolor.Value)
+						anim2:Play(0.1, 9e9, 0.1) 
+					elseif Invisibility.Enabled then 
+						Invisibility.ToggleButton() 
+						break 
+					end	
+					task.wait()
+				until not Invisibility.Enabled
+			end)
+			else
+				for i,v in next, collideparts do 
+					pcall(function() v.CanCollide = true end) 
+				end
+				table.clear(collideparts)
+				if isAlive(lplr, true) then 
+					lplr.Character.HumanoidRootPart.Transparency = 1 
+					lplr.Character.HumanoidRootPart.Color = oldcolor
+					task.wait()
+				    bedwars.SwordController:swingSwordAtMouse() 
+				end
+			end
+		end
+	})
+	invisvisual = Invisibility.CreateToggle({
+		Name = 'Show Root',
+		Function = function(calling)
+			pcall(function() visualrootcolor.Object.Visible = calling end) 
+		end
+	})
+	visualrootcolor = Invisibility.CreateColorSlider({
+		Name = 'Root Color',
+		Function = function() end
+	})
+	visualrootcolor.Object.Visible = false
+end)
