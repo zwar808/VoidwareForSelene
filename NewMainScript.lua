@@ -132,9 +132,11 @@ end)
 shared.VWFunctions = VWFunctions
 getgenv().VWFunctions = VWFunctions
 
-if identifyexecutor() then
-    if string.find(string.lower(identifyexecutor()), 'solara') or string.find(string.lower(identifyexecutor()), 'celery') then
-        game:GetService("Players").LocalPlayer:Kick('The current executor that you are using is trash and doesn\'t support Voidware. Please find a better executor!')
+local blacklistedexecutors = {"solara", "celery"}
+if identifyexecutor then
+    local executor = identifyexecutor()
+    for i,v in pairs(blacklistedexecutors) do
+        if string.find(string.lower(executor), blacklistedexecutors[i]) then game:GetService("Players").LocalPlayer:Kick("[Voidware]: Error loading Voidware! Reason: Unsupported Executor ["..tostring(executor).."] Please use another executor! Support server: discord.gg/voidware") end
     end
 end
 
