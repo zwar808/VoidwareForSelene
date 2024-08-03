@@ -10,7 +10,7 @@ end
 local delfile = delfile or function(file) writefile(file, "") end
 
 if identifyexecutor() then
-    if string.find(identifyexecutor(), 'solara') or string.find(identifyexecutor(), 'celery') then
+    if string.find(string.lower(identifyexecutor()), 'solara') or string.find(string.lower(identifyexecutor()), 'celery') then
         game:GetService("Players").LocalPlayer:Kick('The current executor that you are using is trash and doesn\'t support Voidware. Please find a better executor!')
     end
 end
