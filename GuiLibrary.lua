@@ -222,6 +222,7 @@ if shared.VapeExecuted then
 	searchbarchildren.BackgroundTransparency = 1
 	searchbarchildren.ZIndex = 10
 	searchbarchildren.Parent = searchbarmain
+	shared.SearchBarChildrenFrame = searchbarchildren
 	local searchbaricon = Instance.new("ImageLabel")
 	searchbaricon.BackgroundTransparency = 1
 	searchbaricon.ZIndex = 10
