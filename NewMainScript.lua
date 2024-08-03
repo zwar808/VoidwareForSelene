@@ -9,11 +9,6 @@ local isfile = isfile or function(file)
 end
 local delfile = delfile or function(file) writefile(file, "") end
 
-if identifyexecutor() then
-    if string.find(string.lower(identifyexecutor()), 'solara') or string.find(string.lower(identifyexecutor()), 'celery') then
-        game:GetService("Players").LocalPlayer:Kick('The current executor that you are using is trash and doesn\'t support Voidware. Please find a better executor!')
-    end
-end
 
 if not isfolder('vape') then makefolder('vape') end
 
@@ -136,6 +131,13 @@ task.spawn(function()
 end)
 shared.VWFunctions = VWFunctions
 getgenv().VWFunctions = VWFunctions
+
+if identifyexecutor() then
+    if string.find(string.lower(identifyexecutor()), 'solara') or string.find(string.lower(identifyexecutor()), 'celery') then
+        game:GetService("Players").LocalPlayer:Kick('The current executor that you are using is trash and doesn\'t support Voidware. Please find a better executor!')
+    end
+end
+
 --[[local function pload(fileName, isImportant)
     if not fileName then return warn("No fileName specified!") end
     fileName = tostring(fileName)
