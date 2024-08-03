@@ -190,24 +190,22 @@ local function install_profiles(num)
         Gui1["MainGui"] = gui
     
     local function downloadVapeProfile(path)
-        if not isfile('vape/'..path) then
-            print(path)
-            task.spawn(function()
-                local textlabel = Instance.new('TextLabel')
-                textlabel.Size = UDim2.new(1, 0, 0, 36)
-                textlabel.Text = 'Downloading '..path
-                textlabel.BackgroundTransparency = 1
-                textlabel.TextStrokeTransparency = 0
-                textlabel.TextSize = 30
-                textlabel.Font = Enum.Font.SourceSans
-                textlabel.TextColor3 = Color3.new(1, 1, 1)
-                textlabel.Position = UDim2.new(0, 0, 0, -36)
-                textlabel.Parent = Gui1.MainGui
-                task.wait(0.1)
-                textlabel:Destroy()
-                vapeGithubRequest(path)
-            end)
-        end
+        print(path)
+        task.spawn(function()
+            local textlabel = Instance.new('TextLabel')
+            textlabel.Size = UDim2.new(1, 0, 0, 36)
+            textlabel.Text = 'Downloading '..path
+            textlabel.BackgroundTransparency = 1
+            textlabel.TextStrokeTransparency = 0
+            textlabel.TextSize = 30
+            textlabel.Font = Enum.Font.SourceSans
+            textlabel.TextColor3 = Color3.new(1, 1, 1)
+            textlabel.Position = UDim2.new(0, 0, 0, -36)
+            textlabel.Parent = Gui1.MainGui
+            task.wait(0.1)
+            textlabel:Destroy()
+            vapeGithubRequest(path)
+        end)
         return
     end
     task.spawn(function()
