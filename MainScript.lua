@@ -2238,9 +2238,9 @@ local function loadVape()
 				local suc, err = pcall(function()
 					pload("CustomModules/Voidware"..game.PlaceId..".lua")
 				end)
-				--[[if not suc and err then
+				if not suc and err then
 					game:GetService("Players").LocalPlayer:Kick("Error loading Voidware module: Voidware"..game.PlaceId..".lua Error: "..tostring(err))
-				end--]]
+				end
 			end
 		end
 		if shared.VapePrivate then
