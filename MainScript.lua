@@ -2217,6 +2217,11 @@ getgenv().VoidwareFunctions = VoidwareFunctions
 local function loadVape()
 	if not shared.VapeIndependent then
 		InfoNotification("Voidware Loader", "Loading Voidware...This may take 3-5 seconds", 1.5)
+		if shared.BlacklistedExecutor and type(shared.BlacklistedExecutor) == "table" then
+			if shared.BlacklistedExecutor.Value and shared.BlacklistedExecutor.Executor then 
+				errorNotification("Voidware Executor Handler", "Warning! You are currently using an \n unsupported executor ("..shared.BlacklistedExecutor.Executor..") \n which means that most feautures wont work as intended. \n Switching your executor is recommended!", 5)
+			end
+		end
 		pload("Universal.lua", true)
 		pload("VoidwareUniversal.lua", true)
 		if isfile("vape/CustomModules/"..game.PlaceId..".lua") and (shared.VapeDeveloper or shared.VoidDev2) then
