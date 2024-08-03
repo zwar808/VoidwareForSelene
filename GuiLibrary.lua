@@ -9538,21 +9538,24 @@ if shared.VapeExecuted then
 	GuiLibrary["KeyInputHandler"] = inputService.InputBegan:Connect(function(input1)
 		if inputService:GetFocusedTextBox() == nil then
 			if input1.KeyCode == Enum.KeyCode[GuiLibrary["GUIKeybind"]] and GuiLibrary["KeybindCaptured"] == false then
-				clickgui.Visible = not clickgui.Visible
-				legitgui.Visible = not clickgui.Visible
-				--inputService.OverrideMouseIconBehavior = (clickgui.Visible and Enum.OverrideMouseIconBehavior.ForceShow or game:GetService("VRService").VREnabled and Enum.OverrideMouseIconBehavior.ForceHide or Enum.OverrideMouseIconBehavior.None)
-				--game:GetService("RunService"):SetRobloxGuiFocused(clickgui.Visible and GuiLibrary["MainBlur"].Size ~= 0 or guiService:GetErrorType() ~= Enum.ConnectionError.OK)
-				for _, mobileButton in pairs(GuiLibrary.MobileButtons) do mobileButton.Visible = not clickgui.Visible end
-				if OnlineProfilesBigFrame.Visible then
-					OnlineProfilesBigFrame.Visible = false
-				end
-				if LegitModulesBigFrame.Visible then
-					LegitModulesBigFrame.Visible = false
+				shared.GUIKeybindFunction = function()
+					clickgui.Visible = not clickgui.Visible
 					legitgui.Visible = not clickgui.Visible
-					for i, v in pairs(legitgui:GetChildren()) do
-						if v:IsA("Frame") then v.BackgroundTransparency = legitgui.Visible and 0.8 or 1 end
+					inputService.OverrideMouseIconBehavior = (clickgui.Visible and Enum.OverrideMouseIconBehavior.ForceShow or game:GetService("VRService").VREnabled and Enum.OverrideMouseIconBehavior.ForceHide or Enum.OverrideMouseIconBehavior.None)
+					--game:GetService("RunService"):SetRobloxGuiFocused(clickgui.Visible and GuiLibrary["MainBlur"].Size ~= 0 or guiService:GetErrorType() ~= Enum.ConnectionError.OK)	
+					for _, mobileButton in pairs(GuiLibrary.MobileButtons) do mobileButton.Visible = not clickgui.Visible end	
+					if OnlineProfilesBigFrame.Visible then
+						OnlineProfilesBigFrame.Visible = false
+					end
+					if LegitModulesBigFrame.Visible then
+						LegitModulesBigFrame.Visible = false
+						legitgui.Visible = not clickgui.Visible
+						for i, v in pairs(legitgui:GetChildren()) do 
+							if v:IsA("Frame") then v.BackgroundTransparency = legitgui.Visible and 0.8 or 1 end
+						end
 					end
 				end
+				shared.GUIKeybindFunction()
 			end
 			if input1.KeyCode == Enum.KeyCode.RightAlt then
 				holdingalt = true
