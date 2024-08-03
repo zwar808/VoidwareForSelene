@@ -3946,7 +3946,7 @@ task.spawn(function()
 	end
 end)
 
-local isEnabled = function() return false end
+--[[local isEnabled = function() return false end
 local function isEnabled(module)
 	return GuiLibrary.ObjectsThatCanBeSaved[module] and GuiLibrary.ObjectsThatCanBeSaved[module].Api.Enabled and true or false
 end
@@ -4045,4 +4045,4 @@ run(function()
 		Function = function() end
 	})
 	visualrootcolor.Object.Visible = false
-end)
+end)--]]
