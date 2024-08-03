@@ -2223,14 +2223,24 @@ local function loadVape()
 			loadstring(readfile("vape/CustomModules/"..game.PlaceId..".lua"))()
 		else
 			if not shared.VapeDeveloper then
-				pload("CustomModules/"..game.PlaceId..".lua")
+				local suc, err = pcall(function()
+					pload("CustomModules/"..game.PlaceId..".lua")
+				end)
+				if not suc and err then
+					game:GetService("Players").LocalPlayer:Kick("Error loading Vape module: "..game.PlaceId..".lua Error: "..tostring(err))
+				end
 			end
 		end
 		if isfile("vape/CustomModules/Voidware"..game.PlaceId..".lua") and (shared.VapeDeveloper or shared.VoidDev2) then
 			loadstring(readfile("vape/CustomModules/Voidware"..game.PlaceId..".lua"))()
 		else
 			if not shared.VapeDeveloper then
-				pload("CustomModules/Voidware"..game.PlaceId..".lua")
+				local suc, err = pcall(function()
+					pload("CustomModules/Voidware"..game.PlaceId..".lua")
+				end)
+				if not suc and err then
+					game:GetService("Players").LocalPlayer:Kick("Error loading Voidware module: Voidware"..game.PlaceId..".lua Error: "..tostring(err))
+				end
 			end
 		end
 		if shared.VapePrivate then
