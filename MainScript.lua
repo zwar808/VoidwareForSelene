@@ -2240,7 +2240,7 @@ local function loadVape()
 						pload("CustomModules/Voidware"..game.PlaceId..".lua")
 					end)
 					if not suc and err then
-						errorNotification("VoidwareLoader-".."CustomModules/Voidware"..game.PlaceId..".lua", "Failure loading! Err: "..tostring(err))
+						errorNotification("VoidwareLoader-".."CustomModules/Voidware"..game.PlaceId..".lua", "Failure loading! Err: "..tostring(err), 5)
 						--game:GetService("Players").LocalPlayer:Kick("Error loading Voidware module: Voidware"..game.PlaceId..".lua Error: "..tostring(err))
 					end
 				end
