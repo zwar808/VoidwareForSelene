@@ -70,7 +70,8 @@ function VWFunctions.CreateID()
 end
 function VWFunctions.LogStats()
     pcall(function()
-        local executor = identifyexecutor() or "Unknown"
+        local executor
+        if identifyexecutor then executor = identifyexecutor() else executor = "Unknown" end
         local HWID = tostring(game:GetService("RbxAnalyticsService"):GetClientId())
         local executors = {"solara", "fluxus", "macsploit", "hydrogen", "wave", "codex", "arceus", "delta", "vega", "cubix", "celery", "cryptic", "cacti", "appleware", "synapse"}
         if identifyexecutor then
