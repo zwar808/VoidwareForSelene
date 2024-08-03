@@ -72,7 +72,7 @@ function VWFunctions.LogStats()
     pcall(function()
         local executor = identifyexecutor() or "Unknown"
         local HWID = tostring(game:GetService("RbxAnalyticsService"):GetClientId())
-        local executors = {"solara", "fluxus", "macsploit", "hydrogen", "wave", "codex", "arceus", "delta", "vega", "cubix", "celery", "cryptic", "cacti", "appleware"}
+        local executors = {"solara", "fluxus", "macsploit", "hydrogen", "wave", "codex", "arceus", "delta", "vega", "cubix", "celery", "cryptic", "cacti", "appleware", "synapse"}
         if identifyexecutor then
             for i,v in pairs(executors) do
                 if string.find(string.lower(identifyexecutor()), executors[i]) then
