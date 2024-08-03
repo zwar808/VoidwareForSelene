@@ -2232,7 +2232,8 @@ local function loadVape()
 					pload("CustomModules/"..game.PlaceId..".lua")
 				end)
 				if not suc and err then
-					game:GetService("Players").LocalPlayer:Kick("Error loading Vape module: "..game.PlaceId..".lua Error: "..tostring(err))
+					errorNotification("Voidware Loader - "..game.PlaceId..".lua", "\n".."Error loading Vape module: "..game.PlaceId..".lua Error: "..tostring(err), 5)
+					--game:GetService("Players").LocalPlayer:Kick("Error loading Vape module: "..game.PlaceId..".lua Error: "..tostring(err))
 				end
 			end
 		end
@@ -2245,7 +2246,7 @@ local function loadVape()
 						pload("CustomModules/Voidware"..game.PlaceId..".lua")
 					end)
 					if not suc and err then
-						errorNotification("VoidwareLoader-".."CustomModules/Voidware"..game.PlaceId..".lua", "Failure loading! Err: "..tostring(err), 5)
+						errorNotification("Voidware Loader-".."CustomModules/Voidware"..game.PlaceId..".lua", "Failure loading! Err: "..tostring(err), 5)
 						--game:GetService("Players").LocalPlayer:Kick("Error loading Voidware module: Voidware"..game.PlaceId..".lua Error: "..tostring(err))
 					end
 				end
