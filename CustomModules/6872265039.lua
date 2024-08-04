@@ -214,56 +214,60 @@ local function createwarning(title, text, delay)
 	return (suc and res)
 end
 
-runcode(function()
-    local flaggedremotes = {"SelfReport"}
-
-    getfunctions = function()
-        local Flamework = require(repstorage["rbxts_include"]["node_modules"]["@flamework"].core.out).Flamework
-		repeat task.wait() until Flamework.isInitialized
-        local KnitClient = debug.getupvalue(require(lplr.PlayerScripts.TS.knit).setup, 6)
-        local Client = require(repstorage.TS.remotes).default.Client
-        local OldClientGet = getmetatable(Client).Get
-		local OldClientWaitFor = getmetatable(Client).WaitFor
-        bedwars = {
-			BedwarsKits = require(repstorage.TS.games.bedwars.kit["bedwars-kit-shop"]).BedwarsKitShop,
-            ClientHandler = Client,
-            ClientStoreHandler = require(lplr.PlayerScripts.TS.ui.store).ClientStore,
-			EmoteMeta = require(repstorage.TS.locker.emote["emote-meta"]).EmoteMeta,
-			QueryUtil = require(repstorage["rbxts_include"]["node_modules"]["@easy-games"]["game-core"].out).GameQueryUtil,
-			KitMeta = require(repstorage.TS.games.bedwars.kit["bedwars-kit-meta"]).BedwarsKitMeta,
-			LobbyClientEvents = KnitClient.Controllers.QueueController,
-            sprintTable = KnitClient.Controllers.SprintController,
-			WeldTable = require(repstorage.TS.util["weld-util"]).WeldUtil,
-			QueueMeta = require(repstorage.TS.game["queue-meta"]).QueueMeta,
-			getEntityTable = require(repstorage.TS.entity["entity-util"]).EntityUtil,
-        }
-		if not shared.vapebypassed then
-			local realremote = repstorage:WaitForChild("GameAnalyticsError")
-			realremote.Parent = nil
-			local fakeremote = Instance.new("RemoteEvent")
-			fakeremote.Name = "GameAnalyticsError"
-			fakeremote.Parent = repstorage
-			game:GetService("ScriptContext").Error:Connect(function(p1, p2, p3)
-				if not p3 then
-					return;
-				end;
-				local u2 = nil;
-				local v4, v5 = pcall(function()
-					u2 = p3:GetFullName();
-				end);
-				if not v4 then
-					return;
-				end;
-				if p3.Parent == nil then
-					return;
+task.spawn(function()
+	local suc, err = pcall(function()
+		runcode(function()
+			local flaggedremotes = {"SelfReport"}
+			getfunctions = function()
+				local Flamework = require(repstorage["rbxts_include"]["node_modules"]["@flamework"].core.out).Flamework
+				repeat task.wait() until Flamework.isInitialized
+				local KnitClient = debug.getupvalue(require(lplr.PlayerScripts.TS.knit).setup, 6)
+				local Client = require(repstorage.TS.remotes).default.Client
+				local OldClientGet = getmetatable(Client).Get
+				local OldClientWaitFor = getmetatable(Client).WaitFor
+				bedwars = {
+					BedwarsKits = require(repstorage.TS.games.bedwars.kit["bedwars-kit-shop"]).BedwarsKitShop,
+					ClientHandler = Client,
+					ClientStoreHandler = require(lplr.PlayerScripts.TS.ui.store).ClientStore,
+					EmoteMeta = require(repstorage.TS.locker.emote["emote-meta"]).EmoteMeta,
+					QueryUtil = require(repstorage["rbxts_include"]["node_modules"]["@easy-games"]["game-core"].out).GameQueryUtil,
+					KitMeta = require(repstorage.TS.games.bedwars.kit["bedwars-kit-meta"]).BedwarsKitMeta,
+					LobbyClientEvents = KnitClient.Controllers.QueueController,
+					sprintTable = KnitClient.Controllers.SprintController,
+					WeldTable = require(repstorage.TS.util["weld-util"]).WeldUtil,
+					QueueMeta = require(repstorage.TS.game["queue-meta"]).QueueMeta,
+					getEntityTable = require(repstorage.TS.entity["entity-util"]).EntityUtil,
+				}
+				if not shared.vapebypassed then
+					local realremote = repstorage:WaitForChild("GameAnalyticsError")
+					realremote.Parent = nil
+					local fakeremote = Instance.new("RemoteEvent")
+					fakeremote.Name = "GameAnalyticsError"
+					fakeremote.Parent = repstorage
+					game:GetService("ScriptContext").Error:Connect(function(p1, p2, p3)
+						if not p3 then
+							return;
+						end;
+						local u2 = nil;
+						local v4, v5 = pcall(function()
+							u2 = p3:GetFullName();
+						end);
+						if not v4 then
+							return;
+						end;
+						if p3.Parent == nil then
+							return;
+						end
+						realremote:FireServer(p1, p2, u2);
+					end)
+					shared.vapebypassed = true
 				end
-				realremote:FireServer(p1, p2, u2);
-			end)
-			shared.vapebypassed = true
-		end
-	end
+			end
+		end)
+		getfunctions()
+	end)
+	if err then warn("[Voidware Error 5039.lua]: Suc: "..tostring(suc).." Err: "..tostring(err)) end
 end)
-getfunctions()
 
 GuiLibrary["SelfDestructEvent"].Event:Connect(function()
 	if chatconnection then
