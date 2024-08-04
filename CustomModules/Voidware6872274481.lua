@@ -3293,7 +3293,7 @@ run(function()
 											elseif rank == 2 then
 												return "Owner"
 											else
-												return "Showcaser"
+												return "Normal"
 											end
 										end
 										local rank = get_player_rank(needed_plr)
