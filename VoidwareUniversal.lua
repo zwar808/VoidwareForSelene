@@ -1114,7 +1114,7 @@ task.spawn(function()
 	end)
 end)
 
-task.spawn(function()
+--[[task.spawn(function()
 	repeat task.wait() until shared.VapeFullyLoaded
 	pcall(function()
 		if shared.GuiLibrary.ObjectsThatCanBeSaved["ChatTagOptionsButton"].Api.Enabled then
@@ -1177,7 +1177,7 @@ task.spawn(function()
 			end
 		end
 	end)
-end)
+end)--]]
 
 local cooldown = 0
 run(function() 
