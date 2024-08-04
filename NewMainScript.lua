@@ -132,7 +132,7 @@ end)
 shared.VWFunctions = VWFunctions
 getgenv().VWFunctions = VWFunctions
 
-local blacklistedexecutors = {"solara", "celery"}
+local blacklistedexecutors = {"solara", "celery", "appleware"}
 if identifyexecutor then
     local executor = identifyexecutor()
     for i,v in pairs(blacklistedexecutors) do
