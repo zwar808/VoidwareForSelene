@@ -107,39 +107,41 @@ local queueonteleport = syn and syn.queue_on_teleport or queue_on_teleport or fu
 local delfile = delfile or function(file) writefile(file, "") end
 
 local function displayErrorPopup(text, funclist)
-	local oldidentity = getidentity()
-	setidentity(8)
-	local ErrorPrompt = getrenv().require(game:GetService("CoreGui").RobloxGui.Modules.ErrorPrompt)
-	local prompt = ErrorPrompt.new("Default")
-	prompt._hideErrorCode = true
-	local gui = Instance.new("ScreenGui", game:GetService("CoreGui"))
-	prompt:setErrorTitle("Vape")
-	local funcs
-	if funclist then
-		funcs = {}
-		local num = 0
-		for i,v in pairs(funclist) do
-			num = num + 1
-			table.insert(funcs, {
-				Text = i,
-				Callback = function()
-					prompt:_close()
-					v()
-				end,
-				Primary = num == #funclist
-			})
+	pcall(function()
+		local oldidentity = getidentity()
+		setidentity(8)
+		local ErrorPrompt = getrenv().require(game:GetService("CoreGui").RobloxGui.Modules.ErrorPrompt)
+		local prompt = ErrorPrompt.new("Default")
+		prompt._hideErrorCode = true
+		local gui = Instance.new("ScreenGui", game:GetService("CoreGui"))
+		prompt:setErrorTitle("Vape")
+		local funcs
+		if funclist then
+			funcs = {}
+			local num = 0
+			for i,v in pairs(funclist) do
+				num = num + 1
+				table.insert(funcs, {
+					Text = i,
+					Callback = function()
+						prompt:_close()
+						v()
+					end,
+					Primary = num == #funclist
+				})
+			end
 		end
-	end
-	prompt:updateButtons(funcs or {{
-		Text = "OK",
-		Callback = function()
-			prompt:_close()
-		end,
-		Primary = true
-	}}, 'Default')
-	prompt:setParent(gui)
-	prompt:_open(text)
-	setidentity(oldidentity)
+		prompt:updateButtons(funcs or {{
+			Text = "OK",
+			Callback = function()
+				prompt:_close()
+			end,
+			Primary = true
+		}}, 'Default')
+		prompt:setParent(gui)
+		prompt:_open(text)
+		setidentity(oldidentity)
+	end)
 end
 
 local function vapeGithubRequest(scripturl)
@@ -201,7 +203,10 @@ task.spawn(function()
 		writefile("vape/assetsversion.txt", assetver)
 	end
 end)
-if not isfile("vape/CustomModules/cachechecked.txt") then
+GuiLibrary = pload('GuiLibrary.lua', true)
+shared.GuiLibrary = GuiLibrary
+writefile("vape/CustomModules/cachechecked.txt", "verified")
+--[[if not isfile("vape/CustomModules/cachechecked.txt") then
 	local isNotCached = false
 	for i,v in pairs({"vape/Universal.lua", "vape/MainScript.lua", "vape/GuiLibrary.lua"}) do
 		if isfile(v) and not readfile(v):find("--This watermark is used to delete the file if its cached, remove it to make the file persist after commits.") then
@@ -235,10 +240,7 @@ if not isfile("vape/CustomModules/cachechecked.txt") then
 		end})
 	end
 	writefile("vape/CustomModules/cachechecked.txt", "verified")
-end
-
-GuiLibrary = pload('GuiLibrary.lua', true)
-shared.GuiLibrary = GuiLibrary
+end--]]
 
 local saveSettingsLoop = coroutine.create(function()
 	if inputService.TouchEnabled then return end
@@ -264,9 +266,11 @@ task.spawn(function()
 		task.wait(15)
 		if image and image.ContentImageSize == Vector2.zero and (not errorPopupShown) and (not redownloadedAssets) and (not isfile("vape/assets/check3.txt")) then
             errorPopupShown = true
-            displayErrorPopup("Assets failed to load, Try another executor (executor : "..(identifyexecutor and identifyexecutor() or "Unknown")..")", {OK = function()
-                writefile("vape/assets/check3.txt", "")
-            end})
+			pcall(function()
+				displayErrorPopup("Assets failed to load, Try another executor (executor : "..(identifyexecutor and identifyexecutor() or "Unknown")..")", {OK = function()
+					writefile("vape/assets/check3.txt", "")
+				end})
+			end)
         end
 	end)
 end)
