@@ -396,7 +396,7 @@ run(function() local CustomChatTag = {}
 		Function = function() end
 	})
 end)
---[[task.spawn(function()
+task.spawn(function()
 	pcall(function()
 		repeat task.wait() until shared.VapeFullyLoaded
 		if shared.GuiLibrary.ObjectsThatCanBeSaved["ChatTagOptionsButton"].Api.Enabled then
@@ -458,7 +458,7 @@ end)
 			end
 		end
 	end)
-end)--]]
+end)
 
 run(function() local chatDisable = {Enabled = false}
 	local chatVersion = function()
