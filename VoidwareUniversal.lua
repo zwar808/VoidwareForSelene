@@ -1414,3 +1414,132 @@ task.spawn(function()
 		warn("Error making mobile button! Error: "..tostring(err))
 	end
 end)
+
+local Customisation = GuiLibrary.ObjectsThatCanBeSaved.CustomisationWindow.Api
+run(function()
+	local UIS = game:GetService('UserInputService')
+	local mouseMod = {Enabled = false}
+	local mouseDropdown = {Value = 'Arrow'}
+	local mouseIcons = {
+		['CS:GO'] = 'rbxassetid://14789879068',
+		['Old Roblox Mouse'] = 'rbxassetid://13546344315',
+		['dx9ware'] = 'rbxassetid://12233942144',
+		['Aimbot'] = 'rbxassetid://8680062686',
+		['Triangle'] = 'rbxassetid://14790304072',
+		['Arrow'] = 'rbxassetid://14790316561'
+	}
+	local customMouseIcon = {Enabled = false}
+	local customIcon = {Value = ''}
+	mouseMod = Customisation.CreateOptionsButton({
+		Name = 'MouseMod',
+		HoverText = 'Modifies your cursor\'s image.',
+		Function = function(callback)
+			if callback then
+				task.spawn(function()
+					repeat task.wait()
+						if customMouseIcon.Enabled then
+							UIS.MouseIcon = 'rbxassetid://' .. customIcon.Value
+						else
+							UIS.MouseIcon = mouseIcons[mouseDropdown.Value]
+						end
+					until not mouseMod.Enabled
+				end)
+			else
+				UIS.MouseIcon = ''
+				task.wait()
+				UIS.MouseIcon = ''
+			end
+		end
+	})
+	mouseDropdown = mouseMod.CreateDropdown({
+		Name = 'Mouse Icon',
+		List = {
+			'CS:GO',
+			'Old Roblox Mouse',
+			'dx9ware',
+			'Aimbot',
+			'Triangle',
+			'Arrow'
+		},
+		Function = function() end
+	})
+	customMouseIcon = mouseMod.CreateToggle({
+		Name = 'Custom Icon',
+		Function = function(callback) end
+	})
+	customIcon = mouseMod.CreateTextBox({
+		Name = 'Custom Mouse Icon',
+		TempText = 'Image ID (not decal)',
+		FocusLost = function(enter) 
+			if mouseMod.Enabled then 
+				mouseMod.ToggleButton(false)
+				mouseMod.ToggleButton(false)
+			end
+		end
+	})
+end)
+
+run(function()
+	local CustomNotification = {Enabled = false}
+	local CustomNotificationMode = {Value = 'Absolute'}
+	local CustomNotificationColor = {
+		Hue = 1,
+		Sat = 1,
+		Value = 0.50
+	}
+	local CustomNotificationPath = {Value = 'assets/InfoNotification.png'}
+	CustomNotification = Customisation.CreateOptionsButton({
+		Name = 'CustomNotification',
+        HoverText = 'Customizes vape\'s notification',
+		Function = function(callback)
+			if callback then
+				task.spawn(function()
+					repeat task.wait()
+						if CustomNotificationMode.Value == 'Color' then
+							shared.NotifyColor = Color3.fromHSV(CustomNotificationColor.Hue, CustomNotificationColor.Sat, CustomNotificationColor.Value)
+							shared.NotifyIcon = 'assets/WarningNotification.png'
+						elseif CustomNotificationMode.Value == 'Icon' then
+							shared.NotifyColor = Color3.fromRGB(236, 129, 44)
+							shared.NotifyIcon = CustomNotificationPath.Value
+						elseif CustomNotificationMode.Value == 'Absolute' then
+							shared.NotifyColor = Color3.fromHSV(CustomNotificationColor.Hue, CustomNotificationColor.Sat, CustomNotificationColor.Value)
+							shared.NotifyIcon = CustomNotificationPath.Value
+						end
+					until not CustomNotification.Enabled
+				end)
+			else
+				shared.NotifyColor = Color3.fromRGB(236, 129, 44)
+				shared.NotifyIcon = 'assets/WarningNotification.png'
+			end
+		end,
+		ExtraText = function()
+			return CustomNotificationMode.Value
+		end
+	})
+	CustomNotificationMode = CustomNotification.CreateDropdown({
+		Name = 'Mode',
+		List = {
+			'Color',
+			'Icon',
+			'Absolute'
+		},
+		HoverText = 'Notifcation Mode',
+		Function = function() end,
+	})
+	CustomNotificationColor = CustomNotification.CreateColorSlider({
+		Name = 'Color',
+		HoverText = 'Notification Color',
+		Function = function() end,
+	})
+	CustomNotificationPath = CustomNotification.CreateTextBox({
+		Name = 'IconPath',
+		TempText = 'Icon Path',
+		HoverText = 'Notificatiion Icon Path',
+		FocusLost = function(enter) 
+			if CustomNotification.Enabled then 
+				CustomNotification.ToggleButton(false)
+				CustomNotification.ToggleButton(false)
+			end
+		end
+	})
+end)

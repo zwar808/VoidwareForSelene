@@ -263,10 +263,14 @@ function VoidwareFunctions.LoadFunctions()
     end)
     getgenv().RunLoops = RunLoops
     shared.RunLoops = RunLoops
+
+    shared.NotifyColor = Color3.fromRGB(93, 63, 211)
+    shared.NotifyIcon = 'assets/WarningNotification.png'
+    
     local function warningNotification(title, text, delay)
         local suc, res = pcall(function()
-            local frame = GuiLibrary.CreateNotification(title, text, delay, "assets/InfoNotification.png")
-            frame.Frame.Frame.ImageColor3 = Color3.fromRGB(236, 129, 44)
+            local frame = GuiLibrary.CreateNotification(title, text, delay, shared.NotifyIcon)
+            frame.Frame.Frame.ImageColor3 = shared.NotifyColor
             return frame
         end)
         warn(title..": "..text)

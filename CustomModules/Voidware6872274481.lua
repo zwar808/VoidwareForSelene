@@ -4046,3 +4046,173 @@ run(function()
 	})
 	visualrootcolor.Object.Visible = false
 end)--]]
+local Customisation = GuiLibrary.ObjectsThatCanBeSaved.CustomisationWindow.Api
+
+run(function()
+	local size_changer = {};
+	local size_changer_d = {};
+	local size_changer_h = {};
+	local size_changer_v = {};
+	size_changer = Customisation.CreateOptionsButton({
+		Name = 'SizeChanger',
+		HoverText = 'Changes the size of the tools.',
+		Function = function(callback) 
+			if callback then
+				lplr.PlayerScripts.TS.controllers.global.viewmodel['viewmodel-controller']:SetAttribute('ConstantManager_DEPTH_OFFSET', -(size_changer_d.Value / 10));
+				lplr.PlayerScripts.TS.controllers.global.viewmodel['viewmodel-controller']:SetAttribute('ConstantManager_HORIZONTAL_OFFSET', size_changer_h.Value / 10);
+				lplr.PlayerScripts.TS.controllers.global.viewmodel['viewmodel-controller']:SetAttribute('ConstantManager_VERTICAL_OFFSET', size_changer_v.Value / 10);
+				bedwars.ViewmodelController:playAnimation((10 / 2) + 6);
+			else
+				lplr.PlayerScripts.TS.controllers.global.viewmodel['viewmodel-controller']:SetAttribute('ConstantManager_DEPTH_OFFSET', 0);
+				lplr.PlayerScripts.TS.controllers.global.viewmodel['viewmodel-controller']:SetAttribute('ConstantManager_HORIZONTAL_OFFSET', 0);
+				lplr.PlayerScripts.TS.controllers.global.viewmodel['viewmodel-controller']:SetAttribute('ConstantManager_VERTICAL_OFFSET', 0);
+				bedwars.ViewmodelController:playAnimation((10 / 2) + 6);
+				cam.Viewmodel.RightHand.RightWrist.C1 = cam.Viewmodel.RightHand.RightWrist.C1;
+			end;
+		end;
+	});
+	size_changer_d = size_changer.CreateSlider({
+		Name = 'Depth',
+		Min = 0,
+		Max = 24,
+		Function = function(val)
+			if size_changer.Enabled then
+				lplr.PlayerScripts.TS.controllers.global.viewmodel['viewmodel-controller']:SetAttribute('ConstantManager_DEPTH_OFFSET', -(val / 10));
+			end;
+		end,
+		Default = 10;
+	});
+	size_changer_h = size_changer.CreateSlider({
+		Name = 'Horizontal',
+		Min = 0,
+		Max = 24,
+		Function = function(val)
+			if size_changer.Enabled then
+				lplr.PlayerScripts.TS.controllers.global.viewmodel['viewmodel-controller']:SetAttribute('ConstantManager_HORIZONTAL_OFFSET', (val / 10));
+			end;
+		end,
+		Default = 10;
+	});
+	size_changer_v = size_changer.CreateSlider({
+		Name = 'Vertical',
+		Min = 0,
+		Max = 24,
+		Function = function(val)
+			if size_changer.Enabled then
+				lplr.PlayerScripts.TS.controllers.global.viewmodel['viewmodel-controller']:SetAttribute('ConstantManager_VERTICAL_OFFSET', (val / 10));
+			end;
+		end,
+		Default = 0;
+	});
+end)
+
+run(function()
+	local ZoomUnlocker = {Enabled = false}
+	local ZoomUnlockerMode = {Value = 'Infinite'}
+	local ZoomUnlockerZoom = {Value = 500}
+	local ZoomConnection, OldZoom = nil, nil
+	ZoomUnlocker = Customisation.CreateOptionsButton({
+		Name = 'ZoomUnlocker',
+        HoverText = 'Unlocks the abillity to zoom more.',
+		Function = function(callback)
+			if callback then
+				OldZoom = lplr.CameraMaxZoomDistance
+				ZoomUnlocker = runService.Heartbeat:Connect(function()
+					if ZoomUnlockerMode.Value == 'Infinite' then
+						lplr.CameraMaxZoomDistance = 9e9
+					else
+						lplr.CameraMaxZoomDistance = ZoomUnlockerZoom.Value
+					end
+				end)
+			else
+				if ZoomUnlocker then ZoomUnlocker:Disconnect() end
+				lplr.CameraMaxZoomDistance = OldZoom
+				OldZoom = nil
+			end
+		end,
+        Default = false,
+		ExtraText = function()
+            return ZoomUnlockerMode.Value
+        end
+	})
+	ZoomUnlockerMode = ZoomUnlocker.CreateDropdown({
+		Name = 'Mode',
+		List = {
+			'Infinite',
+			'Custom'
+		},
+		HoverText = 'Mode to unlock the zoom.',
+		Value = 'Infinite',
+		Function = function() end
+	})
+	ZoomUnlockerZoom = ZoomUnlocker.CreateSlider({
+		Name = 'Zoom',
+		Min = OldZoom or 13,
+		Max = 1000,
+		HoverText = 'Amount to unlock the zoom.',
+		Function = function() end,
+		Default = 500
+	})
+end)
+
+run(function()
+	local entityLibrary = shared.vapeentity
+    local Headless = {Enabled = false};
+    Headless = Customisation.CreateOptionsButton({
+        Name = 'Headless',
+        HoverText = 'Makes your head transparent.',
+        Function = function(callback)
+            if callback then
+				local old, y = nil, nil;
+				local x = old;
+                task.spawn(function()
+                    repeat task.wait()
+						entityLibrary.character.Head.Transparency = 1
+						y = entityLibrary.character.Head:FindFirstChild('face');
+						if y then
+							old = y;
+							y.Parent = workspace;
+						end;
+						for _, v in next, entityLibrary.character:GetChildren() do
+							if v:IsA'Accessory' then
+								v.Handle.Transparency = 0
+							end
+						end
+                    until not Headless.Enabled;
+                end);
+            else
+                entityLibrary.character.Head.Transparency = 0;
+				for _, v in next, entityLibrary.character:GetChildren() do
+					if v:IsA'Accessory' then
+						v.Handle.Transparency = 0;
+					end;
+				end;
+				if old then
+					old.Parent = entityLibrary.character.Head;
+					old = x;
+				end;
+            end;
+        end,
+        Default = false
+    })
+end)
+
+run(function()
+	local NoNameTag = {Enabled = false}
+	NoNameTag = Customisation.CreateOptionsButton({
+		Name = 'NoNameTag',
+        HoverText = 'Removes your NameTag.',
+		Function = function(callback)
+			if callback then
+				RunLoops:BindToHeartbeat('NoNameTag', function()
+					pcall(function()
+						lplr.Character.Head.Nametag:Destroy()
+					end)
+				end)
+			else
+				RunLoops:UnbindFromHeartbeat('NoNameTag')
+			end
+		end,
+        Default = false
+	})
+end)
