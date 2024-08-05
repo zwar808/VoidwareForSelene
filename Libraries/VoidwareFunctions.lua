@@ -798,7 +798,8 @@ function VoidwareFunctions.LoadVoidware()
         c.BackgroundTransparency = 1
         local d = Instance.new("UIListLayout")
         d.Parent = a
-        d.Padding = UDim.new(0.1, 0)        
+        d.Padding = UDim.new(0.1, 0)   
+        shared.GuiLibrary.ObjectsThatCantBeSaved[a.Text.."CustomWindow"] = {["Type"] = "CustomVoidwareWindow", ["Object"] = a}     
     end)
     shared.VoidwareLoaded = true
 end
