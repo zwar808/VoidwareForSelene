@@ -4542,7 +4542,7 @@ run(function()
 	local size_changer_h = {};
 	local size_changer_v = {};
 	size_changer = GuiLibrary.ObjectsThatCanBeSaved.CustomisationWindow.Api.CreateOptionsButton({
-		Name = 'SizeChanger',
+		Name = 'ToolSizeChanger',
 		HoverText = 'Changes the size of the tools.',
 		Function = function(callback) 
 			if callback then
