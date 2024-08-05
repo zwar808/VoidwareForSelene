@@ -4644,6 +4644,10 @@ run(function()
 						shared.GuiLibrary.ObjectsThatCanBeSaved["AnimationPlayerOptionsButton"].Api.ToggleButton()
 					end
 				end)
+			else
+				if shared.GuiLibrary.ObjectsThatCanBeSaved["AnimationPlayerOptionsButton"].Api.Enabled then
+					shared.GuiLibrary.ObjectsThatCanBeSaved["AnimationPlayerOptionsButton"].Api.ToggleButton()
+				end
 			end
 		end
 	}) 
