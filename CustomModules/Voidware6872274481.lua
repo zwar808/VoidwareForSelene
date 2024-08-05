@@ -3832,6 +3832,18 @@ run(function()
             end
         end
     end;
+	local function NotifyUser(text)
+		game:GetService('StarterGui'):SetCore(
+			'ChatMakeSystemMessage', 
+			{
+				Text = text, 
+				Color = Color3.fromRGB(255, 0, 0), 
+				Font = Enum.Font.GothamBold,
+				FontSize = Enum.FontSize.Size24
+			}
+		)
+		
+	end
     local savestaffdata = function(player, detection)
         local success, json = pcall(function() 
             return httpservice:JSONDecode(readfile('vape/Libraries/staffdata.json'))
@@ -3884,12 +3896,14 @@ run(function()
             for _, tag in ipairs(tags:GetChildren()) do 
                 if matchtag(tag) then
                     savestaffdata(player, 'TAG');
+					NotifyUser("[StaffDetector]: "..`A special player has been detected in your match (@{player.DisplayName} [{tag.Value:upper()}]).`)
                     errorNotification('StaffDetector', `A special player has been detected in your match (@{player.DisplayName} [{tag.Value:upper()}]).`, 60);
                     staffdetectionfuncs[staffdetectoraction.Value]();
                 end
             end
             newtagconnection = tags.ChildAdded:Connect(function(newTag)
                 if matchtag(newTag) then
+					NotifyUser("[StaffDetector]: "..`A special player has been detected in your match (@{player.DisplayName} [{newTag.Value:upper()}]).`)
                     errorNotification('StaffDetector', `A special player has been detected in your match (@{player.DisplayName} [{newTag.Value:upper()}]).`, 60);
                     savestaffdata(player, 'TAG');
                     newtagconnection:Disconnect();
@@ -3900,6 +3914,7 @@ run(function()
         end)
         repeat 
             if table.find(staffconfig.staffaccounts, player.UserId) or table.find(knownstaff, player.UserId) then 
+				NotifyUser("[StaffDetector]: "..`A special player has been detected in your match (@{player.DisplayName} [{v.Value:upper()}]).`)
                 errorNotification('StaffDetector', `A special player has been detected in your match (@{player.DisplayName} [{v.Value:upper()}]).`, 60);
                 staffdetectionfuncs[staffdetectoraction.Value]();
             end
