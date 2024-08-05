@@ -4533,6 +4533,11 @@ run(function()
 		HoverText = 'Mode to render the texture pack.',
 		Function = function() end;
 	});
+	local Credits
+	Credits = texture_pack.CreateCredits({
+        Name = 'CreditsButtonInstance',
+        Credits = 'Melo and Star'
+    })
 end)
 
 run(function()
@@ -4602,4 +4607,9 @@ run(function()
 		end,
 		Default = 0;
 	});
+	local Credits
+	Credits = size_changer.CreateCredits({
+        Name = 'CreditsButtonInstance',
+        Credits = 'Velocity'
+    })
 end)
