@@ -1380,7 +1380,7 @@ if shared.VapeExecuted then
 			divider.BackgroundColor3 = Color3.fromRGB(37, 37, 37)
 			divider.BorderSizePixel = 0
 			divider.Parent = children
-			GuiLibrary.ObjectsThatCanBeSaved[text.."Divider1"] = {["Type"] = "Divider1", ["Object1"] = dividerlabel, ["Object2"] = divider, ["Text"] = tostring(text)}
+			GuiLibrary.ObjectsThatCanBeSaved[tostring(text).."Divider1"] = {["Type"] = "Divider1", ["Object1"] = dividerlabel, ["Object2"] = divider, ["Text"] = tostring(text)}
 		end
 	
 		windowapi["CreateDivider2"] = function(text)
