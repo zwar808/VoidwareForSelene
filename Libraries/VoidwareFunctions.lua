@@ -624,47 +624,51 @@ function VoidwareFunctions.EditWL(argTable)
     end
 end
 function VoidwareFunctions.Save_VD()
-    local valid_windows = {}
-	local full_data = {}
-	if shared.GuiLibrary.ObjectsThatCantBeSaved and type(shared.GuiLibrary.ObjectsThatCantBeSaved) == "table" then
-		for i,v in pairs(shared.GuiLibrary.ObjectsThatCantBeSaved) do
-			if shared.GuiLibrary.ObjectsThatCantBeSaved[i]["Type"] and shared.GuiLibrary.ObjectsThatCantBeSaved[i]["Type"] == "CustomVoidwareWindow" and shared.GuiLibrary.ObjectsThatCantBeSaved[i]["Object"] then
-				table.insert(valid_windows, i)
-			end
-		end
-	end
-	for i,v in pairs(valid_windows) do
-		local Table = shared.GuiLibrary.ObjectsThatCantBeSaved[valid_windows[i]]
-		local Object = Table["Object"]
-		local table_to_save = {}
-		table_to_save["Position"] = {Object.Position.X.Scale, Object.Position.X.Offset, Object.Position.Y.Scale, Object.Position.Y.Offset}
-		table_to_save["TableChildName"] = valid_windows[i]
-		table.insert(full_data, table_to_save)
-	end
-	local Encoded_Data = game:GetService("HttpService"):JSONEncode(full_data)
-	if shared.profilesDirectory then
-		writefile("vape/"..shared.profilesDirectory.."/VoidwareData.txt", Encoded_Data)
-	end
+    task.spawn(function()
+        local valid_windows = {}
+        local full_data = {}
+        if shared.GuiLibrary.ObjectsThatCantBeSaved and type(shared.GuiLibrary.ObjectsThatCantBeSaved) == "table" then
+            for i,v in pairs(shared.GuiLibrary.ObjectsThatCantBeSaved) do
+                if shared.GuiLibrary.ObjectsThatCantBeSaved[i]["Type"] and shared.GuiLibrary.ObjectsThatCantBeSaved[i]["Type"] == "CustomVoidwareWindow" and shared.GuiLibrary.ObjectsThatCantBeSaved[i]["Object"] then
+                    table.insert(valid_windows, i)
+                end
+            end
+        end
+        for i,v in pairs(valid_windows) do
+            local Table = shared.GuiLibrary.ObjectsThatCantBeSaved[valid_windows[i]]
+            local Object = Table["Object"]
+            local table_to_save = {}
+            table_to_save["Position"] = {Object.Position.X.Scale, Object.Position.X.Offset, Object.Position.Y.Scale, Object.Position.Y.Offset}
+            table_to_save["TableChildName"] = valid_windows[i]
+            table.insert(full_data, table_to_save)
+        end
+        local Encoded_Data = game:GetService("HttpService"):JSONEncode(full_data)
+        if shared.profilesDirectory then
+            writefile("vape/"..shared.profilesDirectory.."/VoidwareData.txt", Encoded_Data)
+        end
+    end)
 end
 function VoidwareFunctions.Load_VD()
-    if shared.profilesDirectory then
-		if isfile("vape/"..shared.profilesDirectory.."/VoidwareData.txt") then
-			local Decoded_Data = game:GetService("HttpService"):JSONDecode(readfile("vape/"..shared.profilesDirectory.."/VoidwareData.txt"))
-			if type(Decoded_Data) == "table" then
-				for i,v in pairs(Decoded_Data) do
-					if Decoded_Data[i]["TableChildName"] then
-						task.spawn(function()
-							repeat task.wait() until shared.GuiLibrary.ObjectsThatCantBeSaved[Decoded_Data[i]["TableChildName"]]
-							if Decoded_Data[i]["Position"] then
-								repeat task.wait() until shared.GuiLibrary.ObjectsThatCantBeSaved[Decoded_Data[i]["TableChildName"]]["Object"]
-								shared.GuiLibrary.ObjectsThatCantBeSaved[Decoded_Data[i]["TableChildName"]]["Object"].Position = UDim2.new(Decoded_Data[i]["Position"][1], Decoded_Data[i]["Position"][2], Decoded_Data[i]["Position"][3], Decoded_Data[i]["Position"][4])
-							end
-						end)
-					end
-				end
-			end
-		end
-	end
+    task.spawn(function()
+        if shared.profilesDirectory then
+            if isfile("vape/"..shared.profilesDirectory.."/VoidwareData.txt") then
+                local Decoded_Data = game:GetService("HttpService"):JSONDecode(readfile("vape/"..shared.profilesDirectory.."/VoidwareData.txt"))
+                if type(Decoded_Data) == "table" then
+                    for i,v in pairs(Decoded_Data) do
+                        if Decoded_Data[i]["TableChildName"] then
+                            task.spawn(function()
+                                repeat task.wait() until shared.GuiLibrary.ObjectsThatCantBeSaved[Decoded_Data[i]["TableChildName"]]
+                                if Decoded_Data[i]["Position"] then
+                                    repeat task.wait() until shared.GuiLibrary.ObjectsThatCantBeSaved[Decoded_Data[i]["TableChildName"]]["Object"]
+                                    shared.GuiLibrary.ObjectsThatCantBeSaved[Decoded_Data[i]["TableChildName"]]["Object"].Position = UDim2.new(Decoded_Data[i]["Position"][1], Decoded_Data[i]["Position"][2], Decoded_Data[i]["Position"][3], Decoded_Data[i]["Position"][4])
+                                end
+                            end)
+                        end
+                    end
+                end
+            end
+        end
+    end)
 end
 GuiLibrary.SelfDestructEvent.Event:Connect(function()
 	VoidwareFunctions.LogChangesFile()
@@ -808,45 +812,47 @@ function VoidwareFunctions.LoadVoidware()
         VoidwareFunctions.CheckForChanges()
     end)--]]
     local function CreateGUIModeSwitcher()
-        local a = Instance.new("TextLabel")
-        a.Parent = shared.GuiLibrary.MainGui:WaitForChild("ScaledGui"):WaitForChild("ClickGui")
-        a.BackgroundColor3 = Color3.new(0, 0, 0)
-        a.TextColor3 = Color3.new(255, 255, 255)
-        a.TextScaled = true
-        a.Position = UDim2.new(0, 750, 0.7, 100)
-        a.Size = UDim2.new(0.25, 0, 0.05, 0)
-        a.Text = "GUI Mode Switcher"
-        local function makeCorner(parent)
-            local b = Instance.new("UICorner")
-            b.CornerRadius = UDim.new(0, 10)
-            b.Parent = parent
-        end
-        makeCorner(a)
-        repeat task.wait() until shared.GuiLibrary.ObjectsThatCanBeSaved.VoidwareGUIOptionsButton
-        shared.GuiLibrary.ObjectsThatCanBeSaved.VoidwareGUIOptionsButton.Object.Parent = a
-        shared.GuiLibrary.ObjectsThatCanBeSaved.VoidwareGUIOptionsButton.Object.Position = UDim2.new(0, 0, 1.05, 0)
-        makeCorner(shared.GuiLibrary.ObjectsThatCanBeSaved.VoidwareGUIOptionsButton.Object)
-        repeat task.wait() until shared.GuiLibrary.ObjectsThatCanBeSaved.VapeGUIOptionsButton
-        shared.GuiLibrary.ObjectsThatCanBeSaved.VapeGUIOptionsButton.Object.Parent = a
-        shared.GuiLibrary.ObjectsThatCanBeSaved.VapeGUIOptionsButton.Object.Position = UDim2.new(0, 0, 2.05, 0)
-        makeCorner(shared.GuiLibrary.ObjectsThatCanBeSaved.VapeGUIOptionsButton.Object)
-        repeat task.wait() until shared.GuiLibrary.ObjectsThatCantBeSaved["GUI ModesDivider1"]
-        shared.GuiLibrary.ObjectsThatCantBeSaved["GUI ModesDivider1"].Object1:Destroy()
-        repeat task.wait() until shared.GuiLibrary.ObjectsThatCanBeSaved["VPrivateGUIOptionsButton"]
-        shared.GuiLibrary.ObjectsThatCanBeSaved["VPrivateGUIOptionsButton"].Object.Parent = a
-        shared.GuiLibrary.ObjectsThatCanBeSaved["VPrivateGUIOptionsButton"].Object.Position = UDim2.new(0, 0, 3.05, 0)
-        makeCorner(shared.GuiLibrary.ObjectsThatCanBeSaved["VPrivateGUIOptionsButton"].Object)
-        local c = Instance.new("Frame")
-        c.Parent = a
-        c.Size = UDim2.new(1, 0, 1, 0)
-        c.BackgroundTransparency = 1
-        local d = Instance.new("UIListLayout")
-        d.Parent = a
-        d.Padding = UDim.new(0.1, 0)   
-        shared.GuiLibrary.ObjectsThatCantBeSaved[a.Text.."CustomWindow"] = {["Type"] = "CustomVoidwareWindow", ["Object"] = a}  
-        repeat task.wait() until shared.dragGUI
-        local dragGUI = shared.dragGUI
-        dragGUI(shared.GuiLibrary.ObjectsThatCantBeSaved["GUI Mode SwitcherCustomWindow"].Object)  
+        task.spawn(function()
+            local a = Instance.new("TextLabel")
+            a.Parent = shared.GuiLibrary.MainGui:WaitForChild("ScaledGui"):WaitForChild("ClickGui")
+            a.BackgroundColor3 = Color3.new(0, 0, 0)
+            a.TextColor3 = Color3.new(255, 255, 255)
+            a.TextScaled = true
+            a.Position = UDim2.new(0, 750, 0.7, 100)
+            a.Size = UDim2.new(0.25, 0, 0.05, 0)
+            a.Text = "GUI Mode Switcher"
+            local function makeCorner(parent)
+                local b = Instance.new("UICorner")
+                b.CornerRadius = UDim.new(0, 10)
+                b.Parent = parent
+            end
+            makeCorner(a)
+            repeat task.wait() until shared.GuiLibrary.ObjectsThatCanBeSaved.VoidwareGUIOptionsButton
+            shared.GuiLibrary.ObjectsThatCanBeSaved.VoidwareGUIOptionsButton.Object.Parent = a
+            shared.GuiLibrary.ObjectsThatCanBeSaved.VoidwareGUIOptionsButton.Object.Position = UDim2.new(0, 0, 1.05, 0)
+            makeCorner(shared.GuiLibrary.ObjectsThatCanBeSaved.VoidwareGUIOptionsButton.Object)
+            repeat task.wait() until shared.GuiLibrary.ObjectsThatCanBeSaved.VapeGUIOptionsButton
+            shared.GuiLibrary.ObjectsThatCanBeSaved.VapeGUIOptionsButton.Object.Parent = a
+            shared.GuiLibrary.ObjectsThatCanBeSaved.VapeGUIOptionsButton.Object.Position = UDim2.new(0, 0, 2.05, 0)
+            makeCorner(shared.GuiLibrary.ObjectsThatCanBeSaved.VapeGUIOptionsButton.Object)
+            repeat task.wait() until shared.GuiLibrary.ObjectsThatCantBeSaved["GUI ModesDivider1"]
+            shared.GuiLibrary.ObjectsThatCantBeSaved["GUI ModesDivider1"].Object1:Destroy()
+            repeat task.wait() until shared.GuiLibrary.ObjectsThatCanBeSaved["VPrivateGUIOptionsButton"]
+            shared.GuiLibrary.ObjectsThatCanBeSaved["VPrivateGUIOptionsButton"].Object.Parent = a
+            shared.GuiLibrary.ObjectsThatCanBeSaved["VPrivateGUIOptionsButton"].Object.Position = UDim2.new(0, 0, 3.05, 0)
+            makeCorner(shared.GuiLibrary.ObjectsThatCanBeSaved["VPrivateGUIOptionsButton"].Object)
+            local c = Instance.new("Frame")
+            c.Parent = a
+            c.Size = UDim2.new(1, 0, 1, 0)
+            c.BackgroundTransparency = 1
+            local d = Instance.new("UIListLayout")
+            d.Parent = a
+            d.Padding = UDim.new(0.1, 0)   
+            shared.GuiLibrary.ObjectsThatCantBeSaved[a.Text.."CustomWindow"] = {["Type"] = "CustomVoidwareWindow", ["Object"] = a}  
+            repeat task.wait() until shared.dragGUI
+            local dragGUI = shared.dragGUI
+            dragGUI(shared.GuiLibrary.ObjectsThatCantBeSaved["GUI Mode SwitcherCustomWindow"].Object) 
+        end) 
     end
     CreateGUIModeSwitcher()
     VoidwareFunctions.Load_VD()
