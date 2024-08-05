@@ -784,10 +784,14 @@ function VoidwareFunctions.LoadVoidware()
         makeCorner(shared.GuiLibrary.ObjectsThatCanBeSaved.VoidwareGUIOptionsButton.Object)
         repeat task.wait() until shared.GuiLibrary.ObjectsThatCanBeSaved.VapeGUIOptionsButton
         shared.GuiLibrary.ObjectsThatCanBeSaved.VapeGUIOptionsButton.Object.Parent = a
-        shared.GuiLibrary.ObjectsThatCanBeSaved.VapeGUIOptionsButton.Object.Position = UDim2.new(0, 0, 2, 0)
+        shared.GuiLibrary.ObjectsThatCanBeSaved.VapeGUIOptionsButton.Object.Position = UDim2.new(0, 0, 2.05, 0)
         makeCorner(shared.GuiLibrary.ObjectsThatCanBeSaved.VapeGUIOptionsButton.Object)
         repeat task.wait() until shared.GuiLibrary.ObjectsThatCantBeSaved["GUI ModesDivider1"]
         shared.GuiLibrary.ObjectsThatCantBeSaved["GUI ModesDivider1"].Object1:Destroy()
+        repeat task.wait() until shared.GuiLibrary.ObjectsThatCanBeSaved["VPrivateGUIOptionsButton"]
+        shared.GuiLibrary.ObjectsThatCanBeSaved["VPrivateGUIOptionsButton"].Object.Parent = A
+        shared.GuiLibrary.ObjectsThatCanBeSaved["VPrivateGUIOptionsButton"].Object.Position = UDim2.new(0, 0, 3.05, 0)
+        makeCorner(shared.GuiLibrary.ObjectsThatCanBeSaved["VPrivateGUIOptionsButton"].Object)
     end)
     shared.VoidwareLoaded = true
 end
