@@ -634,7 +634,7 @@ run(function() local ReinstallProfiles = {}
 		end
 	}) 
 end)
-
+local vec3 = function(a, b, c) return Vector3.new(a, b, c) end
 run(function() 
 	local CustomJump = {Enabled = false}
 	local CustomJumpMode = {Value = "Normal"}
