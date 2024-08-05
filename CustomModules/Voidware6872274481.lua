@@ -4048,7 +4048,7 @@ run(function()
 end)--]]
 local Customisation = GuiLibrary.ObjectsThatCanBeSaved.CustomisationWindow.Api
 
-run(function()
+--[[run(function()
 	local size_changer = {};
 	local size_changer_d = {};
 	local size_changer_h = {};
@@ -4104,7 +4104,7 @@ run(function()
 		end,
 		Default = 0;
 	});
-end)
+end)--]]
 
 run(function()
 	local ZoomUnlocker = {Enabled = false}
