@@ -657,6 +657,14 @@ run(function()
 			return CustomJumpMode.Value
 		end
 	})
+	CustomJumpMode = CustomJump.CreateDropdown({
+		Name = "Mode",
+		List = {
+			"Normal",
+			"Velocity"
+		},
+		Function = function() end,
+	})
 	CustomJumpVelocity = CustomJump.CreateSlider({
 		Name = "Velocity",
 		Min = 1,
@@ -664,20 +672,6 @@ run(function()
 		Function = function() end,
 		Default = 50
 	})
-	CustomJumpVelocity.Object.Visible = false
-	CustomJumpMode = CustomJump.CreateDropdown({
-		Name = "Mode",
-		List = {
-			"Normal",
-			"Velocity"
-		},
-		Function = function()
-			setVisible()
-		end,
-	})
-	local function setVisible()
-		if CustomJumpMode.Value == "Velocity" then CustomJumpVelocity.Object.Visible = true else CustomJumpVelocity.Object.Visible = false end
-	end
 end)
 
 run(function()
