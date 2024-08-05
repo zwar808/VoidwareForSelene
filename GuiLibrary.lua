@@ -1358,8 +1358,9 @@ if shared.VapeExecuted then
 	
 		windowapi["CreateDivider"] = function(text)
 			local amount = #children:GetChildren()
+			local dividerlabel
 			if text then
-				local dividerlabel = Instance.new("TextLabel")
+				dividerlabel = Instance.new("TextLabel")
 				dividerlabel.Size = UDim2.new(1, 0, 0, 30)
 				dividerlabel.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
 				dividerlabel.BorderSizePixel = 0
@@ -1379,6 +1380,7 @@ if shared.VapeExecuted then
 			divider.BackgroundColor3 = Color3.fromRGB(37, 37, 37)
 			divider.BorderSizePixel = 0
 			divider.Parent = children
+			GuiLibrary.ObjectsThatCanBeSaved[text.."Divider1"] = {["Type"] = "Divider1", ["Object1"] = dividerlabel, ["Object2"] = divider, ["Text"] = tostring(text)}
 		end
 	
 		windowapi["CreateDivider2"] = function(text)
