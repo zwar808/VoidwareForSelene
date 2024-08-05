@@ -39,7 +39,7 @@ local GetEnumItems = function() return {} end
 		return fonts
 	end
 
-run(function()
+--[[run(function()
 	local ChosenPack = {Value = "Realistic Pack"}
 	local TexturePacks = {Enabled = false}
 	TexturePacks = GuiLibrary.ObjectsThatCanBeSaved.CustomisationWindow.Api.CreateOptionsButton({
@@ -464,7 +464,7 @@ run(function()
         },
         Function = function() end,
     })
-end)
+end)--]]
 
 run(function()
 	local PlayerLevelSet = {}
@@ -4048,64 +4048,6 @@ run(function()
 end)--]]
 local Customisation = GuiLibrary.ObjectsThatCanBeSaved.CustomisationWindow.Api
 
---[[run(function()
-	local size_changer = {};
-	local size_changer_d = {};
-	local size_changer_h = {};
-	local size_changer_v = {};
-	size_changer = Customisation.CreateOptionsButton({
-		Name = 'SizeChanger',
-		HoverText = 'Changes the size of the tools.',
-		Function = function(callback) 
-			if callback then
-				lplr.PlayerScripts.TS.controllers.global.viewmodel['viewmodel-controller']:SetAttribute('ConstantManager_DEPTH_OFFSET', -(size_changer_d.Value / 10));
-				lplr.PlayerScripts.TS.controllers.global.viewmodel['viewmodel-controller']:SetAttribute('ConstantManager_HORIZONTAL_OFFSET', size_changer_h.Value / 10);
-				lplr.PlayerScripts.TS.controllers.global.viewmodel['viewmodel-controller']:SetAttribute('ConstantManager_VERTICAL_OFFSET', size_changer_v.Value / 10);
-				bedwars.ViewmodelController:playAnimation((10 / 2) + 6);
-			else
-				lplr.PlayerScripts.TS.controllers.global.viewmodel['viewmodel-controller']:SetAttribute('ConstantManager_DEPTH_OFFSET', 0);
-				lplr.PlayerScripts.TS.controllers.global.viewmodel['viewmodel-controller']:SetAttribute('ConstantManager_HORIZONTAL_OFFSET', 0);
-				lplr.PlayerScripts.TS.controllers.global.viewmodel['viewmodel-controller']:SetAttribute('ConstantManager_VERTICAL_OFFSET', 0);
-				bedwars.ViewmodelController:playAnimation((10 / 2) + 6);
-				cam.Viewmodel.RightHand.RightWrist.C1 = cam.Viewmodel.RightHand.RightWrist.C1;
-			end;
-		end;
-	});
-	size_changer_d = size_changer.CreateSlider({
-		Name = 'Depth',
-		Min = 0,
-		Max = 24,
-		Function = function(val)
-			if size_changer.Enabled then
-				lplr.PlayerScripts.TS.controllers.global.viewmodel['viewmodel-controller']:SetAttribute('ConstantManager_DEPTH_OFFSET', -(val / 10));
-			end;
-		end,
-		Default = 10;
-	});
-	size_changer_h = size_changer.CreateSlider({
-		Name = 'Horizontal',
-		Min = 0,
-		Max = 24,
-		Function = function(val)
-			if size_changer.Enabled then
-				lplr.PlayerScripts.TS.controllers.global.viewmodel['viewmodel-controller']:SetAttribute('ConstantManager_HORIZONTAL_OFFSET', (val / 10));
-			end;
-		end,
-		Default = 10;
-	});
-	size_changer_v = size_changer.CreateSlider({
-		Name = 'Vertical',
-		Min = 0,
-		Max = 24,
-		Function = function(val)
-			if size_changer.Enabled then
-				lplr.PlayerScripts.TS.controllers.global.viewmodel['viewmodel-controller']:SetAttribute('ConstantManager_VERTICAL_OFFSET', (val / 10));
-			end;
-		end,
-		Default = 0;
-	});
-end)--]]
-
 run(function()
 	local ZoomUnlocker = {Enabled = false}
 	local ZoomUnlockerMode = {Value = 'Infinite'}
@@ -4215,4 +4157,449 @@ run(function()
 		end,
         Default = false
 	})
+end)
+
+run(function()
+    local GuiLibrary = shared.GuiLibrary
+	local texture_pack = {};
+	texture_pack = GuiLibrary.ObjectsThatCanBeSaved.CustomisationWindow.Api.CreateOptionsButton({
+		Name = 'TexturePack',
+		HoverText = 'Customizes your texture pack.',
+		Function = function(callback)
+			if callback then
+				if not shared.VapeSwitchServers then
+					warningNotification("TexturePack - Credits", "Credits to melo and star", 1.5)
+				end
+				if texture_pack_m.Value == 'Noboline' then
+					local Players = game:GetService("Players")
+					local ReplicatedStorage = game:GetService("ReplicatedStorage")
+					local Workspace = game:GetService("Workspace")
+					local objs = game:GetObjects("rbxassetid://13988978091")
+					local import = objs[1]
+					import.Parent = game:GetService("ReplicatedStorage")
+					local index = {
+						{
+							name = "wood_sword",
+							offset = CFrame.Angles(math.rad(0), math.rad(-100), math.rad(-90)),
+							model = import:WaitForChild("Wood_Sword"),
+						},
+						{
+							name = "stone_sword",
+							offset = CFrame.Angles(math.rad(0), math.rad(-100), math.rad(-90)),
+							model = import:WaitForChild("Stone_Sword"),
+						},
+						{
+							name = "iron_sword",
+							offset = CFrame.Angles(math.rad(0), math.rad(-100), math.rad(-90)),
+							model = import:WaitForChild("Iron_Sword"),
+						},
+						{
+							name = "diamond_sword",
+							offset = CFrame.Angles(math.rad(0), math.rad(-100), math.rad(-90)),
+							model = import:WaitForChild("Diamond_Sword"),
+						},
+						{
+							name = "emerald_sword",
+							offset = CFrame.Angles(math.rad(0), math.rad(-100), math.rad(-90)),
+							model = import:WaitForChild("Emerald_Sword"),
+						},
+						{
+							name = "wood_pickaxe",
+							offset = CFrame.Angles(math.rad(0), math.rad(-190), math.rad(-95)),
+							model = import:WaitForChild("Wood_Pickaxe"),
+						},
+						{
+							name = "stone_pickaxe",
+							offset = CFrame.Angles(math.rad(0), math.rad(-190), math.rad(-95)),
+							model = import:WaitForChild("Stone_Pickaxe"),
+						},
+						{
+							name = "iron_pickaxe",
+							offset = CFrame.Angles(math.rad(0), math.rad(-190), math.rad(-95)),
+							model = import:WaitForChild("Iron_Pickaxe"),
+						},
+						{
+							name = "diamond_pickaxe",
+							offset = CFrame.Angles(math.rad(0), math.rad(80), math.rad(-95)),
+							model = import:WaitForChild("Diamond_Pickaxe"),
+						},
+						{
+							name = "wood_axe",
+							offset = CFrame.Angles(math.rad(0), math.rad(-10), math.rad(-95)),
+							model = import:WaitForChild("Wood_Axe"),
+						},
+						{
+							name = "stone_axe",
+							offset = CFrame.Angles(math.rad(0), math.rad(-10), math.rad(-95)),
+							model = import:WaitForChild("Stone_Axe"),
+						},
+						{
+							name = "iron_axe",
+							offset = CFrame.Angles(math.rad(0), math.rad(-10), math.rad(-95)),
+							model = import:WaitForChild("Iron_Axe"),
+						},
+						{
+							name = "diamond_axe",
+							offset = CFrame.Angles(math.rad(0), math.rad(-90), math.rad(-95)),
+							model = import:WaitForChild("Diamond_Axe"),
+						},
+					}
+					local func = Workspace.Camera.Viewmodel.ChildAdded:Connect(function(tool)
+						if not tool:IsA("Accessory") then
+							return
+						end
+						for _, v in ipairs(index) do
+							if v.name == tool.Name then
+								for _, part in ipairs(tool:GetDescendants()) do
+									if part:IsA("BasePart") or part:IsA("MeshPart") or part:IsA("UnionOperation") then
+										part.Transparency = 1
+									end
+								end
+								local model = v.model:Clone()
+								model.CFrame = tool.Handle.CFrame * v.offset
+								model.CFrame = model.CFrame * CFrame.Angles(math.rad(0), math.rad(-50), math.rad(0))
+								model.Parent = tool
+								local weld = Instance.new("WeldConstraint")
+								weld.Part0 = model
+								weld.Part1 = tool.Handle
+								weld.Parent = model
+								local tool2 = Players.LocalPlayer.Character:WaitForChild(tool.Name)
+								for _, part in ipairs(tool2:GetDescendants()) do
+									if part:IsA("BasePart") or part:IsA("MeshPart") or part:IsA("UnionOperation") then
+										part.Transparency = 1
+										if part.Name == "Handle" then
+											part.Transparency = 0
+										end
+									end
+								end
+							end
+						end
+					end)
+				elseif texture_pack_m.Value == 'Aquarium' then
+					local objs = game:GetObjects("rbxassetid://14217388022")
+					local import = objs[1]
+					
+					import.Parent = game:GetService("ReplicatedStorage")
+					
+					local index = {
+					
+						{
+							name = "wood_sword",
+							offset = CFrame.Angles(math.rad(0),math.rad(-100),math.rad(-90)),
+							model = import:WaitForChild("Wood_Sword"),
+						},
+						
+						{
+							name = "stone_sword",
+							offset = CFrame.Angles(math.rad(0),math.rad(-100),math.rad(-90)),
+							model = import:WaitForChild("Stone_Sword"),
+						},
+						
+						{
+							name = "iron_sword",
+							offset = CFrame.Angles(math.rad(0),math.rad(-100),math.rad(-90)),
+							model = import:WaitForChild("Iron_Sword"),
+						},
+						
+						{
+							name = "diamond_sword",
+							offset = CFrame.Angles(math.rad(0),math.rad(-100),math.rad(-90)),
+							model = import:WaitForChild("Diamond_Sword"),
+						},
+						
+						{
+							name = "emerald_sword",
+							offset = CFrame.Angles(math.rad(0),math.rad(-100),math.rad(-90)),
+							model = import:WaitForChild("Diamond_Sword"),
+						},
+						
+						{
+							name = "Rageblade",
+							offset = CFrame.Angles(math.rad(0),math.rad(-100),math.rad(-90)),
+							model = import:WaitForChild("Diamond_Sword"),
+						},
+						
+					}
+					
+					local func = Workspace:WaitForChild("Camera").Viewmodel.ChildAdded:Connect(function(tool)
+						
+						if(not tool:IsA("Accessory")) then return end
+						
+						for i,v in pairs(index) do
+						
+							if(v.name == tool.Name) then
+							
+								for i,v in pairs(tool:GetDescendants()) do
+						
+									if(v:IsA("Part") or v:IsA("MeshPart") or v:IsA("UnionOperation")) then
+										
+										v.Transparency = 1
+										
+									end
+								
+								end
+							
+								local model = v.model:Clone()
+								model.CFrame = tool:WaitForChild("Handle").CFrame * v.offset
+								model.CFrame *= CFrame.Angles(math.rad(0),math.rad(-50),math.rad(0))
+								model.Parent = tool
+								
+								local weld = Instance.new("WeldConstraint",model)
+								weld.Part0 = model
+								weld.Part1 = tool:WaitForChild("Handle")
+								
+								local tool2 = Players.LocalPlayer.Character:WaitForChild(tool.Name)
+								
+								for i,v in pairs(tool2:GetDescendants()) do
+						
+									if(v:IsA("Part") or v:IsA("MeshPart") or v:IsA("UnionOperation")) then
+										
+										v.Transparency = 1
+										
+									end
+								
+								end
+								
+								local model2 = v.model:Clone()
+								model2.Anchored = false
+								model2.CFrame = tool2:WaitForChild("Handle").CFrame * v.offset
+								model2.CFrame *= CFrame.Angles(math.rad(0),math.rad(-50),math.rad(0))
+								model2.CFrame *= CFrame.new(0.4,0,-.9)
+								model2.Parent = tool2
+								
+								local weld2 = Instance.new("WeldConstraint",model)
+								weld2.Part0 = model2
+								weld2.Part1 = tool2:WaitForChild("Handle")
+							
+							end
+						
+						end
+						
+					end)
+				else
+					local Players = game:GetService("Players")
+					local ReplicatedStorage = game:GetService("ReplicatedStorage")
+					local Workspace = game:GetService("Workspace")
+					local objs = game:GetObjects("rbxassetid://14356045010")
+					local import = objs[1]
+					import.Parent = game:GetService("ReplicatedStorage")
+					index = {
+						{
+							name = "wood_sword",
+							offset = CFrame.Angles(math.rad(0),math.rad(-100),math.rad(-90)),
+							model = import:WaitForChild("Wood_Sword"),
+						},
+						{
+							name = "stone_sword",
+							offset = CFrame.Angles(math.rad(0),math.rad(-100),math.rad(-90)),
+							model = import:WaitForChild("Stone_Sword"),
+						},
+						{
+							name = "iron_sword",
+							offset = CFrame.Angles(math.rad(0),math.rad(-100),math.rad(-90)),
+							model = import:WaitForChild("Iron_Sword"),
+						},
+						{
+							name = "diamond_sword",
+							offset = CFrame.Angles(math.rad(0),math.rad(-100),math.rad(-90)),
+							model = import:WaitForChild("Diamond_Sword"),
+						},
+						{
+							name = "emerald_sword",
+							offset = CFrame.Angles(math.rad(0),math.rad(-100),math.rad(-90)),
+							model = import:WaitForChild("Emerald_Sword"),
+						}, 
+						{
+							name = "rageblade",
+							offset = CFrame.Angles(math.rad(0),math.rad(-100),math.rad(90)),
+							model = import:WaitForChild("Rageblade"),
+						}, 
+						   {
+							name = "fireball",
+									offset = CFrame.Angles(math.rad(0), math.rad(0), math.rad(90)),
+							model = import:WaitForChild("Fireball"),
+						}, 
+						{
+							name = "telepearl",
+									offset = CFrame.Angles(math.rad(0), math.rad(0), math.rad(90)),
+							model = import:WaitForChild("Telepearl"),
+						}, 
+						{
+							name = "wood_bow",
+							offset = CFrame.Angles(math.rad(0), math.rad(0), math.rad(90)),
+							model = import:WaitForChild("Bow"),
+						},
+						{
+							name = "wood_crossbow",
+							offset = CFrame.Angles(math.rad(0), math.rad(0), math.rad(90)),
+							model = import:WaitForChild("Crossbow"),
+						},
+						{
+							name = "tactical_crossbow",
+							offset = CFrame.Angles(math.rad(0), math.rad(180), math.rad(-90)),
+							model = import:WaitForChild("Crossbow"),
+						},
+							{
+							name = "wood_pickaxe",
+							offset = CFrame.Angles(math.rad(0), math.rad(-180), math.rad(-95)),
+							model = import:WaitForChild("Wood_Pickaxe"),
+						},
+						{
+							name = "stone_pickaxe",
+							offset = CFrame.Angles(math.rad(0), math.rad(-180), math.rad(-95)),
+							model = import:WaitForChild("Stone_Pickaxe"),
+						},
+						{
+							name = "iron_pickaxe",
+							offset = CFrame.Angles(math.rad(0), math.rad(-180), math.rad(-95)),
+							model = import:WaitForChild("Iron_Pickaxe"),
+						},
+						{
+							name = "diamond_pickaxe",
+							offset = CFrame.Angles(math.rad(0), math.rad(80), math.rad(-95)),
+							model = import:WaitForChild("Diamond_Pickaxe"),
+						},
+					   {
+								  
+							name = "wood_axe",
+							offset = CFrame.Angles(math.rad(0), math.rad(-10), math.rad(-95)),
+							model = import:WaitForChild("Wood_Axe"),
+						},
+						{
+							name = "stone_axe",
+							offset = CFrame.Angles(math.rad(0), math.rad(-10), math.rad(-95)),
+							model = import:WaitForChild("Stone_Axe"),
+						},
+						{
+							name = "iron_axe",
+							offset = CFrame.Angles(math.rad(0), math.rad(-10), math.rad(-95)),
+							model = import:WaitForChild("Iron_Axe"),
+						 },
+						 {
+							name = "diamond_axe",
+							offset = CFrame.Angles(math.rad(0), math.rad(-89), math.rad(-95)),
+							model = import:WaitForChild("Diamond_Axe"),
+						 },
+					
+					
+					
+					 }
+					local func = Workspace:WaitForChild("Camera").Viewmodel.ChildAdded:Connect(function(tool)
+						if(not tool:IsA("Accessory")) then return end
+						for i,v in pairs(index) do
+							if(v.name == tool.Name) then
+								for i,v in pairs(tool:GetDescendants()) do
+									if(v:IsA("Part") or v:IsA("MeshPart") or v:IsA("UnionOperation")) then
+										v.Transparency = 1
+									end
+								end
+								local model = v.model:Clone()
+								model.CFrame = tool:WaitForChild("Handle").CFrame * v.offset
+								model.CFrame *= CFrame.Angles(math.rad(0),math.rad(-50),math.rad(0))
+								model.Parent = tool
+								local weld = Instance.new("WeldConstraint",model)
+								weld.Part0 = model
+								weld.Part1 = tool:WaitForChild("Handle")
+								local tool2 = Players.LocalPlayer.Character:WaitForChild(tool.Name)
+								for i,v in pairs(tool2:GetDescendants()) do
+									if(v:IsA("Part") or v:IsA("MeshPart") or v:IsA("UnionOperation")) then
+										v.Transparency = 1
+									end
+								end
+								local model2 = v.model:Clone()
+								model2.Anchored = false
+								model2.CFrame = tool2:WaitForChild("Handle").CFrame * v.offset
+								model2.CFrame *= CFrame.Angles(math.rad(0),math.rad(-50),math.rad(0))
+								model2.CFrame *= CFrame.new(.7,0,-.8)
+								model2.Parent = tool2
+								local weld2 = Instance.new("WeldConstraint",model)
+								weld2.Part0 = model2
+								weld2.Part1 = tool2:WaitForChild("Handle")
+							end
+						end
+					end)
+				end
+			end
+		end
+	})
+	texture_pack_m = texture_pack.CreateDropdown({
+		Name = 'Mode',
+		List = {
+			'Noboline',
+			'Aquarium',
+			'Ocean'
+		},
+		Default = 'Noboline',
+		HoverText = 'Mode to render the texture pack.',
+		Function = function() end;
+	});
+end)
+
+run(function()
+    local GuiLibrary = shared.GuiLibrary
+	local size_changer = {};
+	local size_changer_d = {};
+	local size_changer_h = {};
+	local size_changer_v = {};
+	size_changer = GuiLibrary.ObjectsThatCanBeSaved.CustomisationWindow.Api.CreateOptionsButton({
+		Name = 'SizeChanger',
+		HoverText = 'Changes the size of the tools.',
+		Function = function(callback) 
+			if callback then
+				pcall(function()
+					lplr.PlayerScripts.TS.controllers.global.viewmodel['viewmodel-controller']:SetAttribute('ConstantManager_DEPTH_OFFSET', -(size_changer_d.Value / 10));
+					lplr.PlayerScripts.TS.controllers.global.viewmodel['viewmodel-controller']:SetAttribute('ConstantManager_HORIZONTAL_OFFSET', size_changer_h.Value / 10);
+					lplr.PlayerScripts.TS.controllers.global.viewmodel['viewmodel-controller']:SetAttribute('ConstantManager_VERTICAL_OFFSET', size_changer_v.Value / 10);
+					bedwars.ViewmodelController:playAnimation((10 / 2) + 6);
+				end)
+			else
+				pcall(function()
+					lplr.PlayerScripts.TS.controllers.global.viewmodel['viewmodel-controller']:SetAttribute('ConstantManager_DEPTH_OFFSET', 0);
+					lplr.PlayerScripts.TS.controllers.global.viewmodel['viewmodel-controller']:SetAttribute('ConstantManager_HORIZONTAL_OFFSET', 0);
+					lplr.PlayerScripts.TS.controllers.global.viewmodel['viewmodel-controller']:SetAttribute('ConstantManager_VERTICAL_OFFSET', 0);
+					bedwars.ViewmodelController:playAnimation((10 / 2) + 6);
+					cam.Viewmodel.RightHand.RightWrist.C1 = cam.Viewmodel.RightHand.RightWrist.C1;
+				end)
+			end;
+		end;
+	});
+	size_changer_d = size_changer.CreateSlider({
+		Name = 'Depth',
+		Min = 0,
+		Max = 24,
+		Function = function(val)
+			if size_changer.Enabled then
+				pcall(function()
+					lplr.PlayerScripts.TS.controllers.global.viewmodel['viewmodel-controller']:SetAttribute('ConstantManager_DEPTH_OFFSET', -(val / 10));
+				end)
+			end;
+		end,
+		Default = 10;
+	});
+	size_changer_h = size_changer.CreateSlider({
+		Name = 'Horizontal',
+		Min = 0,
+		Max = 24,
+		Function = function(val)
+			if size_changer.Enabled then
+				pcall(function()
+					lplr.PlayerScripts.TS.controllers.global.viewmodel['viewmodel-controller']:SetAttribute('ConstantManager_HORIZONTAL_OFFSET', (val / 10));
+				end)
+			end;
+		end,
+		Default = 10;
+	});
+	size_changer_v = size_changer.CreateSlider({
+		Name = 'Vertical',
+		Min = 0,
+		Max = 24,
+		Function = function(val)
+			if size_changer.Enabled then
+				pcall(function()
+					lplr.PlayerScripts.TS.controllers.global.viewmodel['viewmodel-controller']:SetAttribute('ConstantManager_VERTICAL_OFFSET', (val / 10));
+				end)
+			end;
+		end,
+		Default = 0;
+	});
 end)
