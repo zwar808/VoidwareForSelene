@@ -432,7 +432,7 @@ if shared.VapeExecuted then
 	GuiLibrary["MainRescale"]:GetPropertyChangedSignal("Scale"):Connect(function()
 		vertext.Position = UDim2.new(1 / GuiLibrary["MainRescale"].Scale, -(vertextsize.X) - 20, 1 / GuiLibrary["MainRescale"].Scale, -25)
 	end)
-	shared.GuiLibrary.ObjectsThatCantBeSaved["VoidwareHelper"] = {["LegitModulesFrame"] = LegitModulesFrame, ["ClickGUI"] = clickgui}
+	GuiLibrary.ObjectsThatCantBeSaved["VoidwareHelper"] = {["LegitModulesFrame"] = LegitModulesFrame, ["ClickGUI"] = clickgui}
 	local function dragGUI(gui, mod)
 		task.spawn(function()
 			local dragging
