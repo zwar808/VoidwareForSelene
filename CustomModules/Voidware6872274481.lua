@@ -4628,3 +4628,23 @@ run(function()
         Credits = 'Velocity'
     })
 end)
+
+run(function() 
+	local Invisibility = {}
+	Invisibility = GuiLibrary.ObjectsThatCanBeSaved.HotWindow.Api.CreateOptionsButton({
+		Name = 'Invisibility',
+		Function = function(calling)
+			if calling then 
+				task.spawn(function()
+					repeat task.wait() until shared.GuiLibrary.ObjectsThatCanBeSaved["AnimationPlayerOptionsButton"]
+					repeat task.wait() until shared.GuiLibrary.ObjectsThatCanBeSaved["AnimationPlayerSpeedSlider"]
+					shared.GuiLibrary.ObjectsThatCanBeSaved["AnimationPlayerSpeedSlider"].Api.SetValue(9999999999999999999999999)
+					shared.GuiLibrary.ObjectsThatCanBeSaved["AnimationPlayerAnimationTextBox"].Api.SetValue("11360825341")
+					if not shared.GuiLibrary.ObjectsThatCanBeSaved["AnimationPlayerOptionsButton"].Api.Enabled then
+						shared.GuiLibrary.ObjectsThatCanBeSaved["AnimationPlayerOptionsButton"].Api.ToggleButton()
+					end
+				end)
+			end
+		end
+	}) 
+end)
