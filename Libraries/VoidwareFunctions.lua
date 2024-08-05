@@ -623,52 +623,8 @@ function VoidwareFunctions.EditWL(argTable)
         return "Invalid table. 1: "..tostring(type(argTable)).." 2: "..tostring(#argTable).." 3: "..tostring(argTable["api_key"])
     end
 end
-VoidwareFunctions.Save_VD()
-    local valid_windows = {}
-	local full_data = {}
-	if shared.GuiLibrary.ObjectsThatCantBeSaved and type(shared.GuiLibrary.ObjectsThatCantBeSaved) == "table" then
-		for i,v in pairs(shared.GuiLibrary.ObjectsThatCantBeSaved) do
-			if shared.GuiLibrary.ObjectsThatCantBeSaved[i]["Type"] and shared.GuiLibrary.ObjectsThatCantBeSaved[i]["Type"] == "CustomVoidwareWindow" and shared.GuiLibrary.ObjectsThatCantBeSaved[i]["Object"] then
-				table.insert(valid_windows, i)
-			end
-		end
-	end
-	for i,v in pairs(valid_windows) do
-		local Table = shared.GuiLibrary.ObjectsThatCantBeSaved[valid_windows[i]]
-		local Object = Table["Object"]
-		local table_to_save = {}
-		table_to_save["Position"] = {Object.Position.X.Scale, Object.Position.X.Offset, Object.Position.Y.Scale, Object.Position.Y.Offset}
-		table_to_save["TableChildName"] = valid_windows[i]
-		table.insert(full_data, table_to_save)
-	end
-	local Encoded_Data = game:GetService("HttpService"):JSONEncode(full_data)
-	if shared.profilesDirectory then
-		writefile("vape/"..shared.profilesDirectory.."/VoidwareData.txt", Encoded_Data)
-	end
-end
-VoidwareFunctions.Load_VD()
-    if shared.profilesDirectory then
-		if isfile("vape/"..shared.profilesDirectory.."/VoidwareData.txt") then
-			local Decoded_Data = game:GetService("HttpService"):JSONDecode(readfile("vape/"..shared.profilesDirectory.."/VoidwareData.txt"))
-			if type(Decoded_Data) == "table" then
-				for i,v in pairs(Decoded_Data) do
-					if Decoded_Data[i]["TableChildName"] then
-						task.spawn(function()
-							repeat task.wait() until shared.GuiLibrary.ObjectsThatCantBeSaved[Decoded_Data[i]["TableChildName"]]
-							if Decoded_Data[i]["Position"] then
-								repeat task.wait() until shared.GuiLibrary.ObjectsThatCantBeSaved[Decoded_Data[i]["TableChildName"]]["Object"]
-								shared.GuiLibrary.ObjectsThatCantBeSaved[Decoded_Data[i]["TableChildName"]]["Object"].Position = UDim2.new(Decoded_Data[i]["Position"][1], Decoded_Data[i]["Position"][2], Decoded_Data[i]["Position"][3], Decoded_Data[i]["Position"][4])
-							end
-						end)
-					end
-				end
-			end
-		end
-	end
-end
 GuiLibrary.SelfDestructEvent.Event:Connect(function()
 	VoidwareFunctions.LogChangesFile()
-    VoidwareFunctions.Save_VD()
 end)
 function VoidwareFunctions.LoadVoidware()
     GuiLibrary.HideWindow("Friends")
@@ -807,7 +763,7 @@ function VoidwareFunctions.LoadVoidware()
     --[[task.spawn(function()
         VoidwareFunctions.CheckForChanges()
     end)--]]
-    local function CreateGUIModeSwitcher()
+    task.spawn(function()
         local a = Instance.new("TextLabel")
         a.Parent = shared.GuiLibrary.MainGui:WaitForChild("ScaledGui"):WaitForChild("ClickGui")
         a.BackgroundColor3 = Color3.new(0, 0, 0)
@@ -843,13 +799,8 @@ function VoidwareFunctions.LoadVoidware()
         local d = Instance.new("UIListLayout")
         d.Parent = a
         d.Padding = UDim.new(0.1, 0)   
-        shared.GuiLibrary.ObjectsThatCantBeSaved[a.Text.."CustomWindow"] = {["Type"] = "CustomVoidwareWindow", ["Object"] = a}  
-        repeat task.wait() until shared.dragGUI
-        local dragGUI = shared.dragGUI
-        dragGUI(shared.GuiLibrary.ObjectsThatCantBeSaved["GUI Mode SwitcherCustomWindow"].Object)  
-    end
-    CreateGUIModeSwitcher()
-    VoidwareFunctions.Load_VD()
+        shared.GuiLibrary.ObjectsThatCantBeSaved[a.Text.."CustomWindow"] = {["Type"] = "CustomVoidwareWindow", ["Object"] = a}     
+    end)
     shared.VoidwareLoaded = true
 end
 VoidwareFunctions.LoadVoidware()

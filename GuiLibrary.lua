@@ -472,7 +472,6 @@ if shared.VapeExecuted then
 			end)
 		end)
 	end
-	shared.dragGUI = dragGUI
 
 	local function createMobileButton(buttonapi, position)
 		local touchButton = Instance.new("TextButton")
