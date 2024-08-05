@@ -763,6 +763,32 @@ function VoidwareFunctions.LoadVoidware()
     --[[task.spawn(function()
         VoidwareFunctions.CheckForChanges()
     end)--]]
+    task.spawn(function()
+        local a = Instance.new("TextLabel")
+        a.Parent = shared.GuiLibrary.MainGui:WaitForChild("ScaledGui"):WaitForChild("ClickGui")
+        a.BackgroundColor3 = Color3.new(0, 0, 0)
+        a.TextColor3 = Color3.new(255, 255, 255)
+        a.TextScaled = true
+        a.Position = UDim2.new(0, 750, 0.7, 100)
+        a.Size = UDim2.new(0.25, 0, 0.05, 0)
+        a.Text = "GUI Mode Switcher"
+        local function makeCorner(parent)
+            local b = Instance.new("UICorner")
+            b.CornerRadius = UDim.new(0, 10)
+            b.Parent = parent
+        end
+        makeCorner(a)
+        repeat task.wait() until shared.GuiLibrary.ObjectsThatCanBeSaved.VoidwareGUIOptionsButton
+        shared.GuiLibrary.ObjectsThatCanBeSaved.VoidwareGUIOptionsButton.Object.Parent = a
+        shared.GuiLibrary.ObjectsThatCanBeSaved.VoidwareGUIOptionsButton.Object.Position = UDim2.new(0, 0, 1.05, 0)
+        makeCorner(shared.GuiLibrary.ObjectsThatCanBeSaved.VoidwareGUIOptionsButton.Object)
+        repeat task.wait() until shared.GuiLibrary.ObjectsThatCanBeSaved.VapeGUIOptionsButton
+        shared.GuiLibrary.ObjectsThatCanBeSaved.VapeGUIOptionsButton.Object.Parent = a
+        shared.GuiLibrary.ObjectsThatCanBeSaved.VapeGUIOptionsButton.Object.Position = UDim2.new(0, 0, 2, 0)
+        makeCorner(shared.GuiLibrary.ObjectsThatCanBeSaved.VapeGUIOptionsButton.Object)
+        repeat task.wait() until shared.GuiLibrary.ObjectsThatCantBeSaved["GUI ModesDivider1"]
+        shared.GuiLibrary.ObjectsThatCantBeSaved["GUI ModesDivider1"].Object1:Destroy()
+    end)
     shared.VoidwareLoaded = true
 end
 VoidwareFunctions.LoadVoidware()
