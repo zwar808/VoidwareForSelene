@@ -4647,6 +4647,7 @@ run(function()
 			else
 				if shared.GuiLibrary.ObjectsThatCanBeSaved["AnimationPlayerOptionsButton"].Api.Enabled then
 					shared.GuiLibrary.ObjectsThatCanBeSaved["AnimationPlayerOptionsButton"].Api.ToggleButton()
+					warningNotification("Invisibility", "You might need to reset for this to disable!", 1.5)
 				end
 			end
 		end
