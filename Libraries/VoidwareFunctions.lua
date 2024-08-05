@@ -789,9 +789,16 @@ function VoidwareFunctions.LoadVoidware()
         repeat task.wait() until shared.GuiLibrary.ObjectsThatCantBeSaved["GUI ModesDivider1"]
         shared.GuiLibrary.ObjectsThatCantBeSaved["GUI ModesDivider1"].Object1:Destroy()
         repeat task.wait() until shared.GuiLibrary.ObjectsThatCanBeSaved["VPrivateGUIOptionsButton"]
-        shared.GuiLibrary.ObjectsThatCanBeSaved["VPrivateGUIOptionsButton"].Object.Parent = A
+        shared.GuiLibrary.ObjectsThatCanBeSaved["VPrivateGUIOptionsButton"].Object.Parent = a
         shared.GuiLibrary.ObjectsThatCanBeSaved["VPrivateGUIOptionsButton"].Object.Position = UDim2.new(0, 0, 3.05, 0)
         makeCorner(shared.GuiLibrary.ObjectsThatCanBeSaved["VPrivateGUIOptionsButton"].Object)
+        local c = Instance.new("Frame")
+        c.Parent = a
+        c.Size = UDim2.new(1, 0, 1, 0)
+        c.BackgroundTransparency = 1
+        local d = Instance.new("UIListLayout")
+        d.Parent = a
+        d.Padding = UDim.new(0.1, 0)        
     end)
     shared.VoidwareLoaded = true
 end
