@@ -100,6 +100,7 @@ if shared.VapeExecuted then
 		Notifications = false,
 		ToggleTooltips = false,
 		ObjectsThatCanBeSaved = {["Gui ColorSliderColor"] = {Api = {Hue = 0.44, Sat = 1, Value = 1}}},
+		ObjectsThatCantBeSaved = {}
 		ObjectsThatCannotBeSaved = {},
 		MobileButtons = {},
 		RainbowSliders = {}
@@ -1380,7 +1381,8 @@ if shared.VapeExecuted then
 			divider.BackgroundColor3 = Color3.fromRGB(37, 37, 37)
 			divider.BorderSizePixel = 0
 			divider.Parent = children
-			GuiLibrary.ObjectsThatCanBeSaved[tostring(text).."Divider1"] = {["Type"] = "Divider1", ["Object1"] = dividerlabel, ["Object2"] = divider, ["Text"] = tostring(text)}
+			
+			GuiLibrary.ObjectsThatCantBeSaved[tostring(text).."Divider1"] = {["Type"] = "Divider1", ["Object1"] = dividerlabel, ["Object2"] = divider, ["Text"] = tostring(text)}
 		end
 	
 		windowapi["CreateDivider2"] = function(text)
