@@ -2415,8 +2415,8 @@ local function loadVape()
 		table.sort(profiles, function(a, b) return b == "default" and true or a:lower() < b:lower() end)
 		ProfilesTextList.RefreshValues(profiles)
 	end)
-	if not suc then game:GetService("Players").LocalPlayer:Kick("[Voidware Profile Saving]: Error saving your profiles! Error: "..(tostring(err) or "Unknown Error")" Please send this to erchobg#0000 on discord or make a support ticket in discord.gg/voidware") end
-	--print("Suc: "..tostring(suc).." Err: "..tostring(err))
+	if not suc then game:GetService("Players").LocalPlayer:Kick("[Voidware Profile Saving]: Error saving your profiles! Error: "..tostring(err)" Please send this to erchobg#0000 on discord or make a support ticket in discord.gg/voidware") end
+	print("Suc: "..tostring(suc).." Err: "..tostring(err))
 	GUIbind.Reload()
 	TextGUIUpdate()
 	GuiLibrary.UpdateUI(GUIColor1.Hue, GUIColor1.Sat, GUIColor1.Value, true)
