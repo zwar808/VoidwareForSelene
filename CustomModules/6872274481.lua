@@ -3535,7 +3535,7 @@ run(function()
 		Function = function(callback)
 			if callback then
 				--context issues moment
-				if identifyexecutor and string.find(string.lower(identifyexecutor()) ~= "wave") then
+				if identifyexecutor and not string.find(string.lower(identifyexecutor()), "wave") then
 					killaurarangecirclepart = Instance.new("MeshPart")
 					killaurarangecirclepart.MeshId = "rbxassetid://3726303797"
 					killaurarangecirclepart.Color = Color3.fromHSV(killauracolor["Hue"], killauracolor["Sat"], killauracolor.Value)
