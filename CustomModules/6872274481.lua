@@ -3535,19 +3535,22 @@ run(function()
 		Function = function(callback)
 			if callback then
 				--context issues moment
-				if identifyexecutor and not string.find(string.lower(identifyexecutor()), "wave") then
-					killaurarangecirclepart = Instance.new("MeshPart")
-					killaurarangecirclepart.MeshId = "rbxassetid://3726303797"
-					killaurarangecirclepart.Color = Color3.fromHSV(killauracolor["Hue"], killauracolor["Sat"], killauracolor.Value)
-					killaurarangecirclepart.CanCollide = false
-					killaurarangecirclepart.Anchored = true
-					killaurarangecirclepart.Material = Enum.Material.Neon
-					killaurarangecirclepart.Size = Vector3.new(killaurarange.Value * 0.7, 0.01, killaurarange.Value * 0.7)
-					if Killaura.Enabled then
-						killaurarangecirclepart.Parent = gameCamera
+				---- BIG BALLS MOMENT
+				pcall(function()
+					if identifyexecutor and not string.find(string.lower(identifyexecutor()), "wave") then
+						killaurarangecirclepart = Instance.new("MeshPart")
+						killaurarangecirclepart.MeshId = "rbxassetid://3726303797"
+						killaurarangecirclepart.Color = Color3.fromHSV(killauracolor["Hue"], killauracolor["Sat"], killauracolor.Value)
+						killaurarangecirclepart.CanCollide = false
+						killaurarangecirclepart.Anchored = true
+						killaurarangecirclepart.Material = Enum.Material.Neon
+						killaurarangecirclepart.Size = Vector3.new(killaurarange.Value * 0.7, 0.01, killaurarange.Value * 0.7)
+						if Killaura.Enabled then
+							killaurarangecirclepart.Parent = gameCamera
+						end
+						bedwars.QueryUtil:setQueryIgnored(killaurarangecirclepart, true)
 					end
-					bedwars.QueryUtil:setQueryIgnored(killaurarangecirclepart, true)
-				end
+				end)
 			else
 				if killaurarangecirclepart then
 					killaurarangecirclepart:Destroy()
