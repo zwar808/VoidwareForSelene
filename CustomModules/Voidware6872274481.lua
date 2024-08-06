@@ -20,6 +20,8 @@ local lplr = game:GetService("Players").LocalPlayer
 local btext = function(text)
 	return text .. ' '
 end
+local void = function() end
+local runservice = game:GetService("RunService")
 
 local vapeConnections
 if shared.vapeConnections and type(shared.vapeConnections) == "table" then vapeConnections = shared.vapeConnections else vapeConnections = {} shared.vapeConnections = vapeConnections end
@@ -3784,7 +3786,6 @@ local AnticheatDisabler = COB("Customisation", {
     Default = false,
     HoverText = "IMPORTANT! THIS WILL NOT WORK WITH WINTER THEME OR FULLBRIGHT TURN THOSE OFF!"
 })
-local void = function() end
 local staffdetector = {};
 run(function()
 	local teleport = game:GetService('TeleportService');
@@ -4886,8 +4887,6 @@ run(function()
 	DamageIndicatorTextList.Object.Visible = false
 	DamageIndicatorStrokeColor.Object.Visible = false
 end)
-local void = function() end
-local runservice = game:GetService("RunService")
 run(function()
 	local invis = {};
 	local invisbaseparts = safearray();
@@ -4917,12 +4916,15 @@ run(function()
 				end
 			end) 
 		end));
-		invisrenderstep = runservice.Stepped:Connect(function()
-			for i,v in invisbaseparts do 
-				v.CanCollide = false;
-			end
-		end);
-		table.insert(invis.Connections, invisrenderstep);
+		task.spawn(function()
+			invisrenderstep = runservice.Stepped:Connect(function()
+				for i,v in invisbaseparts do 
+					v.CanCollide = false;
+				end
+				task.wait()
+			end);
+			table.insert(invis.Connections, invisrenderstep);
+		end)
 		invisanim.AnimationId = 'rbxassetid://11335949902';
 		local anim = lplr.Character.Humanoid.Animator:LoadAnimation(invisanim);
 		invishumanim = anim;
