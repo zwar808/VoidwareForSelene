@@ -204,6 +204,9 @@ function voidwarewindows_controller.UnHideWindows()
         GuiLibrary.UnHideWindow(voidwarewindows_controller.windows[i])
     end
 end
+shared.vapewindows_controller = vapewindows_controller
+shared.voidwarewindows_controller = voidwarewindows_controller
+shared.vprivatewindows_controller = vprivatewindows_controller
 function VoidwareFunctions.LoadFunctions()
     local function vapeGithubRequest(scripturl)
         if not isfile("vape/"..scripturl) then

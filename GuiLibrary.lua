@@ -4809,10 +4809,11 @@ if shared.VapeExecuted then
 			
 			button.MouseButton2Click:Connect(buttonapi["ExpandToggle"])
 			button2.MouseButton1Click:Connect(buttonapi["ExpandToggle"])
-			if not argstablemain["NoSave"] then
-				GuiLibrary.ObjectsThatCanBeSaved[argstablemain["Name"].."OptionsButton"] = {["Type"] = "OptionsButton", ["Object"] = button, ["ChildrenObject"] = children2, ["Api"] = buttonapi, ["SortOrder"] = 0}
+
+			if argstablemain["NoSave"] then
+				GuiLibrary.ObjectsThatCannotBeSaved[argstablemain["Name"].."OptionsButton"] = {["Type"] = "OptionsButton", ["Object"] = button, ["ChildrenObject"] = children2, ["Api"] = buttonapi, ["SortOrder"] = 0, ["Window"] = "MainWindow"}
 			else
-				GuiLibrary.ObjectsThatCannotBeSaved[argstablemain["Name"].."OptionsButton"] = {["Type"] = "OptionsButton", ["Object"] = button, ["ChildrenObject"] = children2, ["Api"] = buttonapi, ["SortOrder"] = 0}
+				GuiLibrary.ObjectsThatCanBeSaved[argstablemain["Name"].."OptionsButton"] = {["Type"] = "OptionsButton", ["Object"] = button, ["ChildrenObject"] = children2, ["Api"] = buttonapi, ["SortOrder"] = 0, ["Window"] = "MainWindow"}
 			end
 
 			return buttonapi
@@ -8354,7 +8355,7 @@ if shared.VapeExecuted then
 			button.MouseButton2Click:Connect(buttonapi["ExpandToggle"])
 			button2.MouseButton1Click:Connect(buttonapi["ExpandToggle"])
 			buttonapi["Name"] = argstablemain["Name"]
-			GuiLibrary.ObjectsThatCanBeSaved[argstablemain["Name"].."OptionsButton"] = {["Type"] = "OptionsButton", ["Object"] = button, ["ChildrenObject"] = children2, ["Api"] = buttonapi, ["SortOrder"] = 0}
+			GuiLibrary.ObjectsThatCanBeSaved[argstablemain["Name"].."OptionsButton"] = {["Type"] = "OptionsButton", ["Object"] = button, ["ChildrenObject"] = children2, ["Api"] = buttonapi, ["SortOrder"] = 0, ["Window"] = (argstablemain2["Name"] or "Unknown")}
 
 			local sorttable1 = {}
 			for i,v in pairs(children:GetChildren()) do

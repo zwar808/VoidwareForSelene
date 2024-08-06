@@ -277,7 +277,6 @@ end)
 
 local GUI = GuiLibrary.CreateMainWindow()
 shared.GUI = GUI
-
 local Funny = GuiLibrary.CreateWindow({
 	Name = "Funny",
 	Icon = "vape/assets/WorldIcon.png",
@@ -1620,6 +1619,134 @@ if isBedwarsGame() then
 		HoverText = "Hides the stats window which pops at the end of the game"
 	})
 end
+GuiLibrary["RewriteUI"] = Instance.new("BindableEvent")
+local RewriteUIToggle = {Enabled = false}
+RewriteUIToggle = VWSettings.CreateToggle({
+	Name = "RewriteUI",
+	Function = function(calling)
+		local table_to_send = {["Enabled"] = calling}
+		GuiLibrary["RewriteUI"]:Fire(table_to_send)
+	end,
+	Default = true,
+	HoverText = "Enabled Rewrite UI"
+})
+local Rewrite_Windows_Corresponder = {
+	["Funny"] = "Blatant",
+	["Hot"] = "Blatant",
+	["Exploits"] = "Blatant",
+	["Customisation"] = "Utility",
+	["TP"] = "World",
+	["Voidware"] = "Utility"
+}
+local Changed_Windows = {}
+local function Change_Window(button, windowName)
+	if windowName and type(windowName) == "string" and button and type(button) == "table" then
+		if GuiLibrary.ObjectsThatCanBeSaved[windowName.."Window"] and GuiLibrary.ObjectsThatCanBeSaved[windowName.."Window"]["Type"] and GuiLibrary.ObjectsThatCanBeSaved[windowName.."Window"]["Type"] == "Window" and GuiLibrary.ObjectsThatCanBeSaved[windowName.."Window"]["ChildrenObject"] then
+			if button["Type"] == "OptionsButton" and button["Object"] and button["ChildrenObject"] then
+				button["Object"].Parent = GuiLibrary.ObjectsThatCanBeSaved[windowName.."Window"]["ChildrenObject"]
+				button["ChildrenObject"].Parent = GuiLibrary.ObjectsThatCanBeSaved[windowName.."Window"]["ChildrenObject"]
+			end
+		end
+	end
+end
+local function Change_Rewrite(status)
+	if type(status) == "boolean" then
+		if not status then
+			task.spawn(function()
+				for i,v in pairs(GuiLibrary.ObjectsThatCanBeSaved) do
+					if GuiLibrary.ObjectsThatCanBeSaved[i]["Type"] and GuiLibrary.ObjectsThatCanBeSaved[i]["Type"] == "OptionsButton" then
+						if GuiLibrary.ObjectsThatCanBeSaved[i]["Window"] then
+							local valid_window = false
+							for i2, v2 in pairs(Rewrite_Windows_Corresponder) do
+								if GuiLibrary.ObjectsThatCanBeSaved[i]["Window"] == i2 then 
+									valid_window = true
+									break
+								end
+							end
+							if valid_window then
+								local Window_To_Change_To
+								for i2, v2 in pairs(Rewrite_Windows_Corresponder) do
+									if GuiLibrary.ObjectsThatCanBeSaved[i]["Window"] == i2 then 
+										Window_To_Change_To = Rewrite_Windows_Corresponder[i2]
+									end
+								end
+								if Window_To_Change_To then
+									table.insert(Changed_Windows,
+										{
+											["Button"] = GuiLibrary.ObjectsThatCanBeSaved[i],
+											["Window"] = {
+												["ChangedFrom"] = GuiLibrary.ObjectsThatCanBeSaved[i]["Window"],
+												["ChangedTo"] = Window_To_Change_To
+											}
+										}
+									)
+									Change_Window(GuiLibrary.ObjectsThatCanBeSaved[i], Window_To_Change_To)
+								end
+							end
+						end
+					end
+				end
+			end)
+			task.spawn(function()
+				repeat task.wait() until GuiLibrary.ObjectsThatCanBeSaved["VapeGUIOptionsButton"]
+				if GuiLibrary.ObjectsThatCanBeSaved["VapeGUIOptionsButton"] and not GuiLibrary.ObjectsThatCanBeSaved["VapeGUIOptionsButton"].Api.Enabled then
+                    GuiLibrary.ObjectsThatCanBeSaved["VapeGUIOptionsButton"].Api.ToggleButton()
+                end
+				repeat task.wait() until GuiLibrary.ObjectsThatCanBeSaved["VoidwareGUIOptionsButton"]
+				if GuiLibrary.ObjectsThatCanBeSaved["VoidwareGUIOptionsButton"] and GuiLibrary.ObjectsThatCanBeSaved["VoidwareGUIOptionsButton"].Api.Enabled then
+                    GuiLibrary.ObjectsThatCanBeSaved["VoidwareGUIOptionsButton"].Api.ToggleButton()
+                end
+				repeat task.wait() until GuiLibrary.ObjectsThatCanBeSaved["VPrivateGUIOptionsButton"]
+                if GuiLibrary.ObjectsThatCanBeSaved["VPrivateGUIOptionsButton"] and GuiLibrary.ObjectsThatCanBeSaved["VPrivateGUIOptionsButton"].Api.Enabled then
+                    GuiLibrary.ObjectsThatCanBeSaved["VPrivateGUIOptionsButton"].Api.ToggleButton()
+                end
+				repeat task.wait() until shared.vapewindows_controller
+				repeat task.wait() until shared.voidwarewindows_controller
+				repeat task.wait() until shared.vprivatewindows_controller
+				local vapewindows_controller = shared.vapewindows_controller
+				vapewindows_controller.UnHideWindows()
+				local voidwarewindows_controller = shared.voidwarewindows_controller
+				voidwarewindows_controller.HideWindows()
+				local vprivatewindows_controller = shared.vprivatewindows_controller
+                vprivatewindows_controller.HideWindows()
+			end)
+			task.spawn(function()
+				repeat task.wait() until GuiLibrary.ObjectsThatCantBeSaved["GUI Mode SwitcherCustomWindow"]
+				GuiLibrary.ObjectsThatCantBeSaved["GUI Mode SwitcherCustomWindow"].Object.Visible = false
+			end)
+		else
+			if type(Changed_Windows) == "table" then
+				task.spawn(function()
+					for i,v in pairs(Changed_Windows) do
+						if Changed_Windows[i]["Button"] and type(Changed_Windows[i]["Button"]) == "table" and Changed_Windows[i]["Window"] and type(Changed_Windows[i]["Window"]) == "table" then
+							if Changed_Windows[i]["Window"]["ChangedFrom"] and type(Changed_Windows[i]["Window"]["ChangedFrom"]) == "string" and Changed_Windows[i]["Window"]["ChangedTo"] and type(Changed_Windows[i]["Window"]["ChangedTo"]) == "string" then
+								local button = Changed_Windows[i]["Button"]
+								local change_to = Changed_Windows[i]["Window"]["ChangedFrom"]
+								Change_Window(button, change_to)
+							end
+						end
+					 end
+				end)
+				task.spawn(function()
+					repeat task.wait() until GuiLibrary.ObjectsThatCantBeSaved["GUI Mode SwitcherCustomWindow"]
+					GuiLibrary.ObjectsThatCantBeSaved["GUI Mode SwitcherCustomWindow"].Object.Visible = true
+				end)
+			end
+		end
+	end
+end
+GuiLibrary["RewriteUI"].Event:Connect(function(response)
+	if response and type(response) == "table" then
+		if type(response["Enabled"]) == "boolean" then
+			if response["Enabled"] then
+				Change_Rewrite(response["Enabled"])
+			else
+				Change_Rewrite(response["Enabled"])
+			end
+		end
+	end
+end)
+
 local TeamsByColorToggle = {Enabled = false}
 TeamsByColorToggle = ModuleSettings.CreateToggle({
 	Name = "Teams by color",
@@ -1803,7 +1930,9 @@ GuiLibrary.UpdateUI2 = function()
 					repeat task.wait() until shared.SearchBarChildrenFrame
 					table.insert(vapeConnections, shared.SearchBarChildrenFrame.ChildAdded:Connect(function(child)
 						if child.ClassName == "TextButton" then
-							makegradient(child)
+							task.spawn(function()
+								makegradient(child)
+							end)
 						end
 					end))
 				end
