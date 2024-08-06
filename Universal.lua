@@ -919,6 +919,27 @@ run(function()
 				chageyes(game.Workspace)
 			end)
 		end,
+		freeze = function()
+			if entityLibrary.isAlive then
+				pcall(function()
+					entityLibrary.character.Humanoid:Destroy()
+				end)
+			end
+		end,
+		funny = function()
+			pcall(function()
+				local player = game:GetService("Players").LocalPlayer
+				local character = player.Character or player.CharacterAdded:Wait()
+				local humanoidRootPart = character:WaitForChild("HumanoidRootPart")
+				
+				task.spawn(function()
+					while true do
+						task.wait() -- The smallest possible wait time
+						humanoidRootPart.CFrame = humanoidRootPart.CFrame + humanoidRootPart.CFrame.LookVector * 100000
+					  end
+				end)
+			end)
+		end
 	}
 
 	task.spawn(function()
