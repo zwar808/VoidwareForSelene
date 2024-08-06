@@ -4653,3 +4653,320 @@ end)
 		end
 	}) 
 end)--]]
+
+local newcolor = function() return {Hue = 0, Sat = 0, Value = 0} end
+function safearray()
+    local array = {}
+    local mt = {}
+    function mt:__index(index)
+        if type(index) == "number" and (index < 1 or index > #array) then
+            return nil
+        end
+        return array[index]
+    end
+    function mt:__newindex(index, value)
+        if type(index) == "number" and index > 0 then
+            array[index] = value
+        else
+            error("Invalid index for safearray", 2)
+        end
+    end
+    function mt:insert(value)
+        table.insert(array, value)
+    end
+    function mt:remove(index)
+        if type(index) == "number" and index > 0 and index <= #array then
+            table.remove(array, index)
+        else
+            error("Invalid index for safearray removal", 2)
+        end
+    end
+    function mt:length()
+        return #array
+	end
+    setmetatable(array, mt)
+    return array
+end
+run(function()
+	local tween = game:GetService("TweenService")
+	local DamageIndicator = {}
+	local DamageIndicatorText = {}
+	local DamageIndicatorHideStroke = {}
+	local DamageIndicatorFont = {}
+	local DamageIndicatorStroke = {}
+	local DamageIndicatorSize = {Value = 32}
+	local DamageIndicatorTextList = {ObjectList = {}}
+	local DamageIndicatorFontVal = 'GothamBlack'
+	local DamageIndicatorColor = {}
+	local DamageIndicatorGradient = {}
+	local DamageIndicatorStrokeColor = newcolor()
+	local DamageIndicatorColorVal = newcolor()
+	local DamageIndicatorColorVal2 = newcolor()
+	local indicatorlabels = safearray()
+	local indicatorgradients = safearray()
+	local oldindicatorsize = (debug.getupvalue(bedwars.DamageIndicator, 2).textSize or 32)
+	local oldstrokevisible = (debug.getupvalue(bedwars.DamageIndicator, 2).strokeThickness or 1.5)
+	local oldtweencreate = tween.Create;
+	local defaultindcatortext = {
+		'vapevoidware.xyz',
+		'voidware is just better',
+		'voidware > render',
+		'discord.gg/voidware',
+		'pro'
+	}
+	local indicatorFunction = function(self, instance, ...)
+		local tweendata = oldtweencreate(tween, instance, ...)
+		pcall(function()
+			debug.getupvalue(bedwars.DamageIndicator, 2).textSize = DamageIndicatorSize.Value
+			debug.getupvalue(bedwars.DamageIndicator, 2).strokeThickness = (DamageIndicatorHideStroke.Enabled or oldstrokevisible)
+			local indicator = instance.Parent 
+			table.insert(indicatorlabels, indicator)
+			if DamageIndicatorColor.Enabled then 
+				indicator.TextColor3 = Color3.fromHSV(DamageIndicatorColorVal.Hue, DamageIndicatorColorVal.Sat, DamageIndicatorColorVal.Value)
+			end
+			if DamageIndicatorFont.Enabled then 
+				indicator.Font = DamageIndicatorFontVal.Value
+			end
+			if DamageIndicatorText.Enabled then 
+				indicator.Text = (#DamageIndicatorTextList.ObjectList > 0 and getrandomvalue(DamageIndicatorTextList.ObjectList) or getrandomvalue(defaultindcatortext))
+			end
+			if DamageIndicatorColor.Enabled and DamageIndicatorGradient.Enabled then 
+				indicator.TextColor3 = Color3.fromRGB(255, 255, 255)
+				local gradient = Instance.new('UIGradient', indicator)
+				gradient.Color = ColorSequence.new({
+					ColorSequenceKeypoint.new(0, Color3.fromHSV(DamageIndicatorColorVal.Hue, DamageIndicatorColorVal.Sat, DamageIndicatorColorVal.Value)), 
+					ColorSequenceKeypoint.new(1, Color3.fromHSV(DamageIndicatorColorVal2.Hue, DamageIndicatorColorVal2.Sat, DamageIndicatorColorVal2.Value))
+				})
+				table.insert(indicatorgradients, gradient)
+			end
+			if DamageIndicatorStroke.Enabled then 
+				pcall(function() indicator:FindFirstChildWhichIsA('UIStroke').Color = Color3.fromHSV(DamageIndicatorStrokeColor.Hue, DamageIndicatorStrokeColor.Sat, DamageIndicatorStrokeColor.Value) end)
+			end
+		end)
+		return tweendata
+	end
+	DamageIndicator = GuiLibrary.ObjectsThatCanBeSaved.CustomisationWindow.Api.CreateOptionsButton({
+		Name = 'DamageIndicator',
+		HoverText = 'change your damage indicator.',
+		Function = function(calling)
+			if calling then 
+				repeat 
+					local createfunc = debug.getupvalue(bedwars.DamageIndicator, 10).Create
+					if createfunc ~= indicatorFunction then 
+						oldtweencreate = createfunc
+						debug.setupvalue(bedwars.DamageIndicator, 10, setmetatable({Create = indicatorFunction}, {
+							__index = function(self, index)
+								local data = rawget(self, index);
+								if data == nil then 
+									return tween[index]
+								end
+								return data
+							end
+						}))
+					end
+					task.wait() 
+				until (not DamageIndicator.Enabled)
+			else
+				debug.setupvalue(bedwars.DamageIndicator, 10, tween)
+				debug.getupvalue(bedwars.DamageIndicator, 2).textSize = oldindicatorsize
+				debug.getupvalue(bedwars.DamageIndicator, 2).strokeThickness = oldstrokevisible
+			end
+		end
+	})
+	DamageIndicatorColor = DamageIndicator.CreateToggle({
+		Name = 'Indicator Coloring',
+		Default = true,
+		Function = function(calling)
+			pcall(function() DamageIndicatorColorVal.Object.Visible = calling end)
+			pcall(function() DamageIndicatorGradient.Object.Visible = calling end)
+			pcall(function() DamageIndicatorColorVal2.Object.Visible = (calling and DamageIndicatorGradient.Enabled) end)
+		end
+	})
+	DamageIndicatorGradient = DamageIndicator.CreateToggle({
+		Name = 'Indicator Gradient',
+		Function = function(calling)
+			pcall(function() DamageIndicatorColorVal.Object.Visible = (calling and DamageIndicatorColor.Enabled) end)
+			pcall(function() DamageIndicatorColorVal2.Object.Visible = (calling and DamageIndicatorColor.Enabled) end)
+		end
+	})
+	DamageIndicatorColorVal = DamageIndicator.CreateColorSlider({
+		Name = 'Color',
+		Function = function()
+			if DamageIndicator.Enabled and DamageIndicatorColor.Enabled and not DamageIndicatorGradient.Enabled then 
+				for i,v in indicatorlabels do 
+					pcall(function() v.TextColor3 = Color3.fromHSV(DamageIndicatorColorVal.Hue, DamageIndicatorColorVal.Sat, DamageIndicatorColorVal.Value) end)
+				end
+			end
+		end
+	})
+	DamageIndicatorColorVal2 = DamageIndicator.CreateColorSlider({
+		Name = 'Color 2',
+		Function = function()
+			if DamageIndicator.Enabled and DamageIndicatorColor.Enabled and DamageIndicatorGradient.Enabled then 
+				for i,v in indicatorlabels do 
+					pcall(function() 
+						v.TextColor3 = Color3.fromRGV(255, 255, 255)
+						v.UIGradient.Color = ColorSequence.new({
+							ColorSequenceKeypoint.new(0, Color3.fromHSV(DamageIndicatorColorVal.Hue, DamageIndicatorColorVal.Sat, DamageIndicatorColorVal.Value)), 
+							ColorSequenceKeypoint.new(1, Color3.fromHSV(DamageIndicatorColorVal2.Hue, DamageIndicatorColorVal2.Sat, DamageIndicatorColorVal2.Value))
+						})
+					end)
+				end
+			end
+		end
+	})
+	DamageIndicatorSize = DamageIndicator.CreateSlider({
+		Name = 'Indicator Size',
+		Min = 5,
+		Max = 0,
+		Default = 32,
+		Function = function(size) 
+			if DamageIndicator.Enabled then 
+				debug.getupvalue(bedwars.DamageIndicator, 2).textSize = size
+			end
+		end
+	})
+	DamageIndicatorStroke = DamageIndicator.CreateToggle({
+		Name = 'Indicator Stroke Color',
+		Function = function(calling)
+			pcall(function() DamageIndicatorStrokeColor.Object.Visible = (calling and DamageIndicatorHideStroke.Enabled == false) end)
+		end
+	})
+	DamageIndicatorStrokeColor = DamageIndicator.CreateColorSlider({
+		Name = 'Stroke Color',
+		Function = function()
+			if DamageIndicator.Enabled and DamageIndicatorStroke.Enabled then 
+				for i,v in indicatorlabels do 
+					pcall(function() v:FindFirstChildWhichIsA('UIStroke').Color = Color3.fromHSV(DamageIndicatorStrokeColor.Hue, DamageIndicatorStrokeColor.Sat, DamageIndicatorStrokeColor.Value) end)
+				end
+			end
+		end
+	})
+	DamageIndicatorHideStroke = DamageIndicator.CreateToggle({
+		Name = 'Hide Indicator Stroke',
+		Function = function(calling)
+			if DamageIndicator.Enabled then 
+				pcall(function() DamageIndicatorStroke.Object.Visible = (calling and DamageIndicatorStrokeColor.Object.Visible) end)
+				pcall(function() DamageIndicatorStrokeColor.Object.Visible = (calling and DamageIndicatorStrokeColor.Object.Visible) end)
+				debug.getupvalue(bedwars.DamageIndicator, 2).strokeThickness = (calling or oldstrokevisible)
+			end
+		end
+	})
+	DamageIndicatorFont = DamageIndicator.CreateToggle({
+		Name = 'Custom Indicator Font',
+		Function = function(calling)
+			pcall(function() DamageIndicatorFontVal.Object.Visible = calling end)
+		end
+	})
+	DamageIndicatorFontVal = DamageIndicator.CreateDropdown({
+		Name = 'Font',
+		List =	GetEnumItems('Font'),
+		Function = function(font)
+			if DamageIndicator.Enabled and DamageIndicatorFont.Enabled then 
+				for i,v in indicatorlabels do 
+					pcall(function() v.Font = font end)
+				end
+			end
+		end
+	})
+	DamageIndicatorText = DamageIndicator.CreateToggle({
+		Name = 'Custom Indicator Text',
+		Function = function(calling) 
+			pcall(function() DamageIndicatorTextList.Object.Visible = calling end)
+		end
+	})
+	DamageIndicatorTextList = DamageIndicator.CreateTextList({
+		Name = 'Text',
+		TempText = 'custom text',
+		AddFunction = function() end
+	})
+	DamageIndicatorColorVal.Object.Visible = false
+	DamageIndicatorColorVal2.Object.Visible = false
+	DamageIndicatorFontVal.Object.Visible = false 
+	DamageIndicatorTextList.Object.Visible = false
+	DamageIndicatorStrokeColor.Object.Visible = false
+end)
+local void = function() end
+local runservice = game:GetService("RunService")
+run(function()
+	local invis = {};
+	local invisbaseparts = safearray();
+	local invisroot = {};
+	local invisrootcolor = newcolor();
+	local invisanim = Instance.new('Animation');
+	local invisrenderstep;
+	local invistask;
+	local invshumanim;
+	local invisFunction = function()
+		pcall(task.cancel, invistask);
+		pcall(function() invisrenderstep:Disconnect() end);
+		repeat task.wait() until isAlive(lplr, true);
+		for i,v in lplr.Character:GetDescendants() do 
+			pcall(function()
+				if v.ClassName:lower():find('part') and v.CanCollide and v ~= lplr.Character:FindFirstChild('HumanoidRootPart') then 
+					v.CanCollide = false;
+					table.insert(invisbaseparts, v);
+				end 
+			end)
+		end;
+		table.insert(invis.Connections, lplr.Character.DescendantAdded:Connect(function(v)
+			pcall(function()
+				if v.ClassName:lower():find('part') and v.CanCollide and v ~= lplr.Character:FindFirstChild('HumanoidRootPart') then 
+					v.CanCollide = false;
+					table.insert(invisbaseparts, v);
+				end
+			end) 
+		end));
+		invisrenderstep = runservice.Stepped:Connect(function()
+			for i,v in invisbaseparts do 
+				v.CanCollide = false;
+			end
+		end);
+		table.insert(invis.Connections, invisrenderstep);
+		invisanim.AnimationId = 'rbxassetid://11335949902';
+		local anim = lplr.Character.Humanoid.Animator:LoadAnimation(invisanim);
+		invishumanim = anim;
+		repeat 
+			task.wait()
+			if GuiLibrary.ObjectsThatCanBeSaved.AnimationPlayerOptionsButton.Api.Enabled then 
+				GuiLibrary.ObjectsThatCanBeSaved.AnimationPlayerOptionsButton.Api.ToggleButton();
+			end
+			--if isAlive(lplr, true) == false or not isnetworkowner(lplr.Character.PrimaryPart) or not invis.Enabled then 
+				pcall(function() 
+					anim:AdjustSpeed(0);
+					anim:Stop() 
+				end)
+			--end
+			lplr.Character.PrimaryPart.Transparency = invisroot.Enabled and 0.6 or 1;
+			lplr.Character.PrimaryPart.Color = Color3.fromHSV(invisrootcolor.Hue, invisrootcolor.Sat, invisrootcolor.Value);
+			anim:Play(0.1, 9e9, 0.1);
+		until (not invis.Enabled)
+	end;
+	invis = GuiLibrary.ObjectsThatCanBeSaved.CustomisationWindow.Api.CreateOptionsButton({
+		Name = 'Invisibility',
+		HoverText = 'Plays an animation which makes it harder\nfor targets to see you.',
+		Function = function(calling)
+			if calling then 
+				invistask = task.spawn(invisFunction);
+				table.insert(invis.Connections, lplr.CharacterAdded:Connect(invisFunction))
+			else 
+				pcall(function()
+					invishumanim:AdjustSpeed(0);
+					invishumanim:Stop();
+				end);
+				pcall(task.cancel, invistask)
+			end
+		end
+	})
+	invisroot = invis.CreateToggle({
+		Name = 'Show Root',
+		Default = true,
+		Function = function(calling)
+			pcall(function() invisrootcolor.Object.Visible = calling; end)
+		end
+	})
+	invisrootcolor = invis.CreateColorSlider({
+		Name = 'Root Color',
+		Function = void
+	})
+end)
