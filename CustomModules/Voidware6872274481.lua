@@ -4970,3 +4970,39 @@ run(function()
 		Function = void
 	})
 end)
+
+run(function()
+	local damagehighlightvisuals = {};
+	local highlightcolor = newcolor();
+	local highlightinvis = {Value = 4}
+	damagehighlightvisuals = GuiLibrary.ObjectsThatCanBeSaved.CustomisationWindow.Api.CreateOptionsButton({
+		Name = 'HighlightVisuals',
+		HoverText = 'Changes the color of the damage highlight.',
+		Function = function(calling)
+			if calling then 
+				task.spawn(function()
+					table.insert(damagehighlightvisuals.Connections, workspace.DescendantAdded:Connect(function(indicator)
+						if indicator.Name == '_DamageHighlight_' and indicator.ClassName == 'Highlight' then 
+							repeat 
+								indicator.FillColor = Color3.fromHSV(highlightcolor.Hue, highlightcolor.Sat, highlightcolor.Value);
+								indicator.FillTransparency = (0.1 * highlightinvis.Value);
+								task.wait()
+							until (indicator.Parent == nil)
+						end;
+					end))
+				end)
+			end
+		end
+	})
+	highlightcolor = damagehighlightvisuals.CreateColorSlider({
+		Name = 'Color',
+		Function = void
+	})
+	highlightinvis = damagehighlightvisuals.CreateSlider({
+		Name = 'Invisibility',
+		Min = 0,
+		Max = 10,
+		Default = 4,
+		Function = void
+	})
+end);
