@@ -2198,7 +2198,7 @@ run(function()
     })
 end)
 
-local cooldown = 0
+--[[local cooldown = 0
 run(function() 
     -- Notification functions
     local redNotification = function() end
@@ -2481,7 +2481,7 @@ run(function()
         Default = true,
         HoverText = "Show simplified data"
     })
-end)
+end)--]]
 
 run(function()
 	function IsAlive(plr)
