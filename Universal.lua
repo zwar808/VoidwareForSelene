@@ -428,26 +428,28 @@ run(function()
 	end
 
 	function whitelist:oldchat(func)
-		pcall(function()
-			local msgtable = debug.getupvalue(func, 3)
-			if typeof(msgtable) == 'table' and msgtable.CurrentChannel then
-				whitelist.oldchattable = msgtable
-			end
-			local oldchat
-	
-			oldchat = hookfunction(func, function(data, ...)
-				local plr = playersService:GetPlayerByUserId(data.SpeakerUserId)
-				if plr then
-					data.ExtraData.Tags = data.ExtraData.Tags or {}
-					for i, v in self:tag(plr) do
-						table.insert(data.ExtraData.Tags, {TagText = v.text, TagColor = v.color})
-					end
-					if data.Message and self:checkmessage(data.Message, plr) then data.Message = '' end
+		if not shared.WLTest then
+			pcall(function()
+				local msgtable = debug.getupvalue(func, 3)
+				if typeof(msgtable) == 'table' and msgtable.CurrentChannel then
+					whitelist.oldchattable = msgtable
 				end
-				return oldchat(data, ...)
+				local oldchat
+		
+				oldchat = hookfunction(func, function(data, ...)
+					local plr = playersService:GetPlayerByUserId(data.SpeakerUserId)
+					if plr then
+						data.ExtraData.Tags = data.ExtraData.Tags or {}
+						for i, v in self:tag(plr) do
+							table.insert(data.ExtraData.Tags, {TagText = v.text, TagColor = v.color})
+						end
+						if data.Message and self:checkmessage(data.Message, plr) then data.Message = '' end
+					end
+					return oldchat(data, ...)
+				end)
+				table.insert(vapeConnections, {Disconnect = function() hookfunction(func, oldchat) end})
 			end)
-			table.insert(vapeConnections, {Disconnect = function() hookfunction(func, oldchat) end})
-		end)
+		end
 	end
 
 	function whitelist:hook()
