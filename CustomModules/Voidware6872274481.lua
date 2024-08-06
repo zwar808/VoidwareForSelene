@@ -1562,7 +1562,7 @@ run(function()
 		end
 	end
 	HotbarMods = GuiLibrary.ObjectsThatCanBeSaved.CustomisationWindow.Api.CreateOptionsButton({
-		Name = 'HotbarMods',
+		Name = 'HotbarVisuals',
 		HoverText = 'Add customization to your hotbar.',
 		Function = function(calling)
 			if calling then 
