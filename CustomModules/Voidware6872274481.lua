@@ -4629,7 +4629,7 @@ run(function()
     })
 end)
 
-run(function() 
+--[[run(function() 
 	local Invisibility = {}
 	Invisibility = GuiLibrary.ObjectsThatCanBeSaved.HotWindow.Api.CreateOptionsButton({
 		Name = 'Invisibility',
@@ -4652,4 +4652,4 @@ run(function()
 			end
 		end
 	}) 
-end)
+end)--]]
