@@ -946,24 +946,43 @@ run(function()
         ["Name"] = "BedTP",
         ["Function"] = function(callback)
             if callback then
-				table.insert(BedTP.Connections, lplr.CharacterAdded:Connect(function(char)
-					if tppos2 then 
-						task.spawn(function()
-							local root = char:WaitForChild("HumanoidRootPart", 9000000000)
-							if root and tppos2 then 
-								teleportWithTween(char, tppos2)
-								tppos2 = nil
-							end
-						end)
+				task.spawn(function()
+					repeat task.wait() until GuiLibrary.ObjectsThatCanBeSaved.InvisibilityOptionsButton
+					repeat task.wait() until GuiLibrary.ObjectsThatCanBeSaved.GamingChairOptionsButton
+					if GuiLibrary.ObjectsThatCanBeSaved.InvisibilityOptionsButton.Api.Enabled and GuiLibrary.ObjectsThatCanBeSaved.GamingChairOptionsButton.Api.Enabled then
+						errorNotification("BedTP", "Please turn off the Invisibility and GamingChair module!", 3)
+						BedTP.ToggleButton()
+						return
 					end
-				end))
-                local bed = getEnemyBed()
-                if bed then 
-                    tppos2 = bed.Position
-                    killPlayer(lplr)
-                else
-                    BedTP.ToggleButton(false)
-                end
+					if GuiLibrary.ObjectsThatCanBeSaved.InvisibilityOptionsButton.Api.Enabled then
+						errorNotification("BedTP", "Please turn off the Invisibility module!", 3)
+						BedTP.ToggleButton()
+						return
+					end
+					if GuiLibrary.ObjectsThatCanBeSaved.GamingChairOptionsButton.Api.Enabled then
+						errorNotification("BedTP", "Please turn off the GamingChair module!", 3)
+						BedTP.ToggleButton()
+						return
+					end
+					table.insert(BedTP.Connections, lplr.CharacterAdded:Connect(function(char)
+						if tppos2 then 
+							task.spawn(function()
+								local root = char:WaitForChild("HumanoidRootPart", 9000000000)
+								if root and tppos2 then 
+									teleportWithTween(char, tppos2)
+									tppos2 = nil
+								end
+							end)
+						end
+					end))
+					local bed = getEnemyBed()
+					if bed then 
+						tppos2 = bed.Position
+						killPlayer(lplr)
+					else
+						BedTP.ToggleButton(false)
+					end
+				end)
             end
         end
     })
@@ -1068,19 +1087,38 @@ run(function()
 		["Name"] = "DeathTP",
 		["Function"] = function(calling)
 			if calling then
-				local canRespawn = function() end
-				canRespawn = function()
-					local success, response = pcall(function() 
-						return lplr.leaderstats.Bed.Value == '✅' 
-					end)
-					return success and response 
-				end
-				if not canRespawn() then 
-					warningNotification("DeathTP", "Unable to use DeathTP without bed!", 5)
-					deathtpmod.ToggleButton()
-				else
-					setTeleportPosition()
-				end
+				task.spawn(function()
+					repeat task.wait() until GuiLibrary.ObjectsThatCanBeSaved.InvisibilityOptionsButton
+					repeat task.wait() until GuiLibrary.ObjectsThatCanBeSaved.GamingChairOptionsButton
+					if GuiLibrary.ObjectsThatCanBeSaved.InvisibilityOptionsButton.Api.Enabled and GuiLibrary.ObjectsThatCanBeSaved.GamingChairOptionsButton.Api.Enabled then
+						errorNotification("DeathTP", "Please turn off the Invisibility and GamingChair module!", 3)
+						deathtpmod.ToggleButton()
+						return
+					end
+					if GuiLibrary.ObjectsThatCanBeSaved.InvisibilityOptionsButton.Api.Enabled then
+						errorNotification("DeathTP", "Please turn off the Invisibility module!", 3)
+						deathtpmod.ToggleButton()
+						return
+					end
+					if GuiLibrary.ObjectsThatCanBeSaved.GamingChairOptionsButton.Api.Enabled then
+						errorNotification("DeathTP", "Please turn off the GamingChair module!", 3)
+						deathtpmod.ToggleButton()
+						return
+					end
+					local canRespawn = function() end
+					canRespawn = function()
+						local success, response = pcall(function() 
+							return lplr.leaderstats.Bed.Value == '✅' 
+						end)
+						return success and response 
+					end
+					if not canRespawn() then 
+						warningNotification("DeathTP", "Unable to use DeathTP without bed!", 5)
+						deathtpmod.ToggleButton()
+					else
+						setTeleportPosition()
+					end
+				end)
 			end
 		end
 	})
@@ -1157,12 +1195,31 @@ run(function()
 		HoverText = 'Tweens you to a nearby diamond drop.',
 		Function = function(calling)
 			if calling then 
-				if getItemDrop('diamond') then 
-					bypassmethods[isAlive(lplr, true) and DiamondTPTeleport.Value or 'Respawn']() 
-				end
-				if DiamondTP.Enabled then 
-					DiamondTP.ToggleButton()
-				end 
+				task.spawn(function()
+					repeat task.wait() until GuiLibrary.ObjectsThatCanBeSaved.InvisibilityOptionsButton
+					repeat task.wait() until GuiLibrary.ObjectsThatCanBeSaved.GamingChairOptionsButton
+					if GuiLibrary.ObjectsThatCanBeSaved.InvisibilityOptionsButton.Api.Enabled and GuiLibrary.ObjectsThatCanBeSaved.GamingChairOptionsButton.Api.Enabled then
+						errorNotification("DiamondTP", "Please turn off the Invisibility and GamingChair module!", 3)
+						DiamondTP.ToggleButton()
+						return
+					end
+					if GuiLibrary.ObjectsThatCanBeSaved.InvisibilityOptionsButton.Api.Enabled then
+						errorNotification("DiamondTP", "Please turn off the Invisibility module!", 3)
+						DiamondTP.ToggleButton()
+						return
+					end
+					if GuiLibrary.ObjectsThatCanBeSaved.GamingChairOptionsButton.Api.Enabled then
+						errorNotification("DiamondTP", "Please turn off the GamingChair module!", 3)
+						DiamondTP.ToggleButton()
+						return
+					end
+					if getItemDrop('diamond') then 
+						bypassmethods[isAlive(lplr, true) and DiamondTPTeleport.Value or 'Respawn']() 
+					end
+					if DiamondTP.Enabled then 
+						DiamondTP.ToggleButton()
+					end 
+				end)
 			else
 				pcall(function() diamondtween:Cancel() end) 
 				if oldmovefunc then 
@@ -1276,15 +1333,34 @@ run(function()
 	}
 	EmeraldTP = GuiLibrary.ObjectsThatCanBeSaved.TPWindow.Api.CreateOptionsButton({
 		Name = 'EmeraldTP',
-		HoverText = 'Tweens you to a nearby diamond drop.',
+		HoverText = 'Tweens you to a nearby emerald drop.',
 		Function = function(calling)
 			if calling then 
-				if getItemDrop('emerald') then 
-					bypassmethods[isAlive(lplr, true) and EmeraldTPTeleport.Value or 'Respawn']() 
-				end
-				if EmeraldTP.Enabled then 
-					EmeraldTP.ToggleButton()
-				end 
+				task.spawn(function()
+					repeat task.wait() until GuiLibrary.ObjectsThatCanBeSaved.InvisibilityOptionsButton
+					repeat task.wait() until GuiLibrary.ObjectsThatCanBeSaved.GamingChairOptionsButton
+					if GuiLibrary.ObjectsThatCanBeSaved.InvisibilityOptionsButton.Api.Enabled and GuiLibrary.ObjectsThatCanBeSaved.GamingChairOptionsButton.Api.Enabled then
+						errorNotification("EmeraldTP", "Please turn off the Invisibility and GamingChair module!", 3)
+						EmeraldTP.ToggleButton()
+						return
+					end
+					if GuiLibrary.ObjectsThatCanBeSaved.InvisibilityOptionsButton.Api.Enabled then
+						errorNotification("EmeraldTP", "Please turn off the Invisibility module!", 3)
+						EmeraldTP.ToggleButton()
+						return
+					end
+					if GuiLibrary.ObjectsThatCanBeSaved.GamingChairOptionsButton.Api.Enabled then
+						errorNotification("EmeraldTP", "Please turn off the GamingChair module!", 3)
+						EmeraldTP.ToggleButton()
+						return
+					end
+					if getItemDrop('emerald') then 
+						bypassmethods[isAlive(lplr, true) and EmeraldTPTeleport.Value or 'Respawn']() 
+					end
+					if EmeraldTP.Enabled then 
+						EmeraldTP.ToggleButton()
+					end 
+				end)
 			else
 				pcall(function() emeraldtween:Cancel() end) 
 				if oldmovefunc then 
@@ -1412,14 +1488,33 @@ run(function()
 		HoverText = 'Tweens you to a nearby target.',
 		Function = function(calling)
 			if calling then 
-				if GetTarget(nil, PlayerTPSort.Value == 'Health', true).RootPart and shared.VapeFullyLoaded then 
-					bypassmethods[isAlive() and PlayerTPTeleport.Value or 'Respawn']() 
-				else
-					InfoNotification("PlayerTP", "No player/s found!", 3)
-				end
-				if PlayerTP.Enabled then 
-					PlayerTP.ToggleButton()
-				end
+				task.spawn(function()
+					repeat task.wait() until GuiLibrary.ObjectsThatCanBeSaved.InvisibilityOptionsButton
+					repeat task.wait() until GuiLibrary.ObjectsThatCanBeSaved.GamingChairOptionsButton
+					if GuiLibrary.ObjectsThatCanBeSaved.InvisibilityOptionsButton.Api.Enabled and GuiLibrary.ObjectsThatCanBeSaved.GamingChairOptionsButton.Api.Enabled then
+						errorNotification("PlayerTP", "Please turn off the Invisibility and GamingChair module!", 3)
+						PlayerTP.ToggleButton()
+						return
+					end
+					if GuiLibrary.ObjectsThatCanBeSaved.InvisibilityOptionsButton.Api.Enabled then
+						errorNotification("PlayerTP", "Please turn off the Invisibility module!", 3)
+						PlayerTP.ToggleButton()
+						return
+					end
+					if GuiLibrary.ObjectsThatCanBeSaved.GamingChairOptionsButton.Api.Enabled then
+						errorNotification("PlayerTP", "Please turn off the GamingChair module!", 3)
+						PlayerTP.ToggleButton()
+						return
+					end
+					if GetTarget(nil, PlayerTPSort.Value == 'Health', true).RootPart and shared.VapeFullyLoaded then 
+						bypassmethods[isAlive() and PlayerTPTeleport.Value or 'Respawn']() 
+					else
+						InfoNotification("PlayerTP", "No player/s found!", 3)
+					end
+					if PlayerTP.Enabled then 
+						PlayerTP.ToggleButton()
+					end
+				end)
 			else
 				pcall(function() playertween:Disconnect() end)
 				if oldmovefunc then 
@@ -3325,103 +3420,122 @@ run(function()
 		Function = function(callback)
 			if callback then
 				task.spawn(function()
-					if store.matchState == 0 then repeat task.wait() until store.matchState ~= 0 or not Autowin.Enabled end
-					if not shared.VapeFullyLoaded then repeat task.wait() until shared.VapeFullyLoaded or not Autowin.Enabled end
-					if not Autowin.Enabled then return end
-					vapeAssert(not store.queueType:find("skywars"), "Autowin", "Skywars not supported.", 7, true, true, "Autowin")
-					if isAlive(lplr, true) then
-						lplr.Character.Humanoid:ChangeState(Enum.HumanoidStateType.Dead)
-						lplr.Character.Humanoid:TakeDamage(lplr.Character.Humanoid.Health)
+					repeat task.wait() until GuiLibrary.ObjectsThatCanBeSaved.InvisibilityOptionsButton
+					repeat task.wait() until GuiLibrary.ObjectsThatCanBeSaved.GamingChairOptionsButton
+					if GuiLibrary.ObjectsThatCanBeSaved.InvisibilityOptionsButton.Api.Enabled and GuiLibrary.ObjectsThatCanBeSaved.GamingChairOptionsButton.Api.Enabled then
+						errorNotification("Autowin", "Please turn off the Invisibility and GamingChair module!", 3)
+						Autowin.ToggleButton()
+						return
 					end
-					table.insert(Autowin.Connections, runService.Heartbeat:Connect(function()
-						pcall(function()
-						if not isnetworkowner(lplr.Character.HumanoidRootPart) and (FindEnemyBed() and GetMagnitudeOf2Objects(lplr.Character.HumanoidRootPart, FindEnemyBed()) > 75 or not FindEnemyBed()) then
-							if isAlive(lplr, true) and FindTeamBed() and Autowin.Enabled and not VoidwareStore.GameFinished then
-								lplr.Character.Humanoid:ChangeState(Enum.HumanoidStateType.Dead)
-								lplr.Character.Humanoid:TakeDamage(lplr.Character.Humanoid.Health)
-							end
-						end
-					end)
-					end))
-					table.insert(Autowin.Connections, lplr.CharacterAdded:Connect(function()
-						if not isAlive(lplr, true) then repeat task.wait() until isAlive(lplr, true) end
-						local bed = FindEnemyBed()
-						if bed and (bed:GetAttribute("BedShieldEndTime") and bed:GetAttribute("BedShieldEndTime") < workspace:GetServerTimeNow() or not bed:GetAttribute("BedShieldEndTime")) then
-						bedtween = tweenService:Create(lplr.Character.HumanoidRootPart, TweenInfo.new(0.75, Enum.EasingStyle.Linear, Enum.EasingDirection.In, 0, false, 0), {CFrame = CFrame.new(bed.Position) + Vector3.new(0, 10, 0)})
-						task.wait(0.1)
-						bedtween:Play()
-						bedtween.Completed:Wait()
-						task.spawn(function()
-						task.wait(1.5)
-						local magnitude = GetMagnitudeOf2Objects(lplr.Character.HumanoidRootPart, bed)
-						if magnitude >= 50 and FindTeamBed() and Autowin.Enabled then
-							lplr.Character.Humanoid:TakeDamage(lplr.Character.Humanoid.Health)
+					if GuiLibrary.ObjectsThatCanBeSaved.InvisibilityOptionsButton.Api.Enabled then
+						errorNotification("Autowin", "Please turn off the Invisibility module!", 3)
+						Autowin.ToggleButton()
+						return
+					end
+					if GuiLibrary.ObjectsThatCanBeSaved.GamingChairOptionsButton.Api.Enabled then
+						errorNotification("Autowin", "Please turn off the GamingChair module!", 3)
+						Autowin.ToggleButton()
+						return
+					end
+					task.spawn(function()
+						if store.matchState == 0 then repeat task.wait() until store.matchState ~= 0 or not Autowin.Enabled end
+						if not shared.VapeFullyLoaded then repeat task.wait() until shared.VapeFullyLoaded or not Autowin.Enabled end
+						if not Autowin.Enabled then return end
+						vapeAssert(not store.queueType:find("skywars"), "Autowin", "Skywars not supported.", 7, true, true, "Autowin")
+						if isAlive(lplr, true) then
 							lplr.Character.Humanoid:ChangeState(Enum.HumanoidStateType.Dead)
-						end
-						end)
-						if AutowinNotification.Enabled then
-							local bedname = VoidwareStore.bedtable[bed] or "unknown"
-							task.spawn(InfoNotification, "Autowin", "Destroying "..bedname:lower().." team's bed", 5)
-						end
-						if not isEnabled("Nuker") then
-							--GuiLibrary.ObjectsThatCanBeSaved.NukerOptionsButton.Api.ToggleButton(false)
-						end
-						repeat task.wait() until FindEnemyBed() ~= bed or not isAlive()
-						if FindTarget(45, store.blockRaycast).RootPart and isAlive() then
-							if AutowinNotification.Enabled then
-								local team = VoidwareStore.bedtable[bed] or "unknown"
-								task.spawn(InfoNotification, "Autowin", "Killing "..team:lower().." team's teamates", 5)
-							end
-							repeat
-							local target = FindTarget(45, store.blockRaycast)
-							if not target.RootPart then break end
-							playertween = tweenService:Create(lplr.Character.HumanoidRootPart, TweenInfo.new(0.75), {CFrame = target.RootPart.CFrame + Vector3.new(0, 3, 0)})
-							playertween:Play()
-							task.wait()
-							until not FindTarget(45, store.blockRaycast).RootPart or not Autowin.Enabled or not isAlive()
-						end
-						if isAlive(lplr, true) and FindTeamBed() and Autowin.Enabled then
 							lplr.Character.Humanoid:TakeDamage(lplr.Character.Humanoid.Health)
-							lplr.Character.Humanoid:ChangeState(Enum.HumanoidStateType.Dead)
 						end
-						elseif FindTarget(nil, store.blockRaycast).RootPart then
-							task.wait()
-							local target = FindTarget(nil, store.blockRaycast)
-							playertween = tweenService:Create(lplr.Character.HumanoidRootPart, TweenInfo.new(0.75, Enum.EasingStyle.Linear), {CFrame = target.RootPart.CFrame + Vector3.new(0, 3, 0)})
-							playertween:Play()
-							if AutowinNotification.Enabled then
-								task.spawn(InfoNotification, "Autowin", "Killing "..target.Player.DisplayName.." ("..(target.Player.Team and target.Player.Team.Name or "neutral").." Team)", 5)
-							end
-							playertween.Completed:Wait()
-							if not Autowin.Enabled then return end
-								if FindTarget(50, store.blockRaycast).RootPart and isAlive() then
-									repeat
-									target = FindTarget(50, store.blockRaycast)
-									if not target.RootPart or not isAlive() then break end
-									playertween = tweenService:Create(lplr.Character.HumanoidRootPart, TweenInfo.new(0.75), {CFrame = target.RootPart.CFrame + Vector3.new(0, 3, 0)})
-									playertween:Play()
-									task.wait()
-									until not FindTarget(50, store.blockRaycast).RootPart or not Autowin.Enabled or not isAlive()
+						table.insert(Autowin.Connections, runService.Heartbeat:Connect(function()
+							pcall(function()
+							if not isnetworkowner(lplr.Character.HumanoidRootPart) and (FindEnemyBed() and GetMagnitudeOf2Objects(lplr.Character.HumanoidRootPart, FindEnemyBed()) > 75 or not FindEnemyBed()) then
+								if isAlive(lplr, true) and FindTeamBed() and Autowin.Enabled and not VoidwareStore.GameFinished then
+									lplr.Character.Humanoid:ChangeState(Enum.HumanoidStateType.Dead)
+									lplr.Character.Humanoid:TakeDamage(lplr.Character.Humanoid.Health)
 								end
+							end
+						end)
+						end))
+						table.insert(Autowin.Connections, lplr.CharacterAdded:Connect(function()
+							if not isAlive(lplr, true) then repeat task.wait() until isAlive(lplr, true) end
+							local bed = FindEnemyBed()
+							if bed and (bed:GetAttribute("BedShieldEndTime") and bed:GetAttribute("BedShieldEndTime") < workspace:GetServerTimeNow() or not bed:GetAttribute("BedShieldEndTime")) then
+							bedtween = tweenService:Create(lplr.Character.HumanoidRootPart, TweenInfo.new(0.75, Enum.EasingStyle.Linear, Enum.EasingDirection.In, 0, false, 0), {CFrame = CFrame.new(bed.Position) + Vector3.new(0, 10, 0)})
+							task.wait(0.1)
+							bedtween:Play()
+							bedtween.Completed:Wait()
+							task.spawn(function()
+							task.wait(1.5)
+							local magnitude = GetMagnitudeOf2Objects(lplr.Character.HumanoidRootPart, bed)
+							if magnitude >= 50 and FindTeamBed() and Autowin.Enabled then
+								lplr.Character.Humanoid:TakeDamage(lplr.Character.Humanoid.Health)
+								lplr.Character.Humanoid:ChangeState(Enum.HumanoidStateType.Dead)
+							end
+							end)
+							if AutowinNotification.Enabled then
+								local bedname = VoidwareStore.bedtable[bed] or "unknown"
+								task.spawn(InfoNotification, "Autowin", "Destroying "..bedname:lower().." team's bed", 5)
+							end
+							if not isEnabled("Nuker") then
+								--GuiLibrary.ObjectsThatCanBeSaved.NukerOptionsButton.Api.ToggleButton(false)
+							end
+							repeat task.wait() until FindEnemyBed() ~= bed or not isAlive()
+							if FindTarget(45, store.blockRaycast).RootPart and isAlive() then
+								if AutowinNotification.Enabled then
+									local team = VoidwareStore.bedtable[bed] or "unknown"
+									task.spawn(InfoNotification, "Autowin", "Killing "..team:lower().." team's teamates", 5)
+								end
+								repeat
+								local target = FindTarget(45, store.blockRaycast)
+								if not target.RootPart then break end
+								playertween = tweenService:Create(lplr.Character.HumanoidRootPart, TweenInfo.new(0.75), {CFrame = target.RootPart.CFrame + Vector3.new(0, 3, 0)})
+								playertween:Play()
+								task.wait()
+								until not FindTarget(45, store.blockRaycast).RootPart or not Autowin.Enabled or not isAlive()
+							end
 							if isAlive(lplr, true) and FindTeamBed() and Autowin.Enabled then
 								lplr.Character.Humanoid:TakeDamage(lplr.Character.Humanoid.Health)
 								lplr.Character.Humanoid:ChangeState(Enum.HumanoidStateType.Dead)
 							end
-						else
-						if VoidwareStore.GameFinished then return end
-						lplr.Character.Humanoid:TakeDamage(lplr.Character.Humanoid.Health)
-						lplr.Character.Humanoid:ChangeState(Enum.HumanoidStateType.Dead)
-						end
-					end))
-					table.insert(Autowin.Connections, lplr.CharacterAdded:Connect(function()
-						if not isAlive(lplr, true) then repeat task.wait() until isAlive(lplr, true) end
-						if not VoidwareStore.GameFinished then return end
-						local oldpos = lplr.Character.HumanoidRootPart.CFrame
-						repeat 
-						lplr.Character.HumanoidRootPart.CFrame = oldpos
-						task.wait()
-						until not isAlive(lplr, true) or not Autowin.Enabled
-					end))
+							elseif FindTarget(nil, store.blockRaycast).RootPart then
+								task.wait()
+								local target = FindTarget(nil, store.blockRaycast)
+								playertween = tweenService:Create(lplr.Character.HumanoidRootPart, TweenInfo.new(0.75, Enum.EasingStyle.Linear), {CFrame = target.RootPart.CFrame + Vector3.new(0, 3, 0)})
+								playertween:Play()
+								if AutowinNotification.Enabled then
+									task.spawn(InfoNotification, "Autowin", "Killing "..target.Player.DisplayName.." ("..(target.Player.Team and target.Player.Team.Name or "neutral").." Team)", 5)
+								end
+								playertween.Completed:Wait()
+								if not Autowin.Enabled then return end
+									if FindTarget(50, store.blockRaycast).RootPart and isAlive() then
+										repeat
+										target = FindTarget(50, store.blockRaycast)
+										if not target.RootPart or not isAlive() then break end
+										playertween = tweenService:Create(lplr.Character.HumanoidRootPart, TweenInfo.new(0.75), {CFrame = target.RootPart.CFrame + Vector3.new(0, 3, 0)})
+										playertween:Play()
+										task.wait()
+										until not FindTarget(50, store.blockRaycast).RootPart or not Autowin.Enabled or not isAlive()
+									end
+								if isAlive(lplr, true) and FindTeamBed() and Autowin.Enabled then
+									lplr.Character.Humanoid:TakeDamage(lplr.Character.Humanoid.Health)
+									lplr.Character.Humanoid:ChangeState(Enum.HumanoidStateType.Dead)
+								end
+							else
+							if VoidwareStore.GameFinished then return end
+							lplr.Character.Humanoid:TakeDamage(lplr.Character.Humanoid.Health)
+							lplr.Character.Humanoid:ChangeState(Enum.HumanoidStateType.Dead)
+							end
+						end))
+						table.insert(Autowin.Connections, lplr.CharacterAdded:Connect(function()
+							if not isAlive(lplr, true) then repeat task.wait() until isAlive(lplr, true) end
+							if not VoidwareStore.GameFinished then return end
+							local oldpos = lplr.Character.HumanoidRootPart.CFrame
+							repeat 
+							lplr.Character.HumanoidRootPart.CFrame = oldpos
+							task.wait()
+							until not isAlive(lplr, true) or not Autowin.Enabled
+						end))
+					end)
 				end)
 			else
 				pcall(function() playertween:Cancel() end)
