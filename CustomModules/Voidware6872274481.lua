@@ -55,6 +55,14 @@ function safearray()
     setmetatable(array, mt)
     return array
 end
+function getrandomvalue(list)
+    local count = #list
+    if count == 0 then
+        return ''
+    end
+    local randomIndex = math.random(1, count)
+    return list[randomIndex]
+end
 
 local vapeConnections
 if shared.vapeConnections and type(shared.vapeConnections) == "table" then vapeConnections = shared.vapeConnections else vapeConnections = {} shared.vapeConnections = vapeConnections end
