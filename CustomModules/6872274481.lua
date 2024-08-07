@@ -7979,47 +7979,67 @@ end)
 
 run(function()
 	local RavenTP = {Enabled = false}
+	local RavenTPMode = {Value = "Toggle"}
+	local function Raven()
+		task.spawn(function()
+			if getItem("raven") then
+				local plr = EntityNearMouse(1000)
+				if plr then
+					local projectile = bedwars.Client:Get(bedwars.SpawnRavenRemote):CallServerAsync():andThen(function(projectile)
+						if projectile then
+							local projectilemodel = projectile
+							if not projectilemodel then
+								projectilemodel:GetPropertyChangedSignal("PrimaryPart"):Wait()
+							end
+							local bodyforce = Instance.new("BodyForce")
+							bodyforce.Force = Vector3.new(0, projectilemodel.PrimaryPart.AssemblyMass * workspace.Gravity, 0)
+							bodyforce.Name = "AntiGravity"
+							bodyforce.Parent = projectilemodel.PrimaryPart
+
+							if plr then
+								projectilemodel:SetPrimaryPartCFrame(CFrame.new(plr.RootPart.CFrame.p, plr.RootPart.CFrame.p + gameCamera.CFrame.lookVector))
+								task.wait(0.3)
+								bedwars.RavenController:detonateRaven()
+							else
+								warningNotification("RavenTP", "Player died before it could TP.", 3)
+							end
+						else
+							warningNotification("RavenTP", "Raven on cooldown.", 3)
+						end
+					end)
+				else
+					warningNotification("RavenTP", "Player not found.", 3)
+				end
+			else
+				if RavenTPMode.Value ~= "Toggle" then
+					warningNotification("RavenTP", "Raven not found.", 3)
+				end
+			end
+		end)
+	end
 	RavenTP = GuiLibrary.ObjectsThatCanBeSaved.UtilityWindow.Api.CreateOptionsButton({
 		Name = "RavenTP",
 		Function = function(callback)
 			if callback then
-				task.spawn(function()
-					if getItem("raven") then
-						local plr = EntityNearMouse(1000)
-						if plr then
-							local projectile = bedwars.Client:Get(bedwars.SpawnRavenRemote):CallServerAsync():andThen(function(projectile)
-								if projectile then
-									local projectilemodel = projectile
-									if not projectilemodel then
-										projectilemodel:GetPropertyChangedSignal("PrimaryPart"):Wait()
-									end
-									local bodyforce = Instance.new("BodyForce")
-									bodyforce.Force = Vector3.new(0, projectilemodel.PrimaryPart.AssemblyMass * workspace.Gravity, 0)
-									bodyforce.Name = "AntiGravity"
-									bodyforce.Parent = projectilemodel.PrimaryPart
-
-									if plr then
-										projectilemodel:SetPrimaryPartCFrame(CFrame.new(plr.RootPart.CFrame.p, plr.RootPart.CFrame.p + gameCamera.CFrame.lookVector))
-										task.wait(0.3)
-										bedwars.RavenController:detonateRaven()
-									else
-										warningNotification("RavenTP", "Player died before it could TP.", 3)
-									end
-								else
-									warningNotification("RavenTP", "Raven on cooldown.", 3)
-								end
-							end)
-						else
-							warningNotification("RavenTP", "Player not found.", 3)
-						end
-					else
-						warningNotification("RavenTP", "Raven not found.", 3)
-					end
-				end)
-				RavenTP.ToggleButton(true)
+				if RavenTPMode.Value ~= "Toggle" then
+					Raven()
+					RavenTP.ToggleButton(true)
+				else
+					repeat Raven() task.wait() until not RavenTP.Enabled
+				end
 			end
 		end,
 		HoverText = "Spawns and teleports a raven to a player\nnear your mouse."
+	})
+	RavenTPMode = RavenTP.CreateDropdown({
+		Name = "Activation",
+		List = {"On Key", "Toggle"},
+		Function = function(val)
+			if RavenTP.Enabled then
+				RavenTP.ToggleButton(false)
+				RavenTP.ToggleButton(false)
+			end
+		end
 	})
 end)
 
