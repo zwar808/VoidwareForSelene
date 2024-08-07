@@ -8021,12 +8021,14 @@ run(function()
 		Name = "RavenTP",
 		Function = function(callback)
 			if callback then
-				if RavenTPMode.Value ~= "Toggle" then
-					Raven()
-					RavenTP.ToggleButton(true)
-				else
-					repeat Raven() task.wait() until not RavenTP.Enabled
-				end
+				pcall(function()
+					if RavenTPMode.Value ~= "Toggle" then
+						Raven()
+						RavenTP.ToggleButton(true)
+					else
+						repeat Raven() task.wait() until not RavenTP.Enabled
+					end
+				end)
 			end
 		end,
 		HoverText = "Spawns and teleports a raven to a player\nnear your mouse."
