@@ -2390,14 +2390,16 @@ run(function()
 		Name = "Range Visualizer",
 		Function = function(callback)
 			if callback then
-				KillauraRangeCirclePart = Instance.new("MeshPart")
-				KillauraRangeCirclePart.MeshId = "rbxassetid://3726303797"
-				KillauraRangeCirclePart.Color = Color3.fromHSV(KillauraColor.Hue, KillauraColor.Sat, KillauraColor.Value)
-				KillauraRangeCirclePart.CanCollide = false
-				KillauraRangeCirclePart.Anchored = true
-				KillauraRangeCirclePart.Material = Enum.Material.Neon
-				KillauraRangeCirclePart.Size = Vector3.new(KillauraRange.Value * 0.7, 0.01, KillauraRange.Value * 0.7)
-				KillauraRangeCirclePart.Parent = gameCamera
+				pcall(function()
+					KillauraRangeCirclePart = Instance.new("MeshPart")
+					KillauraRangeCirclePart.MeshId = "rbxassetid://3726303797"
+					KillauraRangeCirclePart.Color = Color3.fromHSV(KillauraColor.Hue, KillauraColor.Sat, KillauraColor.Value)
+					KillauraRangeCirclePart.CanCollide = false
+					KillauraRangeCirclePart.Anchored = true
+					KillauraRangeCirclePart.Material = Enum.Material.Neon
+					KillauraRangeCirclePart.Size = Vector3.new(KillauraRange.Value * 0.7, 0.01, KillauraRange.Value * 0.7)
+					KillauraRangeCirclePart.Parent = gameCamera
+				end)
 			else
 				if KillauraRangeCirclePart then
 					KillauraRangeCirclePart:Destroy()
