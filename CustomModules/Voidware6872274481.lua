@@ -1561,7 +1561,7 @@ run(function()
     })
 end)
 
-run(function()
+--[[run(function()
 	local function instawin()
 		local player = game.Players.LocalPlayer
 		local character = player.Character or player.CharacterAdded:Wait()
@@ -1600,7 +1600,7 @@ run(function()
         ButtonText = 'Show Credits',
         Credits = 'Vape+ Booster'
     })
-end)
+end)--]] -- patched eeee
 
 run(function()
 	local HotbarMods = {}
