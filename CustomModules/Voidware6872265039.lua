@@ -89,7 +89,7 @@ run(function()
 
 	AutoCrate = GuiLibrary.ObjectsThatCanBeSaved.HotWindow.Api.CreateOptionsButton({
 		Name = "AutoCrate",
-		HovorText = "Automatically open crates if you have any.",
+		HoverText = "Automatically open crates if you have any.",
 		Function = function(callback)
 			if callback then
 			    task.spawn(function()
