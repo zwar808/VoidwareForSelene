@@ -8001,14 +8001,20 @@ run(function()
 								task.wait(0.3)
 								bedwars.RavenController:detonateRaven()
 							else
-								warningNotification("RavenTP", "Player died before it could TP.", 3)
+								if RavenTPMode.Value ~= "Toggle" then
+									warningNotification("RavenTP", "Player died before it could TP.", 3)
+								end
 							end
 						else
-							warningNotification("RavenTP", "Raven on cooldown.", 3)
+							if RavenTPMode.Value ~= "Toggle" then
+								warningNotification("RavenTP", "Raven on cooldown.", 3)
+							end
 						end
 					end)
 				else
-					warningNotification("RavenTP", "Player not found.", 3)
+					if RavenTPMode.Value ~= "Toggle" then
+						warningNotification("RavenTP", "Player not found.", 3)
+					end
 				end
 			else
 				if RavenTPMode.Value ~= "Toggle" then
