@@ -12,7 +12,6 @@ local delfile = delfile or function(file) writefile(file, "") end
 
 if not isfolder('vape') then makefolder('vape') end
 
--- we bouta blow 😝
 local VWFunctions = {}
 function VWFunctions.CreateID()
     pcall(function()

@@ -1543,3 +1543,152 @@ run(function()
 		end
 	})
 end)
+local tween = game:GetService("TweenService")
+local void = function() end
+local runservice = game:GetService("RunService")
+local newcolor = function() return {Hue = 0, Sat = 0, Value = 0} end
+function safearray()
+    local array = {}
+    local mt = {}
+    function mt:__index(index)
+        if type(index) == "number" and (index < 1 or index > #array) then
+            return nil
+        end
+        return array[index]
+    end
+    function mt:__newindex(index, value)
+        if type(index) == "number" and index > 0 then
+            array[index] = value
+        else
+            error("Invalid index for safearray", 2)
+        end
+    end
+    function mt:insert(value)
+        table.insert(array, value)
+    end
+    function mt:remove(index)
+        if type(index) == "number" and index > 0 and index <= #array then
+            table.remove(array, index)
+        else
+            error("Invalid index for safearray removal", 2)
+        end
+    end
+    function mt:length()
+        return #array
+	end
+    setmetatable(array, mt)
+    return array
+end
+run(function()
+	local trails = {};
+	local traildistance = {Value = 7};
+	local trailcolor = newcolor();
+	local trailparts = safearray();
+	local lastpos;
+	local lastpart;
+	local createtrailpart = function()
+		local part = Instance.new('Part', workspace);
+		part.Anchored = true;
+		part.Material = Enum.Material.Neon;
+		part.Size = Vector3.new(2, 1, 1);
+		part.Shape = Enum.PartType.Ball;
+		part.CFrame = lplr.Character.PrimaryPart.CFrame;
+		part.CanCollide = false;
+		part.Color = Color3.fromHSV(trailcolor.Hue, trailcolor.Sat, trailcolor.Value);
+		lastpart = part;
+		lastpos = part.Position;
+		table.insert(trailparts, part);
+		task.delay(2.5, function()
+			tween:Create(part, TweenInfo.new(0.8, Enum.EasingStyle.Quad), {Transparency = 1}):Play()
+			repeat task.wait() until (part.Transparency == 1);
+			part:Destroy()
+		end);
+		return part
+	end;
+	trails = GuiLibrary.ObjectsThatCanBeSaved.CustomisationWindow.Api.CreateOptionsButton({
+		Name = 'Trails',
+		HoverText = 'cool trail for your character.',
+		Function = function(calling)
+			if calling then 
+				repeat 
+					if isAlive(lplr, true) and (lastpos == nil or (lplr.Character.PrimaryPart.Position - lastpos).Magnitude > traildistance.Value) then 
+						createtrailpart()
+					end
+					task.wait()
+				until (not trails.Enabled)
+			end
+		end
+	})
+	traildistance = trails.CreateSlider({
+		Name = 'Distance',
+		Min = 3,
+		Max = 10,
+		Function = void
+	})
+	trailcolor = trails.CreateColorSlider({
+		Name = 'Color',
+		Function = function()
+			for i,v in trailparts do 
+				v.Color = Color3.fromHSV(trailcolor.Hue, trailcolor.Sat, trailcolor.Value);
+			end
+		end
+	})
+end)
+
+run(function()
+	local guifonts = {};
+	local guifontwhite = {};
+	local guifontcustom = {};
+	local guifont = {Value = 'Gotham'};
+	local toggledtasks = {};
+	guifonts = GuiLibrary.ObjectsThatCanBeSaved.CustomisationWindow.Api.CreateOptionsButton({
+		Name = 'GUIFonts',
+		HoverText = 'Change the fonts of the GUI',
+		Function = function(calling)
+			if calling then
+				if not shared.VapeFullyLoaded then 
+					repeat task.wait() until shared.VapeFullyLoaded
+				end
+				for i,v in next, GuiLibrary.ObjectsThatCanBeSaved do 
+					if v.Type == 'OptionsButton' then 
+						v.Object.ButtonText.Font = guifont.Value;
+						if guifontwhite.Enabled then 
+							table.insert(toggledtasks, task.spawn(function()
+								repeat 
+									if v.Api.Enabled and guifontwhite.Enabled then 
+										v.Object.ButtonText.TextColor3 = Color3.fromRGB(255, 255, 255);
+									end
+									task.wait()
+								until false
+							end));
+						end
+					end
+				end
+			else 
+				for i,v in toggledtasks do 
+					pcall(task.cancel, v);
+				end
+				table.clear(toggledtasks);	
+			end
+		end
+	})
+	guifont = guifonts.CreateDropdown({
+		Name = 'Font',
+		List = GetEnumItems('Font'),
+		Function = function()
+			if guifonts.Enabled then 
+				guifonts.ToggleButton()
+				guifonts.ToggleButton()
+			end
+		end
+	})
+	guifontwhite = guifonts.CreateToggle({
+		Name = 'White Text',
+		Function = function()
+			if guifonts.Enabled then 
+				guifonts.ToggleButton()
+				guifonts.ToggleButton()
+			end
+		end
+	})
+end)

@@ -1,1 +1,1 @@
-{"default":{"Selected":false,"Keybind":""},"Voidware Blue":{"Selected":true,"Keybind":""}}
+{"default":{"Selected":true,"Keybind":""}}
