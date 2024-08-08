@@ -3,6 +3,12 @@ repeat task.wait() until shared.GuiLibrary
 repeat task.wait() until shared.GUI
 repeat task.wait() until shared.run
 
+-- new voidware command
+
+-- if u are watching the github, you got trolled noob.......
+
+-- /ikyourwatching
+
 local run = shared.run
 local GuiLibrary = shared.GuiLibrary
 local store = shared.GlobalStore
