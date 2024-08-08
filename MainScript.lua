@@ -277,6 +277,11 @@ end)
 
 local GUI = GuiLibrary.CreateMainWindow()
 shared.GUI = GUI
+local GUISwitcher = GuiLibrary.CreateWindow({
+	Name = "GUISwitcher",
+	Icon = "vape/assets/WorldIcon.png",
+	IconSize = 16
+})
 local Funny = GuiLibrary.CreateWindow({
 	Name = "Funny",
 	Icon = "vape/assets/WorldIcon.png",
@@ -348,6 +353,12 @@ local Profiles = GuiLibrary.CreateWindow2({
 	IconSize = 19
 })
 GUI.CreateDivider()
+GUI.CreateButton({
+	Name = "GUISwitcher",
+	Function = function(callback) GUISwitcher.SetVisible(callback) end,
+	Icon = "vape/assets/CombatIcon.png",
+	IconSize = 15
+})
 GUI.CreateButton({
 	Name = "Funny",
 	Function = function(callback) Funny.SetVisible(callback) end,
@@ -1939,9 +1950,13 @@ local function Change_Rewrite(status)
                 vprivatewindows_controller.HideWindows()
 			end)
 			task.spawn(function()
+				repeat task.wait() until shared.GuiLibrary.ObjectsThatCanBeSaved.GUISwitcherWindow
+				shared.GuiLibrary.ObjectsThatCanBeSaved.GUISwitcherWindow.Object.Visible = false
+			end)
+			--[[task.spawn(function()
 				repeat task.wait() until GuiLibrary.ObjectsThatCantBeSaved["GUI Mode SwitcherCustomWindow"]
 				GuiLibrary.ObjectsThatCantBeSaved["GUI Mode SwitcherCustomWindow"].Object.Visible = false
-			end)
+			end)--]]
 		else
 			if type(Changed_Windows) == "table" then
 				task.spawn(function()
@@ -1956,9 +1971,13 @@ local function Change_Rewrite(status)
 					 end
 				end)
 				task.spawn(function()
+					repeat task.wait() until shared.GuiLibrary.ObjectsThatCanBeSaved.GUISwitcherWindow
+					shared.GuiLibrary.ObjectsThatCanBeSaved.GUISwitcherWindow.Object.Visible = true
+				end)
+				--[[task.spawn(function()
 					repeat task.wait() until GuiLibrary.ObjectsThatCantBeSaved["GUI Mode SwitcherCustomWindow"]
 					GuiLibrary.ObjectsThatCantBeSaved["GUI Mode SwitcherCustomWindow"].Object.Visible = true
-				end)
+				end)--]]
 			end
 		end
 	end
@@ -2083,15 +2102,54 @@ local function getVapeSaturation(val)
 	return sat
 end
 local makegradient = function(parent)
+	local gui_windows = {
+		"VapeGUI",
+		"VoidwareGUI",
+		"VPrivateGUI"
+	}
+	local isGuiWindow = false
+	for i,v in pairs(gui_windows) do
+		if string.find(string.lower(parent.Name), string.lower(gui_windows[i])) then 
+			isGuiWindow = true 
+			break 
+		end
+	end
     local gradient = (parent:FindFirstChildWhichIsA('UIGradient') or Instance.new('UIGradient', parent))
-    gradient.Color = ColorSequence.new({
-        ColorSequenceKeypoint.new(0, Color3.fromHSV(GUIColor1.Hue, GUIColor1.Sat, GUIColor1.Value)), 
-        ColorSequenceKeypoint.new(1, Color3.fromHSV(GUIColor2.Hue, GUIColor2.Sat, GUIColor2.Value))
-    })
+	if isGuiWindow then
+		gradient.Color = ColorSequence.new({
+			ColorSequenceKeypoint.new(0, Color3.fromHSV(0.1634375, 0.5834635416666667, 0.8509804010391235)), 
+			ColorSequenceKeypoint.new(1, Color3.fromHSV(0.16768229166666669, 0.9624060392379761, 0.5215686559677124))
+		})
+	else
+		gradient.Color = ColorSequence.new({
+			ColorSequenceKeypoint.new(0, Color3.fromHSV(GUIColor1.Hue, GUIColor1.Sat, GUIColor1.Value)), 
+			ColorSequenceKeypoint.new(1, Color3.fromHSV(GUIColor2.Hue, GUIColor2.Sat, GUIColor2.Value))
+		})
+	end
 	gradient.Rotation = 170
     gradient.Name = "Gradient ParentName: "..tostring(parent.Name)
     return gradient
 end
+
+GuiLibrary.RecordHSV = function()
+	local table1 = {
+		["Hue"] = GUIColor1.Hue,
+		["Sat"] = GUIColor1.Sat,
+		["Value"] = GUIColor1.Value
+	}
+	local table2 = {
+		["Hue"] = GUIColor2.Hue,
+		["Sat"] = GUIColor2.Sat,
+		["Value"] = GUIColor2.Value
+	}
+	local fullTable = {
+		["GUIColor1"] = table1,
+		["GUIColor2"] = table2
+	}
+	local final_table = game:GetService("HttpService"):JSONEncode(fullTable)
+	writefile("Record.txt", final_table)
+end
+
 local vapeConnections
 if shared.vapeConnections and type(shared.vapeConnections) == "table" then vapeConnections = shared.vapeConnections else vapeConnections = {} shared.vapeConnections = vapeConnections end
 GuiLibrary.UpdateUI2 = function()
@@ -2534,7 +2592,7 @@ GUISettings.CreateButton2({
 			ProfilesWindow = 9,
 			["Text GUICustomWindow"] = 10,
 			TargetInfoCustomWindow = 11,
-			RadarCustomWindow = 12,
+			RadarCustomWindow = 12
 		}
 		local storedpos = {}
 		local num = 6

@@ -101,6 +101,7 @@ function GuiLibrary.SortGui()
         UtilityWindow = 10,
         WorldWindow = 11,
         FunnyWindow = 12,
+        --GUISwitcherWindow = 13,
         FriendsWindow = 13,
         TargetsWindow = 14,
         ProfilesWindow = 15,
@@ -113,7 +114,7 @@ function GuiLibrary.SortGui()
     for i,v in pairs(GuiLibrary.ObjectsThatCanBeSaved) do
         local obj = GuiLibrary.ObjectsThatCanBeSaved[i]
         if obj then
-            if v.Type == "Window" and v.Object.Visible then
+            if v.Type == "Window" and v.Object.Visible and (v.Object.Name ~= "GUISwitcher" or (not string.find(string.lower(v.Object.Name), "guiswitcher"))) then
                 local sortordernum = (sortordertable[i] or #sorttable)
                 sorttable[sortordernum] = v.Object
             end
@@ -167,12 +168,15 @@ function GuiLibrary.HideDivider(text, value)
 end
 local vapewindows_controller = {
     ["windows"] = {"Combat", "Blatant", "Render", "Utility", "World"}
+    --["windows"] = {"Combat", "Blatant", "Render", "Utility", "World", "GUISwitcher"}
 }
 local voidwarewindows_controller = {
     ["windows"] = {"Hot", "Exploits", "Customisation", "TP", "Voidware"}
+    --["windows"] = {"Hot", "Exploits", "Customisation", "TP", "Voidware", "GUISwitcher"}
 }
 local vprivatewindows_controller = {
     ["windows"] = {"Funny"}
+    --["windows"] = {"Funny", "GUISwitcher"}
 }
 function vapewindows_controller.HideWindows()
     for i,v in pairs(vapewindows_controller.windows) do
@@ -816,35 +820,37 @@ function VoidwareFunctions.LoadVoidware()
     end)--]]
     local function CreateGUIModeSwitcher()
         task.spawn(function()
-            local a = Instance.new("TextLabel")
+            --[[local a = Instance.new("TextLabel")
             a.Parent = shared.GuiLibrary.MainGui:WaitForChild("ScaledGui"):WaitForChild("ClickGui")
             a.BackgroundColor3 = Color3.new(0, 0, 0)
             a.TextColor3 = Color3.new(255, 255, 255)
             a.TextScaled = true
             a.Position = UDim2.new(0, 750, 0.7, 100)
             a.Size = UDim2.new(0.25, 0, 0.05, 0)
-            a.Text = "GUI Mode Switcher"
+            a.Text = "GUI Mode Switcher"--]]
             local function makeCorner(parent)
                 local b = Instance.new("UICorner")
                 b.CornerRadius = UDim.new(0, 10)
                 b.Parent = parent
             end
-            makeCorner(a)
+            --makeCorner(a)
+            repeat task.wait() until shared.GuiLibrary.ObjectsThatCanBeSaved.GUISwitcherWindow
+            local a = shared.GuiLibrary.ObjectsThatCanBeSaved.GUISwitcherWindow.ChildrenObject
             repeat task.wait() until shared.GuiLibrary.ObjectsThatCanBeSaved.VoidwareGUIOptionsButton
             shared.GuiLibrary.ObjectsThatCanBeSaved.VoidwareGUIOptionsButton.Object.Parent = a
-            shared.GuiLibrary.ObjectsThatCanBeSaved.VoidwareGUIOptionsButton.Object.Position = UDim2.new(0, 0, 1.05, 0)
+            --shared.GuiLibrary.ObjectsThatCanBeSaved.VoidwareGUIOptionsButton.Object.Position = UDim2.new(0, 0, 1.05, 0)
             makeCorner(shared.GuiLibrary.ObjectsThatCanBeSaved.VoidwareGUIOptionsButton.Object)
             repeat task.wait() until shared.GuiLibrary.ObjectsThatCanBeSaved.VapeGUIOptionsButton
             shared.GuiLibrary.ObjectsThatCanBeSaved.VapeGUIOptionsButton.Object.Parent = a
-            shared.GuiLibrary.ObjectsThatCanBeSaved.VapeGUIOptionsButton.Object.Position = UDim2.new(0, 0, 2.05, 0)
+            --shared.GuiLibrary.ObjectsThatCanBeSaved.VapeGUIOptionsButton.Object.Position = UDim2.new(0, 0, 2.05, 0)
             makeCorner(shared.GuiLibrary.ObjectsThatCanBeSaved.VapeGUIOptionsButton.Object)
-            repeat task.wait() until shared.GuiLibrary.ObjectsThatCantBeSaved["GUI ModesDivider1"]
-            shared.GuiLibrary.ObjectsThatCantBeSaved["GUI ModesDivider1"].Object1:Destroy()
             repeat task.wait() until shared.GuiLibrary.ObjectsThatCanBeSaved["VPrivateGUIOptionsButton"]
             shared.GuiLibrary.ObjectsThatCanBeSaved["VPrivateGUIOptionsButton"].Object.Parent = a
-            shared.GuiLibrary.ObjectsThatCanBeSaved["VPrivateGUIOptionsButton"].Object.Position = UDim2.new(0, 0, 3.05, 0)
+            --shared.GuiLibrary.ObjectsThatCanBeSaved["VPrivateGUIOptionsButton"].Object.Position = UDim2.new(0, 0, 3.05, 0)
             makeCorner(shared.GuiLibrary.ObjectsThatCanBeSaved["VPrivateGUIOptionsButton"].Object)
-            local c = Instance.new("Frame")
+            repeat task.wait() until shared.GuiLibrary.ObjectsThatCantBeSaved["GUI ModesDivider1"]
+            shared.GuiLibrary.ObjectsThatCantBeSaved["GUI ModesDivider1"].Object1:Destroy()
+            --[[local c = Instance.new("Frame")
             c.Parent = a
             c.Size = UDim2.new(1, 0, 1, 0)
             c.BackgroundTransparency = 1
@@ -854,7 +860,7 @@ function VoidwareFunctions.LoadVoidware()
             shared.GuiLibrary.ObjectsThatCantBeSaved[a.Text.."CustomWindow"] = {["Type"] = "CustomVoidwareWindow", ["Object"] = a}  
             repeat task.wait() until shared.dragGUI
             local dragGUI = shared.dragGUI
-            dragGUI(shared.GuiLibrary.ObjectsThatCantBeSaved["GUI Mode SwitcherCustomWindow"].Object) 
+            dragGUI(shared.GuiLibrary.ObjectsThatCantBeSaved["GUI Mode SwitcherCustomWindow"].Object) --]]
         end) 
     end
     CreateGUIModeSwitcher()
