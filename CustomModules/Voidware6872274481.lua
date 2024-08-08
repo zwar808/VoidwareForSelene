@@ -5173,20 +5173,22 @@ run(function()
 		Function = function(calling)
 			if calling then 
 				repeat 
-					local createfunc = debug.getupvalue(bedwars.DamageIndicator, 10).Create
-					if createfunc ~= indicatorFunction then 
-						oldtweencreate = createfunc
-						debug.setupvalue(bedwars.DamageIndicator, 10, setmetatable({Create = indicatorFunction}, {
-							__index = function(self, index)
-								local data = rawget(self, index);
-								if data == nil then 
-									return tween[index]
+					pcall(function()
+						local createfunc = debug.getupvalue(bedwars.DamageIndicator, 10).Create
+						if createfunc ~= indicatorFunction then 
+							oldtweencreate = createfunc
+							debug.setupvalue(bedwars.DamageIndicator, 10, setmetatable({Create = indicatorFunction}, {
+								__index = function(self, index)
+									local data = rawget(self, index);
+									if data == nil then 
+										return tween[index]
+									end
+									return data
 								end
-								return data
-							end
-						}))
-					end
-					task.wait() 
+							}))
+						end
+						task.wait() 
+					end)
 				until (not DamageIndicator.Enabled)
 			else
 				debug.setupvalue(bedwars.DamageIndicator, 10, tween)
@@ -5370,8 +5372,10 @@ run(function()
 		HoverText = 'Plays an animation which makes it harder\nfor targets to see you.',
 		Function = function(calling)
 			if calling then 
-				invistask = task.spawn(invisFunction);
-				table.insert(invis.Connections, lplr.CharacterAdded:Connect(invisFunction))
+				pcall(function()
+					invistask = task.spawn(invisFunction);
+					table.insert(invis.Connections, lplr.CharacterAdded:Connect(invisFunction))
+				end)
 			else 
 				pcall(function()
 					invishumanim:AdjustSpeed(0);
