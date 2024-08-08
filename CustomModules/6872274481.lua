@@ -21,6 +21,8 @@ local vapeEvents = setmetatable({}, {
 local vapeTargetInfo = shared.VapeTargetInfo
 local vapeInjected = true
 
+-- chipi chipi chapa chapa ruby ruby raba raba!!! beaner song!!! ik you love it negabulla!!! 🐂🐂
+
 local bedwars = {}
 local store = {
 	attackReach = 0,
