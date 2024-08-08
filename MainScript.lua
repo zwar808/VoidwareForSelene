@@ -2159,7 +2159,8 @@ GuiLibrary.UpdateUI2 = function()
 					table.insert(vapeConnections, shared.SearchBarChildrenFrame.ChildAdded:Connect(function(child)
 						if child.ClassName == "TextButton" then
 							task.spawn(function()
-								makegradient(child)
+								--makegradient(child)
+								child.BackgroundColor3 = Color3.fromHSV(GUIColor1.Hue, GUIColor1.Sat, GUIColor1.Value)
 							end)
 						end
 					end))
@@ -2412,7 +2413,7 @@ local teleportConnection = playersService.LocalPlayer.OnTeleport:Connect(functio
 			if shared.VapeDeveloper then
 				loadstring(readfile("vape/NewMainScript.lua"))()
 			else
-								loadstring(game:HttpGet("https://raw.githubusercontent.com/VapeVoidware/vapevoidware/main/NewMainScript.lua", true))()
+				loadstring(game:HttpGet("https://raw.githubusercontent.com/VapeVoidware/vapevoidware/main/NewMainScript.lua", true))()
 			end
 		]]
 		if shared.VapeDeveloper then
