@@ -5116,6 +5116,93 @@ end)
 	}) 
 end)--]]
 run(function()
+	local invis = {};
+	local invisbaseparts = safearray();
+	local invisroot = {};
+	local invisrootcolor = newcolor();
+	local invisanim = Instance.new('Animation');
+	local invisrenderstep;
+	local invistask;
+	local invshumanim;
+	local invisFunction = function()
+		pcall(task.cancel, invistask);
+		pcall(function() invisrenderstep:Disconnect() end);
+		repeat task.wait() until isAlive(lplr, true);
+		for i,v in lplr.Character:GetDescendants() do 
+			pcall(function()
+				if v.ClassName:lower():find('part') and v.CanCollide and v ~= lplr.Character:FindFirstChild('HumanoidRootPart') then 
+					v.CanCollide = false;
+					table.insert(invisbaseparts, v);
+				end 
+			end)
+		end;
+		table.insert(invis.Connections, lplr.Character.DescendantAdded:Connect(function(v)
+			pcall(function()
+				if v.ClassName:lower():find('part') and v.CanCollide and v ~= lplr.Character:FindFirstChild('HumanoidRootPart') then 
+					v.CanCollide = false;
+					table.insert(invisbaseparts, v);
+				end
+			end) 
+		end));
+		task.spawn(function()
+			invisrenderstep = runservice.Stepped:Connect(function()
+				for i,v in invisbaseparts do 
+					v.CanCollide = false;
+				end
+				task.wait()
+			end);
+			table.insert(invis.Connections, invisrenderstep);
+		end)
+		invisanim.AnimationId = 'rbxassetid://11335949902';
+		local anim = lplr.Character.Humanoid.Animator:LoadAnimation(invisanim);
+		invishumanim = anim;
+		repeat 
+			task.wait()
+			if GuiLibrary.ObjectsThatCanBeSaved.AnimationPlayerOptionsButton.Api.Enabled then 
+				GuiLibrary.ObjectsThatCanBeSaved.AnimationPlayerOptionsButton.Api.ToggleButton();
+			end
+			--if isAlive(lplr, true) == false or not isnetworkowner(lplr.Character.PrimaryPart) or not invis.Enabled then 
+				pcall(function() 
+					anim:AdjustSpeed(0);
+					anim:Stop() 
+				end)
+			--end
+			lplr.Character.PrimaryPart.Transparency = invisroot.Enabled and 0.6 or 1;
+			lplr.Character.PrimaryPart.Color = Color3.fromHSV(invisrootcolor.Hue, invisrootcolor.Sat, invisrootcolor.Value);
+			anim:Play(0.1, 9e9, 0.1);
+		until (not invis.Enabled)
+	end;
+	invis = GuiLibrary.ObjectsThatCanBeSaved.CustomisationWindow.Api.CreateOptionsButton({
+		Name = 'Invisibility',
+		HoverText = 'Plays an animation which makes it harder\nfor targets to see you.',
+		Function = function(calling)
+			if calling then 
+				pcall(function()
+					invistask = task.spawn(invisFunction);
+					table.insert(invis.Connections, lplr.CharacterAdded:Connect(invisFunction))
+				end)
+			else 
+				pcall(function()
+					invishumanim:AdjustSpeed(0);
+					invishumanim:Stop();
+				end);
+				pcall(task.cancel, invistask)
+			end
+		end
+	})
+	invisroot = invis.CreateToggle({
+		Name = 'Show Root',
+		Default = true,
+		Function = function(calling)
+			pcall(function() invisrootcolor.Object.Visible = calling; end)
+		end
+	})
+	invisrootcolor = invis.CreateColorSlider({
+		Name = 'Root Color',
+		Function = void
+	})
+end)
+--[[run(function()
 	local tween = game:GetService("TweenService")
 	local DamageIndicator = {}
 	local DamageIndicatorText = {}
@@ -5317,93 +5404,6 @@ run(function()
 	DamageIndicatorStrokeColor.Object.Visible = false
 end)
 run(function()
-	local invis = {};
-	local invisbaseparts = safearray();
-	local invisroot = {};
-	local invisrootcolor = newcolor();
-	local invisanim = Instance.new('Animation');
-	local invisrenderstep;
-	local invistask;
-	local invshumanim;
-	local invisFunction = function()
-		pcall(task.cancel, invistask);
-		pcall(function() invisrenderstep:Disconnect() end);
-		repeat task.wait() until isAlive(lplr, true);
-		for i,v in lplr.Character:GetDescendants() do 
-			pcall(function()
-				if v.ClassName:lower():find('part') and v.CanCollide and v ~= lplr.Character:FindFirstChild('HumanoidRootPart') then 
-					v.CanCollide = false;
-					table.insert(invisbaseparts, v);
-				end 
-			end)
-		end;
-		table.insert(invis.Connections, lplr.Character.DescendantAdded:Connect(function(v)
-			pcall(function()
-				if v.ClassName:lower():find('part') and v.CanCollide and v ~= lplr.Character:FindFirstChild('HumanoidRootPart') then 
-					v.CanCollide = false;
-					table.insert(invisbaseparts, v);
-				end
-			end) 
-		end));
-		task.spawn(function()
-			invisrenderstep = runservice.Stepped:Connect(function()
-				for i,v in invisbaseparts do 
-					v.CanCollide = false;
-				end
-				task.wait()
-			end);
-			table.insert(invis.Connections, invisrenderstep);
-		end)
-		invisanim.AnimationId = 'rbxassetid://11335949902';
-		local anim = lplr.Character.Humanoid.Animator:LoadAnimation(invisanim);
-		invishumanim = anim;
-		repeat 
-			task.wait()
-			if GuiLibrary.ObjectsThatCanBeSaved.AnimationPlayerOptionsButton.Api.Enabled then 
-				GuiLibrary.ObjectsThatCanBeSaved.AnimationPlayerOptionsButton.Api.ToggleButton();
-			end
-			--if isAlive(lplr, true) == false or not isnetworkowner(lplr.Character.PrimaryPart) or not invis.Enabled then 
-				pcall(function() 
-					anim:AdjustSpeed(0);
-					anim:Stop() 
-				end)
-			--end
-			lplr.Character.PrimaryPart.Transparency = invisroot.Enabled and 0.6 or 1;
-			lplr.Character.PrimaryPart.Color = Color3.fromHSV(invisrootcolor.Hue, invisrootcolor.Sat, invisrootcolor.Value);
-			anim:Play(0.1, 9e9, 0.1);
-		until (not invis.Enabled)
-	end;
-	invis = GuiLibrary.ObjectsThatCanBeSaved.CustomisationWindow.Api.CreateOptionsButton({
-		Name = 'Invisibility',
-		HoverText = 'Plays an animation which makes it harder\nfor targets to see you.',
-		Function = function(calling)
-			if calling then 
-				pcall(function()
-					invistask = task.spawn(invisFunction);
-					table.insert(invis.Connections, lplr.CharacterAdded:Connect(invisFunction))
-				end)
-			else 
-				pcall(function()
-					invishumanim:AdjustSpeed(0);
-					invishumanim:Stop();
-				end);
-				pcall(task.cancel, invistask)
-			end
-		end
-	})
-	invisroot = invis.CreateToggle({
-		Name = 'Show Root',
-		Default = true,
-		Function = function(calling)
-			pcall(function() invisrootcolor.Object.Visible = calling; end)
-		end
-	})
-	invisrootcolor = invis.CreateColorSlider({
-		Name = 'Root Color',
-		Function = void
-	})
-end)
-run(function()
 	local damagehighlightvisuals = {};
 	local highlightcolor = newcolor();
 	local highlightinvis = {Value = 4}
@@ -5437,4 +5437,4 @@ run(function()
 		Default = 4,
 		Function = void
 	})
-end);
+end);--]]

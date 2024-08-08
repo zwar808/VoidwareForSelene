@@ -1543,7 +1543,7 @@ run(function()
 		end
 	})
 end)
-local tween = game:GetService("TweenService")
+--[[local tween = game:GetService("TweenService")
 local void = function() end
 local runservice = game:GetService("RunService")
 local newcolor = function() return {Hue = 0, Sat = 0, Value = 0} end
@@ -1691,4 +1691,4 @@ run(function()
 			end
 		end
 	})
-end)
+end)--]]
