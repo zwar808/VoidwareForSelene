@@ -2,7 +2,7 @@ repeat task.wait() until game:IsLoaded()
 task.spawn(function()
     repeat task.wait() until warningNotification
     warningNotification("Voidware - Bedwarz", "Credits go to lwclowny#0 on discord!", 10)
-end)
+end) --- eee sk1dded#0 moment
 -- Initialize Orion Library
 local OrionLib = loadstring(game:HttpGet(('https://raw.githubusercontent.com/shlexware/Orion/main/source')))()  -- Ensure you have the correct URL for OrionLib
 
