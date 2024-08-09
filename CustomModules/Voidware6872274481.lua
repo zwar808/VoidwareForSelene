@@ -3,12 +3,6 @@ repeat task.wait() until shared.GuiLibrary
 repeat task.wait() until shared.GUI
 repeat task.wait() until shared.run
 
--- new voidware command
-
--- if u are watching the github, you got trolled noob.......
-
--- /ikyourwatching
-
 local run = shared.run
 local GuiLibrary = shared.GuiLibrary
 local store = shared.GlobalStore
@@ -4107,146 +4101,6 @@ run(function()
 	})
 end)
 
-run(function() local AestheticLighting = {}
-	AestheticLighting = GuiLibrary.ObjectsThatCanBeSaved.CustomisationWindow.Api.CreateOptionsButton({
-		Name = 'AestheticLighting',
-		Function = function(callback)
-			if callback then
-				local Lighting = game:GetService("Lighting")
-				local StarterGui = game:GetService("StarterGui")
-				local Bloom = Instance.new("BloomEffect")
-				local Blur = Instance.new("BlurEffect")
-				local ColorCor = Instance.new("ColorCorrectionEffect")
-				local SunRays = Instance.new("SunRaysEffect")
-				local Sky = Instance.new("Sky")
-				local Atm = Instance.new("Atmosphere")
-	
-	
-				for i, v in pairs(Lighting:GetChildren()) do
-					if v then
-						v:Destroy()
-					end
-				end
-				Bloom.Parent = Lighting
-				Blur.Parent = Lighting
-				ColorCor.Parent = Lighting
-				SunRays.Parent = Lighting
-				Sky.Parent = Lighting
-				Atm.Parent = Lighting
-				if Vignette == true then
-					local Gui = Instance.new("ScreenGui")
-					Gui.Parent = StarterGui
-					Gui.IgnoreGuiInset = true
-					
-					local ShadowFrame = Instance.new("ImageLabel")
-					ShadowFrame.Parent = Gui
-					ShadowFrame.AnchorPoint = Vector2.new(0.5,1)
-					ShadowFrame.Position = UDim2.new(0.5,0,1,0)
-					ShadowFrame.Size = UDim2.new(1,0,1.05,0)
-					ShadowFrame.BackgroundTransparency = 1
-					ShadowFrame.Image = "rbxassetid://4576475446"
-					ShadowFrame.ImageTransparency = 0.3
-					ShadowFrame.ZIndex = 10
-				end
-				Bloom.Intensity = 1
-				Bloom.Size = 2
-				Bloom.Threshold = 2
-				Blur.Size = 0
-				ColorCor.Brightness = 0.1
-				ColorCor.Contrast = 0
-				ColorCor.Saturation = -0.3
-				ColorCor.TintColor = Color3.fromRGB(107, 78, 173)
-				SunRays.Intensity = 0.03
-				SunRays.Spread = 0.727
-				Sky.SkyboxBk = "http://www.roblox.com/asset/?id=8139677359"
-				Sky.SkyboxDn = "http://www.roblox.com/asset/?id=8139677253"
-				Sky.SkyboxFt = "http://www.roblox.com/asset/?id=8139677111"
-				Sky.SkyboxLf = "http://www.roblox.com/asset/?id=8139676988"
-				Sky.SkyboxRt = "http://www.roblox.com/asset/?id=8139676842"
-				Sky.SkyboxUp = "http://www.roblox.com/asset/?id=8139676647"
-				Sky.SunAngularSize = 10
-				Lighting.Ambient = Color3.fromRGB(128,128,128)
-				Lighting.Brightness = 2
-				Lighting.ColorShift_Bottom = Color3.fromRGB(0,0,0)
-				Lighting.ColorShift_Top = Color3.fromRGB(0,0,0)
-				Lighting.EnvironmentDiffuseScale = 0.2
-				Lighting.EnvironmentSpecularScale = 0.2
-				Lighting.GlobalShadows = false
-				Lighting.OutdoorAmbient = Color3.fromRGB(0,0,0)
-				Lighting.ShadowSoftness = 0.2
-				Lighting.ClockTime = 14
-				Lighting.GeographicLatitude = 45
-				Lighting.ExposureCompensation = 0.5
-			end
-		end
-	}) 
-end)
-
-local COB = function(tab, argstable)         
-    return GuiLibrary["ObjectsThatCanBeSaved"][tab.."Window"]["Api"].CreateOptionsButton(argstable)
-end
-
-local AnticheatDisabler = COB("Customisation", {
-    Name = "Sky",
-    Function = function(callback) 
-        if callback then
-            local Lighting = game:GetService("Lighting")
-            local random = math.random(100000000, 999999999)
-            Lighting.Name = "Lighting"..random
-            local LightingName = "Lighting"..random
-            for i,v in pairs(Lighting:GetChildren()) do
-                v:Destroy()
-            end
-            wait(.1)
-            local Atmosphere = Instance.new("Atmosphere")
-            local Sky = Instance.new("Sky")
-            local Bloom = Instance.new("BloomEffect")
-            local ColorCorrection = Instance.new("ColorCorrectionEffect")
-            local DepthOfField = Instance.new("DepthOfFieldEffect")
-            local SunRays = Instance.new("SunRaysEffect")
-            Atmosphere.Parent = game[LightingName]
-            Sky.Parent = game[LightingName]
-            Bloom.Parent = game[LightingName]
-            ColorCorrection.Parent = game[LightingName]
-            DepthOfField.Parent = game[LightingName]
-            SunRays.Parent = game[LightingName]
-			game[LightingName].Sky.SkyboxBk = "rbxassetid://5084575798"
-			game[LightingName].Sky.SkyboxDn = "rbxassetid://5084575916"
-			game[LightingName].Sky.SkyboxFt = "rbxassetid://5103949679"
-			game[LightingName].Sky.SkyboxLf = "rbxassetid://5103948542"
-			game[LightingName].Sky.SkyboxRt = "rbxassetid://5103948784"
-			game[LightingName].Sky.SkyboxUp = "rbxassetid://5084576400"
-			game[LightingName].Sky.MoonAngularSize = 0
-			game[LightingName].Sky.SunAngularSize = 0
-			game[LightingName].Sky.SunTextureId = ""
-			game[LightingName].Sky.MoonTextureId = ""
-			game[LightingName].Brightness = 0
-			game[LightingName].GlobalShadows = true
-			game[LightingName].ClockTime = 17.8
-			game[LightingName].GeographicLatitude = 0
-			game[LightingName].Atmosphere.Density = 0.3
-			game[LightingName].Atmosphere.Offset = 0.25
-			game[LightingName].Atmosphere.Color = Color3.new(199, 199, 199)
-			game[LightingName].Atmosphere.Decay = Color3.new(106, 112, 125)
-			game[LightingName].Atmosphere.Glare = 0
-			game[LightingName].Atmosphere.Haze = 0
-			game[LightingName].Bloom.Enabled = true
-			game[LightingName].Bloom.Intensity = 1
-			game[LightingName].Bloom.Size = 24
-			game[LightingName].Bloom.Threshold = 2
-			game[LightingName].DepthOfField.Enabled = false
-			game[LightingName].DepthOfField.FarIntensity = 0.1
-			game[LightingName].DepthOfField.FocusDistance = 0.05
-			game[LightingName].DepthOfField.InFocusRadius = 30
-			game[LightingName].DepthOfField.NearIntensity = 0.75
-			game[LightingName].SunRays.Enabled = true
-			game[LightingName].SunRays.Intensity = 0.01
-			game[LightingName].SunRays.Spread = 0.1
-        end
-	end,
-    Default = false,
-    HoverText = "IMPORTANT! THIS WILL NOT WORK WITH WINTER THEME OR FULLBRIGHT TURN THOSE OFF!"
-})
 local staffdetector = {};
 run(function()
 	local teleport = game:GetService('TeleportService');
@@ -5116,93 +4970,6 @@ end)
 	}) 
 end)--]]
 run(function()
-	local invis = {};
-	local invisbaseparts = safearray();
-	local invisroot = {};
-	local invisrootcolor = newcolor();
-	local invisanim = Instance.new('Animation');
-	local invisrenderstep;
-	local invistask;
-	local invshumanim;
-	local invisFunction = function()
-		pcall(task.cancel, invistask);
-		pcall(function() invisrenderstep:Disconnect() end);
-		repeat task.wait() until isAlive(lplr, true);
-		for i,v in lplr.Character:GetDescendants() do 
-			pcall(function()
-				if v.ClassName:lower():find('part') and v.CanCollide and v ~= lplr.Character:FindFirstChild('HumanoidRootPart') then 
-					v.CanCollide = false;
-					table.insert(invisbaseparts, v);
-				end 
-			end)
-		end;
-		table.insert(invis.Connections, lplr.Character.DescendantAdded:Connect(function(v)
-			pcall(function()
-				if v.ClassName:lower():find('part') and v.CanCollide and v ~= lplr.Character:FindFirstChild('HumanoidRootPart') then 
-					v.CanCollide = false;
-					table.insert(invisbaseparts, v);
-				end
-			end) 
-		end));
-		task.spawn(function()
-			invisrenderstep = runservice.Stepped:Connect(function()
-				for i,v in invisbaseparts do 
-					v.CanCollide = false;
-				end
-				task.wait()
-			end);
-			table.insert(invis.Connections, invisrenderstep);
-		end)
-		invisanim.AnimationId = 'rbxassetid://11335949902';
-		local anim = lplr.Character.Humanoid.Animator:LoadAnimation(invisanim);
-		invishumanim = anim;
-		repeat 
-			task.wait()
-			if GuiLibrary.ObjectsThatCanBeSaved.AnimationPlayerOptionsButton.Api.Enabled then 
-				GuiLibrary.ObjectsThatCanBeSaved.AnimationPlayerOptionsButton.Api.ToggleButton();
-			end
-			--if isAlive(lplr, true) == false or not isnetworkowner(lplr.Character.PrimaryPart) or not invis.Enabled then 
-				pcall(function() 
-					anim:AdjustSpeed(0);
-					anim:Stop() 
-				end)
-			--end
-			lplr.Character.PrimaryPart.Transparency = invisroot.Enabled and 0.6 or 1;
-			lplr.Character.PrimaryPart.Color = Color3.fromHSV(invisrootcolor.Hue, invisrootcolor.Sat, invisrootcolor.Value);
-			anim:Play(0.1, 9e9, 0.1);
-		until (not invis.Enabled)
-	end;
-	invis = GuiLibrary.ObjectsThatCanBeSaved.CustomisationWindow.Api.CreateOptionsButton({
-		Name = 'Invisibility',
-		HoverText = 'Plays an animation which makes it harder\nfor targets to see you.',
-		Function = function(calling)
-			if calling then 
-				pcall(function()
-					invistask = task.spawn(invisFunction);
-					table.insert(invis.Connections, lplr.CharacterAdded:Connect(invisFunction))
-				end)
-			else 
-				pcall(function()
-					invishumanim:AdjustSpeed(0);
-					invishumanim:Stop();
-				end);
-				pcall(task.cancel, invistask)
-			end
-		end
-	})
-	invisroot = invis.CreateToggle({
-		Name = 'Show Root',
-		Default = true,
-		Function = function(calling)
-			pcall(function() invisrootcolor.Object.Visible = calling; end)
-		end
-	})
-	invisrootcolor = invis.CreateColorSlider({
-		Name = 'Root Color',
-		Function = void
-	})
-end)
---[[run(function()
 	local tween = game:GetService("TweenService")
 	local DamageIndicator = {}
 	local DamageIndicatorText = {}
@@ -5266,22 +5033,20 @@ end)
 		Function = function(calling)
 			if calling then 
 				repeat 
-					pcall(function()
-						local createfunc = debug.getupvalue(bedwars.DamageIndicator, 10).Create
-						if createfunc ~= indicatorFunction then 
-							oldtweencreate = createfunc
-							debug.setupvalue(bedwars.DamageIndicator, 10, setmetatable({Create = indicatorFunction}, {
-								__index = function(self, index)
-									local data = rawget(self, index);
-									if data == nil then 
-										return tween[index]
-									end
-									return data
+					local createfunc = debug.getupvalue(bedwars.DamageIndicator, 10).Create
+					if createfunc ~= indicatorFunction then 
+						oldtweencreate = createfunc
+						debug.setupvalue(bedwars.DamageIndicator, 10, setmetatable({Create = indicatorFunction}, {
+							__index = function(self, index)
+								local data = rawget(self, index);
+								if data == nil then 
+									return tween[index]
 								end
-							}))
-						end
-						task.wait() 
-					end)
+								return data
+							end
+						}))
+					end
+					task.wait() 
 				until (not DamageIndicator.Enabled)
 			else
 				debug.setupvalue(bedwars.DamageIndicator, 10, tween)
@@ -5404,6 +5169,91 @@ end)
 	DamageIndicatorStrokeColor.Object.Visible = false
 end)
 run(function()
+	local invis = {};
+	local invisbaseparts = safearray();
+	local invisroot = {};
+	local invisrootcolor = newcolor();
+	local invisanim = Instance.new('Animation');
+	local invisrenderstep;
+	local invistask;
+	local invshumanim;
+	local invisFunction = function()
+		pcall(task.cancel, invistask);
+		pcall(function() invisrenderstep:Disconnect() end);
+		repeat task.wait() until isAlive(lplr, true);
+		for i,v in lplr.Character:GetDescendants() do 
+			pcall(function()
+				if v.ClassName:lower():find('part') and v.CanCollide and v ~= lplr.Character:FindFirstChild('HumanoidRootPart') then 
+					v.CanCollide = false;
+					table.insert(invisbaseparts, v);
+				end 
+			end)
+		end;
+		table.insert(invis.Connections, lplr.Character.DescendantAdded:Connect(function(v)
+			pcall(function()
+				if v.ClassName:lower():find('part') and v.CanCollide and v ~= lplr.Character:FindFirstChild('HumanoidRootPart') then 
+					v.CanCollide = false;
+					table.insert(invisbaseparts, v);
+				end
+			end) 
+		end));
+		task.spawn(function()
+			invisrenderstep = runservice.Stepped:Connect(function()
+				for i,v in invisbaseparts do 
+					v.CanCollide = false;
+				end
+				task.wait()
+			end);
+			table.insert(invis.Connections, invisrenderstep);
+		end)
+		invisanim.AnimationId = 'rbxassetid://11335949902';
+		local anim = lplr.Character.Humanoid.Animator:LoadAnimation(invisanim);
+		invishumanim = anim;
+		repeat 
+			task.wait()
+			if GuiLibrary.ObjectsThatCanBeSaved.AnimationPlayerOptionsButton.Api.Enabled then 
+				GuiLibrary.ObjectsThatCanBeSaved.AnimationPlayerOptionsButton.Api.ToggleButton();
+			end
+			--if isAlive(lplr, true) == false or not isnetworkowner(lplr.Character.PrimaryPart) or not invis.Enabled then 
+				pcall(function() 
+					anim:AdjustSpeed(0);
+					anim:Stop() 
+				end)
+			--end
+			lplr.Character.PrimaryPart.Transparency = invisroot.Enabled and 0.6 or 1;
+			lplr.Character.PrimaryPart.Color = Color3.fromHSV(invisrootcolor.Hue, invisrootcolor.Sat, invisrootcolor.Value);
+			anim:Play(0.1, 9e9, 0.1);
+		until (not invis.Enabled)
+	end;
+	invis = GuiLibrary.ObjectsThatCanBeSaved.CustomisationWindow.Api.CreateOptionsButton({
+		Name = 'Invisibility',
+		HoverText = 'Plays an animation which makes it harder\nfor targets to see you.',
+		Function = function(calling)
+			if calling then 
+				invistask = task.spawn(invisFunction);
+				table.insert(invis.Connections, lplr.CharacterAdded:Connect(invisFunction))
+			else 
+				pcall(function()
+					invishumanim:AdjustSpeed(0);
+					invishumanim:Stop();
+				end);
+				pcall(task.cancel, invistask)
+			end
+		end
+	})
+	invisroot = invis.CreateToggle({
+		Name = 'Show Root',
+		Default = true,
+		Function = function(calling)
+			pcall(function() invisrootcolor.Object.Visible = calling; end)
+		end
+	})
+	invisrootcolor = invis.CreateColorSlider({
+		Name = 'Root Color',
+		Function = void
+	})
+end)
+run(function()
 	local damagehighlightvisuals = {};
 	local highlightcolor = newcolor();
 	local highlightinvis = {Value = 4}
@@ -5437,4 +5287,4 @@ run(function()
 		Default = 4,
 		Function = void
 	})
-end);--]]
+end);

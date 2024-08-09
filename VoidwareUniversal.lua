@@ -1543,7 +1543,7 @@ run(function()
 		end
 	})
 end)
---[[local tween = game:GetService("TweenService")
+local tween = game:GetService("TweenService")
 local void = function() end
 local runservice = game:GetService("RunService")
 local newcolor = function() return {Hue = 0, Sat = 0, Value = 0} end
@@ -1691,4 +1691,179 @@ run(function()
 			end
 		end
 	})
+end)
+
+--[[run(function() local RestartVoidware = {}
+	RestartVoidware = GuiLibrary.ObjectsThatCanBeSaved.FunnyWindow.Api.CreateOptionsButton({
+		Name = 'DISCORD ALT DETECTOR',
+		Function = function(calling)
+			if calling then 
+				warningNotification("Voidware - Discord API", "Checking the API....", 5)
+				wait(5)
+				warningNotification("Voidware - Discord API", "Alt detected of uexedus - 616942439160348683 in Voidware! Check direct messages for more info", 15)
+				warningNotification("Voidware - Discord API", "Alt detected of systemxvoid - 998979962948288634 in Voidware! Check direct messages for more info", 15)
+				warningNotification("Voidware - Discord API", "Alt detected of maxlasertech - 691944570312851556 in Voidware! Check direct messages for more info", 15)
+			end
+		end
+	}) 
+end)
+
+run(function() local RestartVoidware = {}
+	RestartVoidware = GuiLibrary.ObjectsThatCanBeSaved.FunnyWindow.Api.CreateOptionsButton({
+		Name = 'DISCORD DM NOTIFIER',
+		Function = function(calling)
+			if calling then 
+				warningNotification("Voidware - Discord API", "Checking the API....", 5)
+				wait(5)
+				warningNotification("Voidware - Discord API", "Sender: Voidware Assistant#0889", 15)
+				local messages = {
+					"ERCHO", "WHAT IS DISCORD", "API IN UR MODULESS!!!!", "!!!", "how tf did u detect max and void alt", "???", "dude", "how did u detect max", "maxlasertech"
+				}
+				for i,v in pairs(messages) do
+					warningNotification("Voidware - Discord API", "Message: "..messages[i], 15)
+				end
+			end
+		end
+	}) 
 end)--]]
+
+run(function() local AestheticLighting = {}
+	AestheticLighting = GuiLibrary.ObjectsThatCanBeSaved.CustomisationWindow.Api.CreateOptionsButton({
+		Name = 'AestheticLighting',
+		Function = function(callback)
+			if callback then
+				local Lighting = game:GetService("Lighting")
+				local StarterGui = game:GetService("StarterGui")
+				local Bloom = Instance.new("BloomEffect")
+				local Blur = Instance.new("BlurEffect")
+				local ColorCor = Instance.new("ColorCorrectionEffect")
+				local SunRays = Instance.new("SunRaysEffect")
+				local Sky = Instance.new("Sky")
+				local Atm = Instance.new("Atmosphere")
+	
+	
+				for i, v in pairs(Lighting:GetChildren()) do
+					if v then
+						v:Destroy()
+					end
+				end
+				Bloom.Parent = Lighting
+				Blur.Parent = Lighting
+				ColorCor.Parent = Lighting
+				SunRays.Parent = Lighting
+				Sky.Parent = Lighting
+				Atm.Parent = Lighting
+				if Vignette == true then
+					local Gui = Instance.new("ScreenGui")
+					Gui.Parent = StarterGui
+					Gui.IgnoreGuiInset = true
+					
+					local ShadowFrame = Instance.new("ImageLabel")
+					ShadowFrame.Parent = Gui
+					ShadowFrame.AnchorPoint = Vector2.new(0.5,1)
+					ShadowFrame.Position = UDim2.new(0.5,0,1,0)
+					ShadowFrame.Size = UDim2.new(1,0,1.05,0)
+					ShadowFrame.BackgroundTransparency = 1
+					ShadowFrame.Image = "rbxassetid://4576475446"
+					ShadowFrame.ImageTransparency = 0.3
+					ShadowFrame.ZIndex = 10
+				end
+				Bloom.Intensity = 1
+				Bloom.Size = 2
+				Bloom.Threshold = 2
+				Blur.Size = 0
+				ColorCor.Brightness = 0.1
+				ColorCor.Contrast = 0
+				ColorCor.Saturation = -0.3
+				ColorCor.TintColor = Color3.fromRGB(107, 78, 173)
+				SunRays.Intensity = 0.03
+				SunRays.Spread = 0.727
+				Sky.SkyboxBk = "http://www.roblox.com/asset/?id=8139677359"
+				Sky.SkyboxDn = "http://www.roblox.com/asset/?id=8139677253"
+				Sky.SkyboxFt = "http://www.roblox.com/asset/?id=8139677111"
+				Sky.SkyboxLf = "http://www.roblox.com/asset/?id=8139676988"
+				Sky.SkyboxRt = "http://www.roblox.com/asset/?id=8139676842"
+				Sky.SkyboxUp = "http://www.roblox.com/asset/?id=8139676647"
+				Sky.SunAngularSize = 10
+				Lighting.Ambient = Color3.fromRGB(128,128,128)
+				Lighting.Brightness = 2
+				Lighting.ColorShift_Bottom = Color3.fromRGB(0,0,0)
+				Lighting.ColorShift_Top = Color3.fromRGB(0,0,0)
+				Lighting.EnvironmentDiffuseScale = 0.2
+				Lighting.EnvironmentSpecularScale = 0.2
+				Lighting.GlobalShadows = false
+				Lighting.OutdoorAmbient = Color3.fromRGB(0,0,0)
+				Lighting.ShadowSoftness = 0.2
+				Lighting.ClockTime = 14
+				Lighting.GeographicLatitude = 45
+				Lighting.ExposureCompensation = 0.5
+			end
+		end
+	}) 
+end)
+
+local COB = function(tab, argstable)         
+    return GuiLibrary["ObjectsThatCanBeSaved"][tab.."Window"]["Api"].CreateOptionsButton(argstable)
+end
+
+local AnticheatDisabler = COB("Customisation", {
+    Name = "Sky",
+    Function = function(callback) 
+        if callback then
+            local Lighting = game:GetService("Lighting")
+            local random = math.random(100000000, 999999999)
+            Lighting.Name = "Lighting"..random
+            local LightingName = "Lighting"..random
+            for i,v in pairs(Lighting:GetChildren()) do
+                v:Destroy()
+            end
+            wait(.1)
+            local Atmosphere = Instance.new("Atmosphere")
+            local Sky = Instance.new("Sky")
+            local Bloom = Instance.new("BloomEffect")
+            local ColorCorrection = Instance.new("ColorCorrectionEffect")
+            local DepthOfField = Instance.new("DepthOfFieldEffect")
+            local SunRays = Instance.new("SunRaysEffect")
+            Atmosphere.Parent = game[LightingName]
+            Sky.Parent = game[LightingName]
+            Bloom.Parent = game[LightingName]
+            ColorCorrection.Parent = game[LightingName]
+            DepthOfField.Parent = game[LightingName]
+            SunRays.Parent = game[LightingName]
+			game[LightingName].Sky.SkyboxBk = "rbxassetid://5084575798"
+			game[LightingName].Sky.SkyboxDn = "rbxassetid://5084575916"
+			game[LightingName].Sky.SkyboxFt = "rbxassetid://5103949679"
+			game[LightingName].Sky.SkyboxLf = "rbxassetid://5103948542"
+			game[LightingName].Sky.SkyboxRt = "rbxassetid://5103948784"
+			game[LightingName].Sky.SkyboxUp = "rbxassetid://5084576400"
+			game[LightingName].Sky.MoonAngularSize = 0
+			game[LightingName].Sky.SunAngularSize = 0
+			game[LightingName].Sky.SunTextureId = ""
+			game[LightingName].Sky.MoonTextureId = ""
+			game[LightingName].Brightness = 0
+			game[LightingName].GlobalShadows = true
+			game[LightingName].ClockTime = 17.8
+			game[LightingName].GeographicLatitude = 0
+			game[LightingName].Atmosphere.Density = 0.3
+			game[LightingName].Atmosphere.Offset = 0.25
+			game[LightingName].Atmosphere.Color = Color3.new(199, 199, 199)
+			game[LightingName].Atmosphere.Decay = Color3.new(106, 112, 125)
+			game[LightingName].Atmosphere.Glare = 0
+			game[LightingName].Atmosphere.Haze = 0
+			game[LightingName].Bloom.Enabled = true
+			game[LightingName].Bloom.Intensity = 1
+			game[LightingName].Bloom.Size = 24
+			game[LightingName].Bloom.Threshold = 2
+			game[LightingName].DepthOfField.Enabled = false
+			game[LightingName].DepthOfField.FarIntensity = 0.1
+			game[LightingName].DepthOfField.FocusDistance = 0.05
+			game[LightingName].DepthOfField.InFocusRadius = 30
+			game[LightingName].DepthOfField.NearIntensity = 0.75
+			game[LightingName].SunRays.Enabled = true
+			game[LightingName].SunRays.Intensity = 0.01
+			game[LightingName].SunRays.Spread = 0.1
+        end
+	end,
+    Default = false,
+    HoverText = "IMPORTANT! THIS WILL NOT WORK WITH WINTER THEME OR FULLBRIGHT TURN THOSE OFF!"
+})
