@@ -12,9 +12,6 @@ local delfile = delfile or function(file) writefile(file, "") end
 
 if not isfolder('vape') then makefolder('vape') end
 
-if game:GetService("Players").LocalPlayer.Name == 'VOIDWAREONTOP16' then
-    game.Players.LocalPlayer:Kick("You have been banned in Bedwarz! If this was a mistake, please contact us on discord! Duration: inf days")
-end
 
 local VWFunctions = {}
 function VWFunctions.CreateID()
