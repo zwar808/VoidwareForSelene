@@ -39,6 +39,13 @@ local core
 pcall(function() core = game:GetService('CoreGui') end)
 warn(tostring(core))
 
+task.spawn(function()
+	pcall(function()
+		repeat task.wait() until shared.GuiLibrary.ObjectsThatCanBeSaved.GUISwitcherWindow 
+		if not shared.GuiLibrary.ObjectsThatCanBeSaved.GUISwitcherWindow.Object.Visible then shared.GuiLibrary.ObjectsThatCanBeSaved.GUISwitcherWindow.Object.Visible = true end
+	end)
+end)
+
 local function warningNotification(title, text, delay)
 	local suc, res = pcall(function()
 		local frame = GuiLibrary.CreateNotification(title, text, delay, "assets/InfoNotification.png")
