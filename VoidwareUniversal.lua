@@ -70,6 +70,12 @@ end
 
 local newcolor = function() return {Hue = 0, Sat = 0, Value = 0} end
 
+task.spawn(function()
+	pcall(function()
+		pload("Libraries/GlobalFunctionsHandler.lua", false)
+	end)
+end)
+
 local textlabel = Instance.new("TextLabel")
 textlabel.Size = UDim2.new(1, 0, 0, 36)
 textlabel.Text = "discord.gg/voidware"
