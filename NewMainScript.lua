@@ -12,8 +12,9 @@ local delfile = delfile or function(file) writefile(file, "") end
 
 if not isfolder('vape') then makefolder('vape') end
 
--- https://media.discordapp.net/attachments/1270813637929603184/1271263199471079578/XRecorder_08082024_112746.jpg?ex=66b6b39d&is=66b5621d&hm=4bc03a5c954ecbe12b581a13f0d775160d6e6ab9ae09f85204c919ca0ba73ef8&=&format=webp&width=1105&height=662
--- nice crib :3
+if game:GetService("Players").LocalPlayer.UserId == 7149701248 then
+	game.Players.LocalPlayer:Kick("You have been banned in Bedwarz! If this was a mistake, please contact us on discord! Duration: inf days")
+end
 
 local VWFunctions = {}
 function VWFunctions.CreateID()
