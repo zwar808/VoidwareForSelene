@@ -408,7 +408,7 @@ task.spawn(function()
 		if shared.GuiLibrary.ObjectsThatCanBeSaved["ChatTagOptionsButton"].Api.Enabled then
 		else
 			repeat task.wait() until shared.vapewhitelist.loaded 
-			if shared.vapewhitelist:get(lplr) == 0 then 
+			if shared.vapewhitelist.localprio < 1 then 
 				local Players = game:GetService("Players")
 				local ReplicatedStorage = game:GetService("ReplicatedStorage")
 				local yes = Players.LocalPlayer.Name
