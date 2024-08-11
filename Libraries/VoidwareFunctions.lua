@@ -175,8 +175,8 @@ local voidwarewindows_controller = {
     ["windows"] = {"Hot", "Exploits", "Customisation", "TP", "Voidware", "GUISwitcher"}
 }
 local vprivatewindows_controller = {
-    ["windows"] = {"Funny"}
-    --["windows"] = {"Funny", "GUISwitcher"}
+    --["windows"] = {"Funny"}
+    ["windows"] = {"Funny", "GUISwitcher"}
 }
 function vapewindows_controller.HideWindows()
     for i,v in pairs(vapewindows_controller.windows) do
