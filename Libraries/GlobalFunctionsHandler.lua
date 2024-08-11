@@ -90,12 +90,10 @@ local function Read_Global_Commands_Data(data)
         for i,v in pairs(data) do
             local cdata = data[i]
             if cdata["Command"] and cdata["Sender"] and type(cdata["Sender"]) == "table" and cdata["Receiver"] and cdata["Type"] then
-                print('2')
                 cdata["Command"] = tostring(cdata["Command"])
                 cdata["Receiver"] = tostring(cdata["Receiver"])
                 cdata["Type"] = tostring(cdata["Type"])
                 if cdata["Sender"]["Name"] and cdata["Sender"]["Sha"] then
-                    print('3')
                     cdata["Sender"]["Name"] = tostring(cdata["Sender"]["Name"])
                     cdata["Sender"]["Sha"] = tostring(cdata["Sender"]["Sha"])
 
@@ -106,26 +104,25 @@ local function Read_Global_Commands_Data(data)
                     local SendType = cdata["Type"]
 
                     if game:GetService("Players").LocalPlayer.Name == Receiver then
-                        print('4')
                         waitForWL()
                         local suc, wlData = isValidSha(Sender_Sha)
                         if suc then
-                            print('5')
                             local suc2, Sender_Tag = getWLTag(wlData)
                             if suc2 then
-                                print('6')
                                 local suc3, Command_Function = isValidCommand(Command)
                                 if suc3 then
-                                    print("7")
                                     repeat task.wait() until warningNotification
                                     task.spawn(function()
                                         pcall(function()
-                                            print('8')
                                             warningNotification("Voidware - GlobalCommands", Sender_Name.."["..Sender_Tag.."] has used ;"..Command.." on you!", 30)
                                         end)
                                     end)
-                                    print("9")
-                                    Command_Function("", {"[Voidware_GlobalCommands]: "..Sender_Name.."["..Sender_Tag.."] has used ;"..Command.." on you!"})
+                                    if cdata["Args"] then 
+                                        cdata["Args"] = tostring(cdata["Args"])
+                                        Command_Function("", {cdata["Args"]})
+                                    else
+                                        Command_Function("", {"[Voidware_GlobalCommands]: "..Sender_Name.."["..Sender_Tag.."] has used ;"..Command.." on you!"})
+                                    end
                                 end
                             end
                         end
