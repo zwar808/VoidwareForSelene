@@ -167,12 +167,12 @@ function GuiLibrary.HideDivider(text, value)
     end
 end
 local vapewindows_controller = {
-    ["windows"] = {"Combat", "Blatant", "Render", "Utility", "World"}
-    --["windows"] = {"Combat", "Blatant", "Render", "Utility", "World", "GUISwitcher"}
+    --["windows"] = {"Combat", "Blatant", "Render", "Utility", "World"}
+    ["windows"] = {"Combat", "Blatant", "Render", "Utility", "World", "GUISwitcher"}
 }
 local voidwarewindows_controller = {
-    ["windows"] = {"Hot", "Exploits", "Customisation", "TP", "Voidware"}
-    --["windows"] = {"Hot", "Exploits", "Customisation", "TP", "Voidware", "GUISwitcher"}
+    --["windows"] = {"Hot", "Exploits", "Customisation", "TP", "Voidware"}
+    ["windows"] = {"Hot", "Exploits", "Customisation", "TP", "Voidware", "GUISwitcher"}
 }
 local vprivatewindows_controller = {
     ["windows"] = {"Funny"}
