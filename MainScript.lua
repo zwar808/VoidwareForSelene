@@ -2062,11 +2062,11 @@ GUIColorSlider2 = GUI.CreateColorSlider("GUI Theme2", function(h, s, v)
 	GuiLibrary.UpdateUI(h, s, v)
 end, true)
 GUIColorSlider2.Object.Visible = false
-GradientUIToggle = GUI.CreateToggle({
+GradientUIToggle = GUI.CreateToggle({ 
 	Name = "Gradient UI",
 	Function = function(calling)
 		if calling then GuiLibrary.GradientMode = true GUIColorSlider2.Object.Visible = true else GuiLibrary.GradientMode = false GUIColorSlider2.Object.Visible = false end
-	end,
+	end
 	--HoverText = "Required for certain features."
 })
 local BlatantModeToggle = GUI.CreateToggle({
