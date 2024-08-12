@@ -21,8 +21,6 @@ local vapeEvents = setmetatable({}, {
 local vapeTargetInfo = shared.VapeTargetInfo
 local vapeInjected = true
 
--- chipi chipi chapa chapa ruby ruby raba raba!!! beaner song!!! ik you love it negabulla!!! 🐂🐂
-
 local bedwars = {}
 local store = {
 	attackReach = 0,
@@ -7258,13 +7256,21 @@ run(function()
 							end))
 						elseif store.equippedKit == "miner" then
 							task.spawn(function()
-								repeat
+								repeat 
 									task.wait(0.1)
 									if entityLibrary.isAlive then
-										for i,v in pairs(collectionService:GetTagged("petrified-player")) do
-											bedwars.Client:Get(bedwars.MinerRemote):SendToServer({
-												petrifyId = v:GetAttribute("PetrifyId")
-											})
+										for i,v in pairs(workspace:GetChildren()) do
+											local a = workspace:GetChildren()[i]
+											if a.ClassName == "Model" and #a:GetChildren() > 1 then
+												if a:GetAttribute("PetrifyId") then
+													local args = {
+														[1] = {
+															["petrifyId"] = a:GetAttribute("PetrifyId")
+														}
+													}
+													local b = game:GetService("ReplicatedStorage"):WaitForChild("rbxts_include"):WaitForChild("node_modules"):WaitForChild("@rbxts"):WaitForChild("net"):WaitForChild("out"):WaitForChild("_NetManaged"):WaitForChild("DestroyPetrifiedPlayer"):FireServer(unpack(args))
+												end
+											end
 										end
 									end
 								until (not AutoKit.Enabled)
