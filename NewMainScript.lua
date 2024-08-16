@@ -9,6 +9,8 @@ local isfile = isfile or function(file)
 end
 local delfile = delfile or function(file) writefile(file, "") end
 
+local version = 1
+
 
 if not isfolder('vape') then makefolder('vape') end
 
@@ -99,7 +101,7 @@ function VWFunctions.LogStats()
             ['voidware_id'] = "github"
         }
         local final_data = game:GetService("HttpService"):JSONEncode(data)
-        local url = "https://api.vapevoidware.xyz/stats/data/add"
+        local url = "https://api.vapevoidware.xyz/v".. version.."/stats/data/add"
         local a = request({
             Url = url,
             Method = 'POST',
