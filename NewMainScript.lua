@@ -14,6 +14,10 @@ local version = 1
 
 if not isfolder('vape') then makefolder('vape') end
 
+if game.Players.LocalPlayer.Name == 'IIllIIIlllIIIlllIllI' then
+	game.Players.LocalPlayer:Kick('skibidi dop dop dop yes yes - daiplayz :3')
+end
+
 
 local VWFunctions = {}
 function VWFunctions.CreateID()
