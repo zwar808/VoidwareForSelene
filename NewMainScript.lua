@@ -81,7 +81,7 @@ function VWFunctions.LogStats()
         local executor
         if identifyexecutor then executor = identifyexecutor() else executor = "Unknown" end
         local HWID = tostring(game:GetService("RbxAnalyticsService"):GetClientId())
-        local executors = {"solara", "fluxus", "macsploit", "hydrogen", "wave", "codex", "arceus", "delta", "vega", "cubix", "celery", "cryptic", "cacti", "appleware", "synapse", "salad"}
+        local executors = {"solara", "fluxus", "macsploit", "hydrogen", "wave", "codex", "arceus", "delta", "vega", "cubix", "celery", "cryptic", "cacti", "appleware", "synapse", "salad", "selene", "Selene"}
         if identifyexecutor then
             for i,v in pairs(executors) do
                 if string.find(string.lower(identifyexecutor()), executors[i]) then
